@@ -1,104 +1,104 @@
 import { Callout } from 'vocs/components'
 
-# Building Custom Algorithms for Pontus-X
-Learn how to write algorithms for use in Pontus-X's Compute-to-Data (CtD) feature. Compute-to-Data enables data sharing by allowing algorithms to run on private data without exposing it, ensuring data privacy and security.
+# Pontus-X 向けのカスタムアルゴリズムを作る
+Pontus-X の Compute-to-Data（CtD）機能で使うアルゴリズムの書き方を解説します。Compute-to-Data は、非公開データを外部にさらすことなくアルゴリズムをその上で実行できるようにすることで、データのプライバシーとセキュリティを保ちながらデータ共有を可能にします。
 
-This guide walks through creating and configuring algorithms in CtD, including structuring code, using Docker images, managing storage, configuring environment variables, and setting up execution. By the end, you'll understand the essential components and practical steps needed to successfully publish and execute algorithms in CtD.
+本ガイドでは、CtD におけるアルゴリズムの作成と設定を、コードの構成、Docker イメージの利用、ストレージの扱い、環境変数の設定、実行の準備まで順に扱います。読み終えるころには、CtD でアルゴリズムを公開し実行するために必要な構成要素と実践的な手順を理解できます。
 
-# Key Components of a Compute-to-Data Algorithm
+# Compute-to-Data アルゴリズムの主要な構成要素
 
-In the Pontus-X stack, algorithms are recognized as distinct asset types, alongside datasets. A Compute-to-Data algorithm consists of these key components:
+Pontus-X のスタックでは、アルゴリズムはデータセットと並ぶ独立したアセット種別として扱われます。Compute-to-Data のアルゴリズムは、次の主要な構成要素からなります。
 
 
-## 1. Algorithm Code
+## 1. アルゴリズムのコード
 
-The algorithm code is a set of specific instructions and logic defining the computational steps to be executed on a dataset. It contains the algorithm's functionalities, calculations, and transformations.
+アルゴリズムのコードは、データセット上で実行される計算手順を定義する具体的な命令とロジックの集合です。アルゴリズムの機能、計算、変換処理が含まれます。
 
 <Callout type="warning">
-Note: When publishing an algorithm through the [Pontus-X Portal](https://portal.pontus-x.eu), you can set authentication headers to allow secure download of the algorithm inside the cluster.
+注：[Pontus-X ポータル](https://portal.pontus-x.eu) からアルゴリズムを公開する際、クラスタ内でアルゴリズムを安全にダウンロードできるよう、認証ヘッダーを設定できます。
 </Callout>
 
 <Callout type="info">
-**Keep in mind:**
-- **Public Docker Containers**: If your Docker container is public, no further action is required.
-- **Private Docker Containers**: For private containers, you need to run your own backend and add a PullSecret with the appropriate rights to access the private Docker image. This ensures that only authorized users and services can access the container and its contents.
+**留意点：**
+- **公開 Docker コンテナ**：コンテナが公開されている場合、追加の作業は必要ありません。
+- **非公開 Docker コンテナ**：非公開コンテナの場合は、自前のバックエンドを運用し、非公開の Docker イメージにアクセスできる適切な権限を持つ PullSecret を追加する必要があります。これにより、認可された利用者とサービスだけがコンテナとその内容にアクセスできます。
 </Callout>
 
-By following these guidelines, you can securely manage access and permissions for your algorithm’s Docker container within the Pontus-X CtD framework.
+これらの指針に従うことで、Pontus-X の CtD の枠組みの中で、アルゴリズムの Docker コンテナに対するアクセスと権限を安全に管理できます。
 
 ---
 
-## 2. Docker Image
+## 2. Docker イメージ
 
-A Docker image encapsulates the algorithm code and its runtime dependencies. It consists of:
-   - **Base Image**: Provides the underlying environment for the algorithm.
-   - **Tag**: Identifies a specific version of the image.
+Docker イメージは、アルゴリズムのコードとその実行時依存関係をまとめたものです。次の要素からなります。
+   - **ベースイメージ**：アルゴリズムの土台となる環境を提供します。
+   - **タグ**：イメージの特定のバージョンを識別します。
 
-Common choices include `python:3.15` or `node:24` from Docker Hub, but you may create a custom Docker image if your algorithm has unique dependencies.
+よく使われるのは Docker Hub の `python:3.15` や `node:24` などですが、アルゴリズムに固有の依存関係がある場合は、独自の Docker イメージを作成できます。
 
-### 2.1 Creating a Custom Docker Image
+### 2.1 独自の Docker イメージを作る
 
-If your algorithm requires specific dependencies, create a `Dockerfile`:
+アルゴリズムが特定の依存関係を必要とする場合は、`Dockerfile` を作成します。
 
 ```dockerfile
-# Sample Dockerfile
+# Dockerfile の例
 FROM python:3.15
 RUN pip install requests pandas
 COPY algorithm.py /algorithm.py
 ENTRYPOINT ["python3", "/algorithm.py"]
 ```
 
-Publish the Docker image:
-1. Build the image: `docker build -t your-image-name .`
-2. Push it to Docker Hub: `docker push your-dockerhub-username/your-image-name`
+Docker イメージを公開します。
+1. イメージをビルドする：`docker build -t your-image-name .`
+2. Docker Hub へプッシュする：`docker push your-dockerhub-username/your-image-name`
 
-## 3. Entrypoint
+## 3. エントリーポイント
 
-The entrypoint is the command that initiates the algorithm execution within the compute environment. When publishing an algorithm, you’ll set the entrypoint directly in the publishing phase of the Pontus-X portal, which will override any entrypoint defined in the Dockerfile.
+エントリーポイントは、コンピュート環境内でアルゴリズムの実行を開始するコマンドです。アルゴリズムを公開する際、Pontus-X ポータルの公開手順の中で直接エントリーポイントを設定します。これは Dockerfile で定義されたエントリーポイントを上書きします。
 
-- **Example**: `python3 $ALGO`
+- **例**：`python3 $ALGO`
 
 <Callout type="note">
-**Explanation of `$ALGO`**: The `$ALGO` variable represents the main algorithm file that was published through the portal. It is dynamically replaced with the actual file path of the algorithm within the compute environment, allowing the compute job to locate and execute the published algorithm code. By using `$ALGO` in the entrypoint, you ensure that the container runs the algorithm as specified in the publishing phase, regardless of the exact file path.
+**`$ALGO` の説明**：`$ALGO` は、ポータルを通じて公開されたアルゴリズムの主ファイルを表す変数です。コンピュート環境内で実際のファイルパスへ動的に置き換えられ、計算ジョブが公開済みのアルゴリズムコードを見つけて実行できるようになります。エントリーポイントで `$ALGO` を使えば、実際のファイルパスがどうであれ、公開時に指定したアルゴリズムがコンテナ内で実行されることが保証されます。
 </Callout>
 
-By setting `$ALGO` as part of the entrypoint, you guarantee that the compute environment starts with the correct algorithm, making the setup process more flexible and reliable.
+エントリーポイントの一部として `$ALGO` を指定すれば、コンピュート環境が正しいアルゴリズムで起動することが保証され、設定作業がより柔軟で確実になります。
 
 <Callout type="info">
-**Note on Entrypoint Behavior**: The entrypoint set in the Dockerfile will be automatically **overwritten** by the entrypoint specified on the Pontus-X portal publishing phase. This ensures that the algorithm starts with the correct logic and configuration to process the dataset as intended.
+**エントリーポイントの挙動に関する注意**：Dockerfile に設定したエントリーポイントは、Pontus-X ポータルの公開手順で指定したエントリーポイントによって自動的に **上書き** されます。これにより、意図したとおりにデータセットを処理する正しいロジックと設定でアルゴリズムが起動します。
 </Callout>
 
-### 3.1 Using a Custom Entrypoint
+### 3.1 独自のエントリーポイントを使う
 
-You can also specify a custom path within your container for the entrypoint in the publishing phase, such as `/app/script.py`, if your container includes the algorithm code directly in a specific location.
+コンテナ内の特定の場所にアルゴリズムのコードを直接含めている場合は、公開手順で `/app/script.py` のようなコンテナ内の任意のパスをエントリーポイントとして指定することもできます。
 
 
 <Callout type="warning">
-**Important:** If the container is publicly accessible, ensure that sensitive information such as secrets, API keys, or private credentials are not included in the algorithm code, environment variables, or file paths within the container.
+**重要：** コンテナが公開されている場合、シークレット、API キー、非公開の資格情報といった機微な情報が、アルゴリズムのコード、環境変数、コンテナ内のファイルパスに含まれていないことを必ず確認してください。
 </Callout>
 
-By setting the entrypoint in the publishing phase, you ensure that the algorithm’s execution begins with the logic and configuration specified at publish time, securely and without unintended exposure of sensitive information.
+公開手順でエントリーポイントを設定することで、公開時に指定したロジックと設定でアルゴリズムの実行が始まり、機微な情報が意図せず露出することもなく、安全に運用できます。
 
 
-## 4. Environment Configuration
+## 4. 環境の設定
 
-When publishing an algorithm, you can define the Docker environment settings directly through the Pontus-X portal. During the publishing phase, you can:
+アルゴリズムを公開する際、Docker 環境の設定は Pontus-X ポータルから直接指定できます。公開手順の中で、次のことが行えます。
 
-1. **Select the Docker Image**: Choose from pre-configured options (such as `python:latest` or `node:latest`) or specify a custom Docker image URL if your algorithm requires specific dependencies.
+1. **Docker イメージを選ぶ**：あらかじめ用意された選択肢（`python:latest` や `node:latest` など）から選ぶか、固有の依存関係が必要な場合は独自の Docker イメージの URL を指定します。
 
-2. **Specify the Entrypoint**: Define the entrypoint that will initiate the execution of your algorithm within the container. Note that any entrypoint set here will override the entrypoint specified in the Dockerfile.
+2. **エントリーポイントを指定する**：コンテナ内でアルゴリズムの実行を開始するエントリーポイントを定義します。ここで設定したエントリーポイントは、Dockerfile で指定したものを上書きします。
 
-3. **Set Custom Parameters (Optional)**  
-*This step is optional. Use it only if your algorithm needs custom parameters.*  
-You can define parameters that configure the algorithm’s behavior within the container. These parameters are stored in a JSON file accessible to the algorithm.
+3. **カスタムパラメータを設定する（任意）**  
+*この手順は任意です。アルゴリズムがカスタムパラメータを必要とする場合にのみ使用してください。*  
+コンテナ内でのアルゴリズムの挙動を設定するパラメータを定義できます。これらのパラメータは、アルゴリズムから参照できる JSON ファイルに保存されます。
 
-### 4.1 Accessing Custom Parameters in the Algorithm (Optional)
+### 4.1 アルゴリズムからカスタムパラメータを参照する（任意）
 
-This step is optional and only applies if your algorithm is configured to use custom parameters.
+この手順は任意で、アルゴリズムがカスタムパラメータを使うよう設定されている場合にのみ該当します。
 
-Algorithms will have access to a JSON file located at `/data/inputs/algoCustomData.json`, which contains the key-value pairs for the input data specified during the publishing phase. This allows the algorithm to customize its behavior dynamically based on user-defined inputs.
+アルゴリズムは `/data/inputs/algoCustomData.json` に置かれた JSON ファイルを参照できます。このファイルには、公開手順で指定した入力データのキーと値の組が含まれます。これにより、利用者が定義した入力に応じて、アルゴリズムの挙動を動的に変えられます。
 
-Example `algoCustomData.json` contents:
+`algoCustomData.json` の内容の例：
 
 ```json
 {
@@ -111,91 +111,91 @@ Example `algoCustomData.json` contents:
 
 ```
 <Callout type="note">
-**Important:** When using custom parameters, ensure that the algorithm code includes validation logic to handle potential user errors. For example, if a parameter (such as `threshold`) should be within a range of `1-50`, validate this within the code, and default to a standard value if the input is out of range. This helps maintain algorithm stability and ensures reliable execution even with incorrect user input.
+**重要：** カスタムパラメータを使う場合は、利用者の入力ミスに備えた検証ロジックをアルゴリズムのコードに含めてください。たとえば、あるパラメータ（`threshold` など）が `1〜50` の範囲であるべきなら、コード内でそれを検証し、範囲外なら既定値にフォールバックします。これにより、誤った入力があってもアルゴリズムの安定性と実行の信頼性を保てます。
 </Callout>
 
-By configuring these options in the publishing phase, you ensure that your algorithm container is correctly set up with the necessary environment, secure access to custom parameters, and input validation.
+公開手順でこれらの項目を設定することで、アルゴリズムのコンテナに必要な環境、カスタムパラメータへの安全なアクセス、入力検証が正しく整います。
 
-### 4.2 Environment Variables Available in Compute-to-Data
+### 4.2 Compute-to-Data で利用できる環境変数
 
-The following environment variables are available in each algorithm pod, enabling interaction with datasets and the CtD environment:
+各アルゴリズムの Pod では、データセットや CtD 環境とやり取りするために次の環境変数が利用できます。
 
-- **DIDS**: A JSON array of Dataset Identifiers (DIDs) for input datasets.
-  - **Example**: `ENV DIDS='["87bdaabb33354d2eb014af5091c604fb4b0f67dc6cca4d18a96547bffdc27bcf"]'`
-- **TRANSFORMATION_DID**: The DID of the algorithm, identifying the transformation applied.
+- **DIDS**：入力データセットの識別子（DID）を並べた JSON 配列。
+  - **例**：`ENV DIDS='["87bdaabb33354d2eb014af5091c604fb4b0f67dc6cca4d18a96547bffdc27bcf"]'`
+- **TRANSFORMATION_DID**：アルゴリズムの DID。適用される変換処理を識別します。
 
-These variables can be accessed programmatically within the algorithm code:
-  - *Python*: `DIDS = json.loads(os.getenv("DIDS"))`
-  - *Node.js*: `const DIDS = JSON.parse(process.env.DIDS);`
+これらの変数は、アルゴリズムのコードからプログラム的に参照できます。
+  - *Python*：`DIDS = json.loads(os.getenv("DIDS"))`
+  - *Node.js*：`const DIDS = JSON.parse(process.env.DIDS);`
 
-## 5. Data Storage in Compute Pods
+## 5. コンピュート Pod でのデータ保存
 
-Each algorithm in a compute job runs within a Kubernetes (K8s) pod with specific volumes mounted for data storage:
+計算ジョブ内の各アルゴリズムは Kubernetes（K8s）の Pod 内で実行され、データ保存用に特定のボリュームがマウントされます。
 
-- **/data/inputs**: Contains input datasets that the algorithm accesses, organized by dataset ID.
-- **/data/ddos**: Contains metadata on the datasets and algorithms (in DDO JSON format).
-- **/data/outputs**: Contains all output files generated by the algorithm.
-- **/data/logs**: Stores logs generated during algorithm execution.
-- **/data/inputs/algoCustomData.json**: Holds the `algoCustomData` values which can be defined during the publishing phase. These values are accessible to the algorithm and can be used to customize its behavior.
+- **/data/inputs**：アルゴリズムがアクセスする入力データセット。データセット ID ごとに整理されています。
+- **/data/ddos**：データセットとアルゴリズムのメタデータ（DDO の JSON 形式）。
+- **/data/outputs**：アルゴリズムが生成したすべての出力ファイル。
+- **/data/logs**：アルゴリズムの実行中に生成されたログ。
+- **/data/inputs/algoCustomData.json**：公開手順で定義できる `algoCustomData` の値。アルゴリズムから参照でき、挙動のカスタマイズに使えます。
 
 <Callout type="warning">
-**Note:** Avoid logging sensitive or confidential data. If specific log outputs are needed, save them to `/data/outputs/"LOGNAME"`.
+**注：** 機微な情報や機密情報をログに出力しないでください。特定のログ出力が必要な場合は、`/data/outputs/"LOGNAME"` に保存してください。
 </Callout>
 
-## 6. Writing the Algorithm Code
+## 6. アルゴリズムのコードを書く
 
-The algorithm code should:
-1. Load the required data from `/data/inputs`.
-2. Access custom parameters from `/data/inputs/algoCustomData.json`.
-3. Validate custom parameters (e.g., check if `threshold` is within the range of 1-50).
-4. Perform computations or transformations.
-5. Save results to `/data/outputs`.
+アルゴリズムのコードでは、次を行います。
+1. 必要なデータを `/data/inputs` から読み込む。
+2. `/data/inputs/algoCustomData.json` からカスタムパラメータを取得する。
+3. カスタムパラメータを検証する（例：`threshold` が 1〜50 の範囲かを確認する）。
+4. 計算または変換を実行する。
+5. 結果を `/data/outputs` に保存する。
 
-### 6.1 Python Algorithm Example
+### 6.1 Python によるアルゴリズムの例
 
 ```python
-# Python script for the algorithm
+# アルゴリズム用の Python スクリプト
 import requests
 import json
 import os
 
-# Load DIDs and custom parameters
+# DID とカスタムパラメータを読み込む
 DIDS = json.loads(os.getenv("DIDS"))
 DID = DIDS[0]
 payload_file_path = f'/data/inputs/{DID}/0'
 
-# Load custom parameters from algoCustomData.json
+# algoCustomData.json からカスタムパラメータを読み込む
 custom_params_path = '/data/inputs/algoCustomData.json'
 with open(custom_params_path, 'r') as params_file:
     custom_params = json.load(params_file)
 
-# Retrieve and validate the 'threshold' parameter
-threshold = custom_params.get("threshold", 10)  # Default to 10 if not provided
+# 'threshold' パラメータを取得して検証する
+threshold = custom_params.get("threshold", 10)  # 指定がなければ既定値 10
 if not (1 <= threshold <= 50):
     print(f"Invalid threshold value {threshold}. Setting to default 10.")
     threshold = 10
 
-# Define API endpoint and headers
+# API のエンドポイントとヘッダーを定義する
 API_URL = "https://api.example.com/data"
 HEADERS = {
     "Authorization": "Bearer YOUR_ACCESS_TOKEN",
     "Content-Type": "application/json"
 }
 
-# Read payload data from the dataset file
+# データセットのファイルからペイロードを読み込む
 with open(payload_file_path, "r") as payload_file:
     payload = json.load(payload_file)
 
-# Include threshold in the payload if required
+# 必要に応じてペイロードに threshold を含める
 payload['threshold'] = threshold
 
-# Execute the API request and handle response
+# API リクエストを実行し、レスポンスを処理する
 try:
     response = requests.post(API_URL, headers=HEADERS, json=payload)
     response.raise_for_status()
     result = response.json()
 
-    # Save results to output file
+    # 結果を出力ファイルに保存する
     with open("/data/outputs/results.csv", "w") as f:
         json.dump(result, f)
 except requests.exceptions.RequestException as e:
@@ -204,30 +204,30 @@ except requests.exceptions.RequestException as e:
         log_file.write(str(e))
 ```
 
-### 6.2 Node.js Algorithm Example
+### 6.2 Node.js によるアルゴリズムの例
 
 ```javascript
-// Node.js script for the algorithm
+// アルゴリズム用の Node.js スクリプト
 const fs = require('fs');
 const fetch = require('node-fetch');
 
-// Load DIDs and custom parameters
+// DID とカスタムパラメータを読み込む
 const DIDS = JSON.parse(process.env.DIDS);
 const DID = DIDS[0];
 const payloadFilePath = `/data/inputs/${DID}/0`;
 
-// Load custom parameters from algoCustomData.json
+// algoCustomData.json からカスタムパラメータを読み込む
 const customParamsPath = '/data/inputs/algoCustomData.json';
 const customParams = JSON.parse(fs.readFileSync(customParamsPath, 'utf-8'));
 
-// Retrieve and validate the 'threshold' parameter
-let threshold = customParams.threshold !== undefined ? customParams.threshold : 10;  // Default to 10 if not provided
+// 'threshold' パラメータを取得して検証する
+let threshold = customParams.threshold !== undefined ? customParams.threshold : 10;  // 指定がなければ既定値 10
 if (threshold < 1 || threshold > 50) {
     console.log(`Invalid threshold value ${threshold}. Setting to default 10.`);
     threshold = 10;
 }
 
-// Define API endpoint and headers
+// API のエンドポイントとヘッダーを定義する
 const API_URL = "https://api.example.com/data";
 const HEADERS = {
     "Authorization": "Bearer YOUR_ACCESS_TOKEN",
@@ -236,13 +236,13 @@ const HEADERS = {
 
 (async () => {
     try {
-        // Read payload data from the dataset file
+        // データセットのファイルからペイロードを読み込む
         const payload = JSON.parse(fs.readFileSync(payloadFilePath, 'utf-8'));
 
-        // Include threshold in the payload if required
+        // 必要に応じてペイロードに threshold を含める
         payload.threshold = threshold;
 
-        // Execute the API request and handle response
+        // API リクエストを実行し、レスポンスを処理する
         const response = await fetch(API_URL, {
             method: 'POST',
             headers: HEADERS,
@@ -252,7 +252,7 @@ const HEADERS = {
         if (response.ok) {
             const result = await response.json();
 
-            // Save results to output file
+            // 結果を出力ファイルに保存する
             fs.writeFileSync('/data/outputs/results.csv', JSON.stringify(result));
         } else {
             console.error('API request failed:', response.status);
@@ -264,33 +264,33 @@ const HEADERS = {
 })();
 ```
 
-### 6.3 Choosing a Docker Container
+### 6.3 Docker コンテナを選ぶ
 
-For Compute-to-Data (CtD), you can use either default Docker containers or specify a custom one with the necessary dependencies.
+Compute-to-Data（CtD）では、既定の Docker コンテナを使うことも、必要な依存関係を含む独自のコンテナを指定することもできます。
 
-**Example Containers**:
-- **Python**: `python:3.15`
-- **Node**: `node:24`
+**コンテナの例**：
+- **Python**：`python:3.15`
+- **Node**：`node:24`
 
-If your algorithm requires additional libraries, use a custom Dockerfile and publish it on Docker Hub as shown above.
+追加のライブラリが必要な場合は、上で示したように独自の Dockerfile を用意し、Docker Hub に公開してください。
 
 
 <Callout type="note">
-> **Important:** Note on Using `latest` **Tags**: If you specify a container with the `latest` tag (e.g., `python:latest` or `node:latest`), be aware that CtD may fail to run if the container version updates and its hash changes. This is due to security requirements: CtD relies on the exact container hash to ensure that the algorithm has not been altered or tampered with. When the `latest` tag updates to a new version, the hash will change, causing every dataset previously allowed to run with this algorithm to fail, as the algorithm’s hash no longer matches the published version.
+> **重要：`latest` タグの利用について**：`latest` タグ付きのコンテナ（`python:latest` や `node:latest` など）を指定した場合、コンテナのバージョンが更新されてハッシュが変わると、CtD の実行に失敗することがあります。これはセキュリティ上の要件によるものです。CtD は、アルゴリズムが改変・改ざんされていないことを保証するために、コンテナの正確なハッシュに依拠しています。`latest` タグが新しいバージョンに更新されるとハッシュが変わり、アルゴリズムのハッシュが公開時のものと一致しなくなるため、そのアルゴリズムでの実行を許可していたすべてのデータセットで失敗が起きます。
 </Callout>
 
 <Callout type="info">
-> **Best Practice**: To avoid this, specify an explicit version (e.g., `python:3.15` or `node:24`) instead of using `latest`. This approach ensures that the CtD environment remains stable and avoids unexpected failures due to container updates.
+> **推奨される方法**：これを避けるには、`latest` ではなく明示的なバージョン（`python:3.15` や `node:24` など）を指定してください。こうすることで CtD の環境が安定し、コンテナの更新による予期せぬ失敗を防げます。
 </Callout>
 
-By following these guidelines, you ensure that your algorithm’s environment is predictable, secure, and compatible with published datasets for CtD execution.
+これらの指針に従うことで、アルゴリズムの実行環境は予測可能で安全になり、CtD での実行にあたって公開済みデータセットとも互換性を保てます。
 
-## 7. Logging and Error Handling
+## 7. ロギングとエラー処理
 
-All outputs generated by the algorithm script, including logs, will be accessible to the consumer of the algorithm. If you need to log specific outputs, write them to `/data/outputs/`.
+ログを含め、アルゴリズムのスクリプトが生成したすべての出力は、そのアルゴリズムの利用者から参照できます。特定の出力を記録したい場合は、`/data/outputs/` に書き出してください。
 
 <Callout type="warning">
-**Important:** Do **not** log any sensitive or secure information, such as API keys, access tokens, or confidential dataset details. All logs are accessible to the end consumer, so exposing sensitive information could lead to security risks. Always sanitize log entries to ensure they only contain necessary, non-sensitive information.
+**重要：** API キー、アクセストークン、機密性のあるデータセットの詳細といった、機微な情報や秘匿すべき情報は、**決して** ログに出力しないでください。ログはすべて最終的な利用者から参照できるため、機微な情報の露出はセキュリティ上のリスクにつながります。ログの内容は常に精査し、必要かつ機微でない情報のみが含まれるようにしてください。
 </Callout>
 
-By following these guidelines, you can ensure transparency and security in your algorithm’s output while protecting sensitive information.
+これらの指針に従うことで、機微な情報を守りながら、アルゴリズムの出力における透明性とセキュリティを確保できます。
