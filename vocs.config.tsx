@@ -51,8 +51,8 @@ export default defineConfig({
     {
       text: 'Language / 言語',
       items: [
-        { text: 'English', link: '/docs/introduction/overview' },
-        { text: '日本語 (Japanese)', link: '/ja/docs/introduction/overview' }
+        { text: 'English', link: '/' },
+        { text: '日本語 (Japanese)', link: '/ja' }
       ]
     },
     {

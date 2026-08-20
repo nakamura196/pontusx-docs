@@ -45,7 +45,7 @@ export const sidebarJa = {
           link: '/ja/docs/getting-started/Publication-guide'
         },
         {
-          text: 'データサービスの提供',
+          text: 'データサービス提供物',
           link: '/ja/docs/getting-started/data-service-offerings'
         },
         {
