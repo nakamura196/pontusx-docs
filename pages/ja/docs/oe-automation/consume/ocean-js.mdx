@@ -1,52 +1,49 @@
 ---
-title: Consume a Dataset with ocean.js (v2)
+title: ocean.js でデータセットを利用する（v2）
 ---
 
-# Consume a Dataset with ocean.js (Ocean Enterprise v2)
+# ocean.js でデータセットを利用する（Ocean Enterprise v2）
 
-This guide shows how to **order and download a DDO v5 dataset** from your own
-Node.js/TypeScript application using [`ocean.js`](https://github.com/oceanprotocol/ocean.js)
-— no Portal involved. It targets Ocean Enterprise assets identified by a
-`did:ope` DID.
+本ガイドでは、[`ocean.js`](https://github.com/oceanprotocol/ocean.js) を用いて、自分の
+Node.js／TypeScript アプリケーションから **DDO v5 のデータセットを注文してダウンロードする** 方法を
+解説します。ポータルは使いません。対象は `did:ope` の DID で識別される Ocean Enterprise のアセットです。
 
 :::info
-This is the **code path**. If you just want the file with no code, use the
-[Ocean CLI guide](/ja/docs/oe-automation/consume/ocean-cli). Both reach the same
-result. For the concepts behind the flow, see the
-[Consume overview](/ja/docs/oe-automation/consume/overview).
+こちらは **コードを書く方法** です。コードなしでファイルだけ欲しい場合は
+[Ocean CLI のガイド](/ja/docs/oe-automation/consume/ocean-cli) を使ってください。どちらも同じ結果に至ります。
+処理の背景にある考え方については [利用の概要](/ja/docs/oe-automation/consume/overview) を参照してください。
 :::
 
 :::info
-The complete, working example code for this guide lives in
-[`deltaDAO/oe-automation-examples`](https://github.com/deltaDAO/oe-automation-examples).
-Every snippet below is taken verbatim from that repository — clone it to run the
-guide end to end.
+本ガイドで使う完全に動作するサンプルコードは
+[`deltaDAO/oe-automation-examples`](https://github.com/deltaDAO/oe-automation-examples) にあります。
+以下のコード片はすべて、このリポジトリからそのまま引用しています。手順を最初から最後まで実行するには、
+リポジトリをクローンしてください。
 :::
 
-## Prerequisites (required)
+## 前提条件（必須）
 
-- **Node.js 24** — the example repo pins it via `.nvmrc`; run `nvm use`.
-- An account (`PRIVATE_KEY`) funded with:
-  - the chain's native token for gas, and
-  - enough of the asset's payment token if the service is priced.
-    - Pontus-X v2 supports EURAU (AllUnity) and EURC (Circle) for settlement. Please contact us for test network tokens.
-- Network access to the target chain's **RPC** and to an **Ocean Node**.
-  - For the **RPC**, you can use a [public RPC](https://chainlist.org/chain/11155420) or contact deltaDAO for RPC access.
-  - For the **Ocean Node**, you can run your own or use one provided by a service provider like deltaDAO.
-- The **`did:ope`** of a published v5 dataset, for example `did:ope:c4f73e09f932f50520d89d50245374a442fb6bca37e5659af1711703e3cc6f53`.
+- **Node.js 24** — サンプルリポジトリが `.nvmrc` で固定しています。`nvm use` を実行してください。
+- 次の資金があるアカウント（`PRIVATE_KEY`）：
+  - ガス用のチェーンのネイティブトークン。
+  - サービスが有償の場合は、そのアセットの決済トークンの十分な残高。
+    - Pontus-X v2 は決済に EURAU（AllUnity）と EURC（Circle）に対応しています。テストネットワーク用トークンについてはお問い合わせください。
+- 対象チェーンの **RPC** と **Ocean Node** へのネットワークアクセス。
+  - **RPC** については、[公開 RPC](https://chainlist.org/chain/11155420) を使うか、deltaDAO に RPC の利用について問い合わせてください。
+  - **Ocean Node** については、自前で運用するか、deltaDAO などのサービス提供者が提供するものを利用できます。
+- 公開済み v5 データセットの **`did:ope`**。例：`did:ope:c4f73e09f932f50520d89d50245374a442fb6bca37e5659af1711703e3cc6f53`
 
 :::info
-Find a `did:ope` in the Pontus-X Catalogue, and make sure your `RPC` and
-`NODE_URL` point at the **same network** the asset was published on
-([Pontus-X Networks](/ja/docs/pontus-x-networks/quick-start)).
+`did:ope` は Pontus-X カタログで探せます。`RPC` と `NODE_URL` が、そのアセットが公開された
+**同じネットワーク** を指していることを確認してください
+（[Pontus-X ネットワーク](/ja/docs/pontus-x-networks/quick-start)）。
 :::
 
-## Step 1 — Get the example code (required)
+## ステップ 1 — サンプルコードを入手する（必須）
 
-The complete, runnable example lives in its own repository —
-[`deltaDAO/oe-automation-examples`](https://github.com/deltaDAO/oe-automation-examples).
-Everything in this guide comes straight from that repo, so cloning it gives you
-the full working code:
+実行可能な完全版のサンプルは独立したリポジトリ
+[`deltaDAO/oe-automation-examples`](https://github.com/deltaDAO/oe-automation-examples) にあります。
+本ガイドの内容はすべてこのリポジトリから直接取っているため、クローンすれば動作するコード一式が手に入ります。
 
 ```bash
 git clone https://github.com/deltaDAO/oe-automation-examples.git
@@ -55,39 +52,37 @@ nvm use            # Node 24
 npm install
 ```
 
-## Step 2 — Configure your environment (required)
+## ステップ 2 — 環境を設定する（必須）
 
-Copy the template and fill in the values:
+テンプレートをコピーして値を埋めます。
 
 ```bash
 cp .env.example .env
 ```
 
 ```bash
-# Required
-PRIVATE_KEY=0x...                     # consumer account
-RPC=https://your-rpc-endpoint         # JSON-RPC for the asset's chain
-NODE_URL=https://your-ocean-node      # Ocean Node (metadata + provider)
+# 必須
+PRIVATE_KEY=0x...                     # 利用者アカウント
+RPC=https://your-rpc-endpoint         # アセットが存在するチェーンの JSON-RPC
+NODE_URL=https://your-ocean-node      # Ocean Node（メタデータ + provider）
 ```
 
 :::warning
-Use a private key intended **only for development** and keep it secure. Never
-commit your `.env` file or share your key.
+**開発専用** の秘密鍵を使い、安全に保管してください。`.env` ファイルをコミットしたり、鍵を共有したり
+しないでください。
 :::
 
-### Step 2a — Get your `PRIVATE_KEY` from a wallet file (optional)
+### ステップ 2a — ウォレットファイルから `PRIVATE_KEY` を取り出す（任意）
 
-If you onboarded through the
-[wallet file setup](/ja/docs/getting-started/wallet-setup), you hold an
-**encrypted JSON keystore** (v3) rather than a raw private key. It looks like
-this:
+[ウォレットファイルの設定](/ja/docs/getting-started/wallet-setup) を通じてオンボーディングした場合、
+手元にあるのは生の秘密鍵ではなく **暗号化された JSON キーストア**（v3）です。次のような形をしています。
 
 ```json
 {"address":"cb638bc3e4ea03072f6e0ebf43a8f514c63f0eea","id":"71fe0cd9-77cc-4539-a0d4-f5ee68a0754d","version":3,"Crypto":{ ... },"x-ethers":{ ... }}
 ```
 
-Decrypt it once to obtain the `0x…` private key that these guides expect. The
-example repo already ships `ethers`, so you can run a short script:
+本ガイドが前提とする `0x…` 形式の秘密鍵を得るために、一度だけ復号します。サンプルリポジトリには
+`ethers` が同梱されているため、次の短いスクリプトを実行できます。
 
 ```js
 // extract-key.mjs
@@ -105,77 +100,75 @@ console.log(wallet.privateKey); // 0x...
 WALLET_PASSWORD="your-wallet-password" node extract-key.mjs ./wallet.json
 ```
 
-Copy the printed `0x…` value into `PRIVATE_KEY` in your `.env`.
+出力された `0x…` の値を、`.env` の `PRIVATE_KEY` に貼り付けてください。
 
 :::warning
-Decrypt the wallet file only on a trusted machine. Never commit the wallet file,
-its password, or the extracted private key.
+ウォレットファイルの復号は信頼できるマシン上でのみ行ってください。ウォレットファイル、そのパスワード、
+取り出した秘密鍵は決してコミットしないでください。
 :::
 
-### Step 2b — SSI wallet variables (optional)
+### ステップ 2b — SSI ウォレット関連の変数（任意）
 
-Only needed for **credential-gated** assets (see
-[dual-wallet setup for v2](/ja/docs/getting-started/wallet-setup)):
+**クレデンシャルで保護された** アセットの場合にのみ必要です
+（[v2 の 2 ウォレット構成](/ja/docs/getting-started/wallet-setup) を参照）。
 
 ```bash
-# Optional — only for credential-gated (SSI) assets
+# 任意 — クレデンシャルで保護された（SSI）アセットの場合のみ
 SSI_WALLET_API=
 SSI_WALLET_ID=
 SSI_WALLET_DID=
 ```
 
 :::info
-If the asset is **not** credential-gated, leave these unset. If they are unset,
-the example logs a warning and continues; the Ocean Node still enforces
-credentials on its side.
+アセットがクレデンシャルで保護されて **いない** 場合、これらは未設定のままで構いません。未設定の場合、
+サンプルは警告を出したうえで処理を続けます。クレデンシャルの検査は Ocean Node 側で引き続き行われます。
 :::
 
-### How the configuration is wired
+### 設定がどう結び付いているか
 
-The env-to-runtime wiring lives in `src/config.ts`:
+環境変数から実行時設定への橋渡しは `src/config.ts` にあります。
 
-- `createSigner()` — builds an `ethers` `Wallet` from `PRIVATE_KEY` + `RPC` and
-  reads the `chainId` from the network.
-- `createOceanConfig()` — loads the chain defaults via ocean.js `ConfigHelper`
-  and points every off-chain lookup at your single `NODE_URL`.
-- `createAquarius()` — the metadata-cache client, also served by the Ocean Node.
+- `createSigner()` — `PRIVATE_KEY` と `RPC` から `ethers` の `Wallet` を作り、ネットワークから
+  `chainId` を読み取ります。
+- `createOceanConfig()` — ocean.js の `ConfigHelper` でチェーンの既定値を読み込み、オフチェーンの
+  参照先をすべて単一の `NODE_URL` に向けます。
+- `createAquarius()` — メタデータキャッシュのクライアント。これも Ocean Node が提供します。
 
-## Step 3 — Run it (required)
+## ステップ 3 — 実行する（必須）
 
 ```bash
 npm run consume -- <did> [outputDir] [serviceId]
 ```
 
-- `<did>` — **required**, e.g. `did:ope:abc123...`
-- `[outputDir]` — *optional*; where to write the file (default `./downloads`).
-- `[serviceId]` — *optional*; defaults to the asset's first service.
+- `<did>` — **必須**。例：`did:ope:abc123...`
+- `[outputDir]` — *任意*。ファイルの書き出し先（既定は `./downloads`）。
+- `[serviceId]` — *任意*。既定ではアセットの最初のサービスが使われます。
 
-Example:
+例：
 
 ```bash
 npm run consume -- did:ope:1234abcd... ./downloads
 ```
 
-On success you'll see `Downloaded: ./downloads/<filename>`.
+成功すると `Downloaded: ./downloads/<filename>` と表示されます。
 
-## How the code works (step by step)
+## コードの動き（手順ごとの解説）
 
-The full example is `src/consume-dataset.ts`. Step by step:
+完全なサンプルは `src/consume-dataset.ts` です。順に見ていきます。
 
-### Dependencies and imports
+### 依存パッケージと import
 
-The example relies on these packages (already declared in the repo's
-`package.json` and installed during [Step 1](#step-1--get-the-example-code-required)):
+サンプルは次のパッケージに依存しています（リポジトリの `package.json` に宣言済みで、
+[ステップ 1](#ステップ-1--サンプルコードを入手する必須) の際にインストールされます）。
 
-| Package | Purpose |
+| パッケージ | 用途 |
 | --- | --- |
-| `@oceanprotocol/lib` | Ordering, provider calls, and download helpers. |
-| `@oceanprotocol/ddo-js` | Parse the raw DDO into the correct version class. |
-| `ethers` | Wallet / signer and JSON-RPC provider. |
-| `dotenv` | Load your `.env` file into `process.env`. |
+| `@oceanprotocol/lib` | 注文、provider の呼び出し、ダウンロードの補助。 |
+| `@oceanprotocol/ddo-js` | 生の DDO を適切なバージョンのクラスへ解析する。 |
+| `ethers` | ウォレット／署名者と JSON-RPC プロバイダー。 |
+| `dotenv` | `.env` ファイルを `process.env` に読み込む。 |
 
-The file starts by importing them, alongside the local config and policy-server
-helpers:
+ファイルはまずこれらを import し、あわせてローカルの設定とポリシーサーバー用のヘルパーも読み込みます。
 
 ```ts
 import 'dotenv/config'
@@ -197,17 +190,17 @@ import {
 import { getPolicyServer, isV5Asset } from './policyServer.js'
 ```
 
-### 1. Resolve the asset
+### 1. アセットを解決する
 
 ```ts
 const ddo = await aquarius.waitForIndexer(did)
 if (!ddo) throw new Error(`Asset ${did} was not found on the Ocean Node.`)
 ```
 
-`waitForIndexer` polls the Ocean Node until the asset is indexed and returns the
-DDO document.
+`waitForIndexer` は、アセットがインデックスされるまで Ocean Node をポーリングし、DDO ドキュメントを
+返します。
 
-### 2. Require v5 and pick a service
+### 2. v5 であることを確認し、サービスを選ぶ
 
 ```ts
 if (!isV5Asset(ddo)) {
@@ -221,11 +214,10 @@ const serviceId = serviceIdArg ?? services[0].id
 const serviceIndex = services.findIndex((s) => s.id === serviceId)
 ```
 
-`DDOManager` (from `@oceanprotocol/ddo-js`) parses the raw DDO into the correct
-version class. `isV5Asset` (in `src/policyServer.ts`) checks the DDO `version` is
-`>= 5.0.0`.
+`DDOManager`（`@oceanprotocol/ddo-js` 由来）は生の DDO を適切なバージョンのクラスへ解析します。
+`isV5Asset`（`src/policyServer.ts` 内）は DDO の `version` が `>= 5.0.0` であることを確認します。
 
-### 3. Resolve the policy server and its `sessionId`
+### 3. ポリシーサーバーとその `sessionId` を取得する
 
 ```ts
 const policyServer = await getPolicyServer(ddo, serviceId, signer, nodeUrl)
@@ -236,34 +228,31 @@ console.log(
 )
 ```
 
-`getPolicyServer` returns a `policyServer` object whose key field is a
-**`sessionId`**. This session id is minted by the Ocean Node
-(`initializePSVerification`) and bound to your `(consumerAddress, documentId,
-serviceId)`.
+`getPolicyServer` は `policyServer` オブジェクトを返します。その中心となるフィールドが
+**`sessionId`** です。このセッション ID は Ocean Node（`initializePSVerification`）が発行し、
+`(consumerAddress, documentId, serviceId)` の組に紐づけられます。
 
 :::warning
-**Any asset with access control settings fails to download without a `sessionId`
-when the Ocean Node has a policy server configured (SSI verification enabled).**
-In that case the node's `download` action rejects every request that lacks a
-`sessionId` requested from the policy server — **before** it even decides whether
-an SSI presentation is required. So for any asset carrying a `credentials` block,
-the session id is a mandatory "ticket" you must obtain here and pass on in step 5.
+**Ocean Node にポリシーサーバーが設定されている（SSI 検証が有効な）場合、アクセス制御が設定された
+アセットは `sessionId` なしではダウンロードに失敗します。** この場合、ノードの `download` アクションは、
+ポリシーサーバーから取得した `sessionId` を持たないリクエストをすべて拒否します。しかも、SSI の
+プレゼンテーションが必要かどうかを判断する **前** に拒否します。したがって `credentials` ブロックを持つ
+アセットでは、セッション ID はここで必ず取得し、ステップ 5 で渡す必須の「チケット」になります。
 :::
 
 :::info
-The SSI credential **presentation** (walt.id) is the part that is optional and
-only runs when the asset has an `SSIpolicy`. For assets with no `credentials`
-block at all, `getPolicyServer` returns `undefined` and the flow continues
-without a session id. `getPolicyServer` is otherwise **non-blocking**: if the
-SSI wallet env vars are unset or the SSI flow throws, it downgrades to a warning.
+任意なのは SSI クレデンシャルの **提示（presentation）**（walt.id）の部分で、これはアセットに
+`SSIpolicy` がある場合にのみ実行されます。`credentials` ブロックをまったく持たないアセットでは、
+`getPolicyServer` は `undefined` を返し、セッション ID なしで処理が続きます。それ以外の点で
+`getPolicyServer` は **処理を止めません**。SSI ウォレットの環境変数が未設定だったり、SSI の処理が
+例外を投げたりした場合は、警告に格下げされます。
 :::
 
-The Ocean Node remains the final authority — if a credential is genuinely
-required, it will reject the download at the next step. A complete reference
-implementation of the walt.id / policy-server presentation exists in the Ocean
-CLI (`getPolicyServerOBJ`).
+最終的な判断は常に Ocean Node が行います。クレデンシャルが実際に必要な場合、次のステップで
+ダウンロードが拒否されます。walt.id ／ポリシーサーバーのプレゼンテーションの完全な参照実装は
+Ocean CLI（`getPolicyServerOBJ`）にあります。
 
-### 4. Order the datatoken
+### 4. datatoken を注文する
 
 ```ts
 const datatoken = new Datatoken(signer, chainId, config)
@@ -275,11 +264,10 @@ const tx = await orderAsset(
 const orderTx = await tx.wait()
 ```
 
-`orderAsset` inspects the datatoken's pricing (fixed-rate exchange, dispenser, or
-already owned) and performs whatever steps are needed to produce a valid order
-transaction for the chosen service.
+`orderAsset` は datatoken の価格設定（固定レート交換、ディスペンサー、あるいは保有済み）を調べ、
+選択したサービスに対して有効な注文トランザクションを作るために必要な処理を行います。
 
-### 5. Get the download URL and save the file
+### 5. ダウンロード URL を取得してファイルを保存する
 
 ```ts
 const downloadResult = await ProviderInstance.getDownloadUrl(
@@ -290,39 +278,38 @@ const { data, filename } = await downloadFile(downloadResult)
 fs.writeFileSync(path.join(outputDir, filename ?? 'file.out'), Buffer.from(data))
 ```
 
-The `policyServer` object from step 3 is passed as the **last argument** so its
-`sessionId` travels with the request. For a credential-gated asset, omitting it
-(or passing one without a `sessionId`) makes the node reject the download.
+ステップ 3 で得た `policyServer` オブジェクトを **最後の引数** として渡すことで、その `sessionId` が
+リクエストとともに送られます。クレデンシャルで保護されたアセットの場合、これを省略したり
+`sessionId` を持たないオブジェクトを渡したりすると、ノードはダウンロードを拒否します。
 
-`getDownloadUrl` proves ownership of the order to the Ocean Node, which returns a
-signed URL (or the payload directly). The signed URL is **single-use**, so it is
-fetched exactly once and written to disk.
+`getDownloadUrl` は注文の所有を Ocean Node に対して証明し、ノードは署名付き URL（またはペイロード
+そのもの）を返します。この署名付き URL は **1 回限り** 有効なので、ちょうど 1 回だけ取得して
+ディスクへ書き出します。
 
-## Complete source code
+## ソースコード全文
 
-Everything above lives in three files, reproduced verbatim from the
-[example repo](https://github.com/deltaDAO/oe-automation-examples). If you cloned
-it in [Step 1](#step-1--get-the-example-code-required) they are already in `src/`;
-otherwise copy them into an `src/` folder and run with `npm run consume -- <did>`.
+ここまでの内容は 3 つのファイルに収められており、[サンプルリポジトリ](https://github.com/deltaDAO/oe-automation-examples)
+からそのまま引用しています。[ステップ 1](#ステップ-1--サンプルコードを入手する必須) でクローン済みであれば `src/` にすでに存在します。
+そうでない場合は `src/` フォルダにコピーし、`npm run consume -- <did>` で実行してください。
 
 ### `src/config.ts`
 
-Turns your `.env` into an ethers signer, an ocean.js `Config`, and an Aquarius
-metadata client:
+`.env` の内容を、ethers の署名者、ocean.js の `Config`、そして Aquarius のメタデータクライアントへ
+変換します。
 
 ```ts
 import 'dotenv/config'
 import { JsonRpcProvider, Wallet, type Signer } from 'ethers'
 import { Aquarius, ConfigHelper, type Config } from '@oceanprotocol/lib'
 
-// Throw early if a required environment variable is missing.
+// 必須の環境変数が欠けていれば早期に例外を投げる。
 export function requireEnv(name: string): string {
   const value = process.env[name]
   if (!value) throw new Error(`Missing required environment variable: ${name}`)
   return value
 }
 
-// Build an ethers Wallet from PRIVATE_KEY + RPC and read its chainId.
+// PRIVATE_KEY と RPC から ethers の Wallet を作り、その chainId を読み取る。
 export async function createSigner(): Promise<{ signer: Signer; chainId: number }> {
   const provider = new JsonRpcProvider(requireEnv('RPC'))
   const signer = new Wallet(requireEnv('PRIVATE_KEY'), provider)
@@ -330,14 +317,14 @@ export async function createSigner(): Promise<{ signer: Signer; chainId: number 
   return { signer, chainId: Number(chainId) }
 }
 
-// Load ocean.js chain defaults, then point every off-chain lookup at NODE_URL.
+// ocean.js のチェーン既定値を読み込み、オフチェーンの参照先をすべて NODE_URL に向ける。
 export function createOceanConfig(chainId: number, nodeUrl: string): Config {
   const config = new ConfigHelper().getConfig(chainId)
   config.nodeUri = nodeUrl
   return config
 }
 
-// Metadata-cache client, also served by the Ocean Node.
+// メタデータキャッシュのクライアント。これも Ocean Node が提供する。
 export function createAquarius(nodeUrl: string): Aquarius {
   return new Aquarius(nodeUrl)
 }
@@ -345,9 +332,8 @@ export function createAquarius(nodeUrl: string): Aquarius {
 
 ### `src/policyServer.ts`
 
-Detects v5 assets and resolves the policy-server `sessionId` (plus the optional
-walt.id credential presentation). It is deliberately **non-blocking** — the Ocean
-Node stays the final authority:
+v5 アセットを検出し、ポリシーサーバーの `sessionId`（および任意の walt.id クレデンシャル提示）を
+解決します。意図的に **処理を止めない** 設計であり、最終的な判断は Ocean Node が行います。
 
 ```ts
 import { type Signer } from 'ethers'
@@ -356,7 +342,7 @@ import { DDOManager, type Asset } from '@oceanprotocol/ddo-js'
 
 const V5_MIN_VERSION = '5.0.0'
 
-// Numeric "version >= minimum" compare (avoids string sorting pitfalls).
+// 「version >= minimum」を数値として比較する（文字列ソートの落とし穴を避ける）。
 export function isVersionGte(version: string | undefined, minimum: string): boolean {
   if (!version) return false
   const parse = (v: string) => v.split('.').map((n) => parseInt(n, 10) || 0)
@@ -370,14 +356,14 @@ export function isVersionGte(version: string | undefined, minimum: string): bool
   return true
 }
 
-// True when the DDO is a v5 (Ocean Enterprise) asset.
+// DDO が v5（Ocean Enterprise）のアセットなら true。
 export function isV5Asset(ddo: Asset): boolean {
   const { version } = DDOManager.getDDOClass(ddo).getDDOFields() as { version?: string }
   return isVersionGte(version, V5_MIN_VERSION)
 }
 
-// The object the Ocean Node hands to the policy server. Only `sessionId`
-// matters once verification succeeds.
+// Ocean Node がポリシーサーバーへ渡すオブジェクト。検証が成功したあとに
+// 意味を持つのは `sessionId` だけ。
 export interface PolicyServerInitiateActionData {
   sessionId: string
   successRedirectUri: string
@@ -395,15 +381,15 @@ type InitiateMessage =
   | { sessionId?: string; redirectUri?: string }
   | undefined
 
-// The policy server carries the session id inside its redirect/openid4vp URI,
-// as either `sessionId=<id>` or `id=<id>`.
+// ポリシーサーバーは、リダイレクト／openid4vp の URI の中に
+// `sessionId=<id>` か `id=<id>` の形でセッション ID を載せてくる。
 function sessionIdFromUri(uri: string | undefined): string {
   if (typeof uri !== 'string') return ''
   const match = /[?&](?:sessionId|id)=([^&#]+)/.exec(uri)
   return match ? decodeURIComponent(match[1]) : ''
 }
 
-// Resolve the session id from any shape the node returned (object, JSON, URL).
+// ノードが返し得るどの形（オブジェクト／JSON／URL）からもセッション ID を取り出す。
 function extractSessionId(message: InitiateMessage): string {
   if (!message) return ''
   if (typeof message === 'object') {
@@ -423,7 +409,7 @@ function extractSessionId(message: InitiateMessage): string {
   }
 }
 
-// Resolve the openid4vp request string (only needed for a real presentation).
+// openid4vp のリクエスト文字列を取り出す（実際に提示を行う場合のみ必要）。
 function extractOpenid4vc(message: InitiateMessage): string | undefined {
   if (!message) return undefined
   if (typeof message === 'object') return message.redirectUri
@@ -435,9 +421,9 @@ function extractOpenid4vc(message: InitiateMessage): string | undefined {
   }
 }
 
-// --- walt.id wallet-api helpers (native fetch; the wallet holds the credentials) ---
+// --- walt.id wallet-api 用のヘルパー（native fetch を使用。クレデンシャルはウォレットが保持）---
 
-// Log in to the SSI wallet by signing a nonce with the on-chain key.
+// オンチェーンの鍵で nonce に署名して SSI ウォレットにログインする。
 async function connectToSSIWallet(signer: Signer, api: string): Promise<SsiWalletSession> {
   const nonceRes = await fetch(`${api}/wallet-api/auth/account/web3/nonce`)
   if (!nonceRes.ok) throw new Error(`SSI wallet nonce request failed: ${nonceRes.status}`)
@@ -464,7 +450,7 @@ async function getWalletDids(walletId: string, token: string, api: string): Prom
   return res.json() as Promise<SsiWalletDid[]>
 }
 
-// Ask the wallet which of its credentials satisfy the presentation definition.
+// 提示定義（presentation definition）を満たすクレデンシャルはどれか、ウォレットに問い合わせる。
 async function matchCredentialsForPresentationDefinition(
   api: string,
   walletId: string,
@@ -501,7 +487,7 @@ async function resolvePresentationRequest(
   return res.text()
 }
 
-// Submit the chosen credentials as a verifiable presentation.
+// 選んだクレデンシャルを検証可能プレゼンテーションとして提出する。
 async function sendPresentationRequest(
   walletId: string,
   did: string,
@@ -522,7 +508,7 @@ async function sendPresentationRequest(
   return res.json() as Promise<{ redirectUri?: string; errorMessage?: string }>
 }
 
-// Fetch the presentation definition for a session (node proxies the `getPD` action).
+// セッションに対応する提示定義を取得する（`getPD` アクションはノードが中継する）。
 async function getPresentationDefinition(sessionId: string, nodeUrl: string): Promise<unknown> {
   const response = await ProviderInstance.PolicyServerPassthrough(nodeUrl, {
     policyServerPassthrough: { action: 'getPD', sessionId }
@@ -532,7 +518,7 @@ async function getPresentationDefinition(sessionId: string, nodeUrl: string): Pr
   return message
 }
 
-// --- Client-side DDO inspection (mirrors what the policy server checks) ---
+// --- クライアント側での DDO の検査（ポリシーサーバーの検査内容に対応）---
 
 interface CredentialEntry { type?: string; values?: unknown[] }
 interface CredentialsBlock { allow?: CredentialEntry[]; deny?: CredentialEntry[] }
@@ -545,8 +531,8 @@ function getCredentialSubject(ddo: Asset): CredentialSubject | undefined {
   return (ddo as unknown as { credentialSubject?: CredentialSubject }).credentialSubject
 }
 
-// The node only consults the policy server when a `credentials` block exists
-// (asset or service level). No block -> no session id needed.
+// ノードがポリシーサーバーに問い合わせるのは、`credentials` ブロックが
+// （アセットまたはサービスの階層に）存在する場合のみ。無ければセッション ID は不要。
 function hasCredentialsBlock(ddo: Asset, serviceId: string): boolean {
   const subject = getCredentialSubject(ddo)
   if (subject?.credentials) return true
@@ -554,8 +540,8 @@ function hasCredentialsBlock(ddo: Asset, serviceId: string): boolean {
   return Boolean(service?.credentials)
 }
 
-// True only when an `SSIpolicy` with request_credentials is present. An
-// address-only gate needs a session id but no wallet presentation.
+// request_credentials を伴う `SSIpolicy` がある場合にのみ true。アドレスのみの
+// 制限では、セッション ID は要るがウォレットからの提示は不要。
 function requiresCredentialPresentation(ddo: Asset, serviceId: string): boolean {
   const subject = getCredentialSubject(ddo)
   if (!subject) return false
@@ -574,13 +560,13 @@ function requiresCredentialPresentation(ddo: Asset, serviceId: string): boolean 
 }
 
 /**
- * Resolve the policy-server object the node needs at download time.
- *   0. No credentials block            -> node won't consult the PS; undefined.
- *   1. initializePSVerification        -> mint the sessionId ticket.
- *   2. No SSIpolicy (e.g. address gate) -> return { sessionId }.
- *   3. SSIpolicy present               -> run the walt.id presentation, then
- *      return { sessionId }.
- * Non-blocking: any failure is downgraded to a warning.
+ * ダウンロード時にノードが必要とするポリシーサーバー用オブジェクトを解決する。
+ *   0. credentials ブロックが無い        -> ノードは PS に問い合わせない。undefined を返す。
+ *   1. initializePSVerification         -> sessionId というチケットを発行させる。
+ *   2. SSIpolicy が無い（例：アドレス制限）-> { sessionId } を返す。
+ *   3. SSIpolicy がある                  -> walt.id の提示処理を実行し、
+ *      その後 { sessionId } を返す。
+ * 処理は止めない：失敗はすべて警告に格下げされる。
  */
 export async function getPolicyServer(
   ddo: Asset,
@@ -588,7 +574,7 @@ export async function getPolicyServer(
   signer: Signer,
   nodeUrl: string
 ): Promise<PolicyServerInitiateActionData | undefined> {
-  // 0. Nothing to gate.
+  // 0. 制限すべきものが無い。
   if (!hasCredentialsBlock(ddo, serviceId)) return undefined
 
   const consumerAddress = await signer.getAddress()
@@ -600,8 +586,8 @@ export async function getPolicyServer(
     presentationDefinitionUri: ''
   }
 
-  // 1. Mint a verification session. On a node without a policy server this
-  //    throws; the node then enforces credentials itself.
+  // 1. 検証セッションを発行させる。ポリシーサーバーを持たないノードでは
+  //    例外になり、その場合はノード自身がクレデンシャルを検査する。
   let initializePs: { success?: boolean; message?: InitiateMessage } | null
   try {
     initializePs = await ProviderInstance.initializePSVerification(nodeUrl, {
@@ -626,12 +612,12 @@ export async function getPolicyServer(
   }
   console.log(`Policy server session id: ${sessionId}`)
 
-  // 2. Address-only / no SSI policy: the session id alone is the ticket.
+  // 2. アドレスのみ／SSI ポリシー無し：セッション ID だけがチケットになる。
   if (!requiresCredentialPresentation(ddo, serviceId)) {
     return { ...policyServer, sessionId }
   }
 
-  // 3. SSIpolicy present: perform the walt.id credential presentation.
+  // 3. SSIpolicy あり：walt.id によるクレデンシャル提示を実行する。
   const ssiApi = process.env.SSI_WALLET_API
   const walletId = process.env.SSI_WALLET_ID
   if (!ssiApi || !walletId || !openid4vc) {
@@ -669,14 +655,14 @@ export async function getPolicyServer(
     console.warn(`Policy-server SSI presentation failed (non-blocking): ${messageText}`)
   }
 
-  // The node re-checks the verifier session at download; hand back the ticket.
+  // ノードはダウンロード時に検証セッションを再確認する。チケットを返しておく。
   return { ...policyServer, sessionId }
 }
 ```
 
 ### `src/consume-dataset.ts`
 
-The entry point that ties it together — resolve, order, download:
+全体をつなぐエントリーポイントです。解決 → 注文 → ダウンロードの順に処理します。
 
 ```ts
 import 'dotenv/config'
@@ -697,7 +683,7 @@ import {
 } from './config.js'
 import { getPolicyServer, isV5Asset } from './policyServer.js'
 
-// Read the download filename from the Content-Disposition header the node sets.
+// ノードが設定する Content-Disposition ヘッダーからダウンロードファイル名を読み取る。
 function filenameFromResponse(response: Response): string | undefined {
   const disposition = response.headers.get('content-disposition')
   if (!disposition) return undefined
@@ -706,7 +692,7 @@ function filenameFromResponse(response: Response): string | undefined {
 }
 
 async function main(): Promise<void> {
-  // CLI args: <did> [outputDir] [serviceId]
+  // CLI 引数: <did> [outputDir] [serviceId]
   const did = process.argv[2]
   const outputDir = process.argv[3] ?? './downloads'
   const serviceIdArg = process.argv[4]
@@ -720,16 +706,16 @@ async function main(): Promise<void> {
   const config = createOceanConfig(chainId, nodeUrl)
   const aquarius = createAquarius(nodeUrl)
 
-  // 1. Resolve the DDO from the Ocean Node metadata cache.
+  // 1. Ocean Node のメタデータキャッシュから DDO を解決する。
   const ddo = await aquarius.waitForIndexer(did)
   if (!ddo) throw new Error(`Asset ${did} was not found on the Ocean Node (${nodeUrl}).`)
 
-  // 2. This guide targets DDO v5 (Ocean Enterprise) assets only.
+  // 2. 本ガイドは DDO v5（Ocean Enterprise）のアセットのみを対象とする。
   if (!isV5Asset(ddo)) {
     throw new Error('This guide targets DDO v5 assets only; the resolved asset is not v5.')
   }
 
-  // 3. Pick the service to consume (defaults to the first one).
+  // 3. 利用するサービスを選ぶ（既定では最初のもの）。
   const { services } = DDOManager.getDDOClass(ddo).getDDOFields() as {
     services: Array<{ id: string }>
   }
@@ -737,11 +723,11 @@ async function main(): Promise<void> {
   const serviceIndex = services.findIndex((s) => s.id === serviceId)
   if (serviceIndex < 0) throw new Error(`Service ${serviceId} does not exist on asset ${did}.`)
 
-  // 4. Resolve the policy-server object. Its sessionId is mandatory for
-  //    access-controlled assets when the node runs a policy server.
+  // 4. ポリシーサーバー用オブジェクトを取得する。ノードがポリシーサーバーを
+  //    動かしている場合、アクセス制御付きアセットでは sessionId が必須。
   const policyServer = await getPolicyServer(ddo, serviceId, signer, nodeUrl)
 
-  // 5. Order the datatoken for the chosen service (handles fixed-rate & free pricing).
+  // 5. 選択したサービスの datatoken を注文する（固定レート・無償の両方に対応）。
   const datatoken = new Datatoken(signer, chainId, config)
   const tx = await orderAsset(
     ddo, signer, config, datatoken, nodeUrl,
@@ -752,14 +738,14 @@ async function main(): Promise<void> {
   const orderTx = await tx.wait()
   if (!orderTx) throw new Error('Order transaction was not mined.')
 
-  // 6. Exchange the on-chain order for a signed download URL. Pass policyServer
-  //    last so its sessionId travels with the request.
+  // 6. オンチェーンの注文を署名付きダウンロード URL と交換する。sessionId を
+  //    リクエストに載せるため、policyServer は最後に渡す。
   const downloadResult = await ProviderInstance.getDownloadUrl(
     ddo.id, serviceId, 0, orderTx.hash, nodeUrl, signer, policyServer
   )
 
-  // 7. getDownloadUrl returns either a single-use signed URL (common) or a
-  //    ready payload. Fetch/normalize once and write the bytes to disk.
+  // 7. getDownloadUrl は 1 回限りの署名付き URL（一般的）か、そのまま使える
+  //    ペイロードを返す。1 度だけ取得・正規化してディスクへ書き出す。
   fs.mkdirSync(outputDir, { recursive: true })
   if (typeof downloadResult === 'string') {
     const response = await fetch(downloadResult)
@@ -788,18 +774,18 @@ main().catch((error) => {
 })
 ```
 
-## Troubleshooting
+## トラブルシューティング
 
-| Symptom | Likely cause |
+| 症状 | 考えられる原因 |
 | --- | --- |
-| `Asset ... was not found` | Wrong `NODE_URL`, wrong chain, or the DID isn't indexed yet. |
-| `not v5` error | The DID points to an older (v4/v1) asset; this guide is v5-only. |
-| `Order failed` | The account can't pay for / claim the datatoken (funds or pricing). |
-| Download rejected after ordering (missing `sessionId`) | The asset is credential-gated; obtain the policy-server `sessionId` in step 3 and pass the `policyServer` object to `getDownloadUrl` (and configure the SSI wallet if an `SSIpolicy` applies). |
-| Chain ID mismatch | `RPC` points at a different chain than the DDO was published on. |
+| `Asset ... was not found` | `NODE_URL` が誤っている、チェーンが違う、あるいは DID がまだインデックスされていない。 |
+| `not v5` のエラー | DID が古い（v4／v1）アセットを指している。本ガイドは v5 専用です。 |
+| `Order failed` | アカウントが datatoken の支払い／受け取りをできない（残高または価格設定の問題）。 |
+| 注文後にダウンロードが拒否される（`sessionId` がない） | アセットがクレデンシャルで保護されている。ステップ 3 でポリシーサーバーの `sessionId` を取得し、`policyServer` オブジェクトを `getDownloadUrl` に渡してください（`SSIpolicy` が適用される場合は SSI ウォレットも設定します）。 |
+| チェーン ID の不一致 | `RPC` が、DDO が公開されたチェーンとは別のチェーンを指している。 |
 
-## Related
+## 関連ページ
 
-- [Consume with the Ocean CLI](/ja/docs/oe-automation/consume/ocean-cli) — the same outcome, no code.
-- [Consume overview](/ja/docs/oe-automation/consume/overview) — concepts and prerequisites.
-- [Wallet Setup (v1 & v2)](/ja/docs/getting-started/wallet-setup) — agent wallet + SSI wallet.
+- [Ocean CLI で利用する](/ja/docs/oe-automation/consume/ocean-cli) — 同じ結果をコードなしで。
+- [利用の概要](/ja/docs/oe-automation/consume/overview) — 考え方と前提条件。
+- [ウォレットの設定（v1・v2）](/ja/docs/getting-started/wallet-setup) — エージェント用ウォレットと SSI ウォレット。

@@ -1,38 +1,37 @@
 ---
-title: Consume a Dataset with the Ocean CLI (v2)
+title: Ocean CLI でデータセットを利用する（v2）
 ---
 
-# Consume a Dataset with the Ocean CLI (Ocean Enterprise v2)
+# Ocean CLI でデータセットを利用する（Ocean Enterprise v2）
 
-This guide achieves the **same result** as
-[Consume a Dataset with ocean.js](/ja/docs/oe-automation/consume/ocean-js) —
-ordering and downloading a DDO v5 dataset — but using the ready-made
-[Ocean CLI](https://github.com/oceanprotocol/ocean-cli) instead of writing code.
-It targets Ocean Enterprise assets identified by a `did:ope` DID.
-
-:::info
-Use this **no-code path** when you just want the file, or to sanity-check a DID
-before integrating the library into your own app. For the concepts behind the
-flow, see the [Consume overview](/ja/docs/oe-automation/consume/overview).
-:::
-
-## Prerequisites (required)
-
-- **Node.js** (Node 24 recommended, matching the ocean.js example repo).
-- **Git**.
-- A funded account (`PRIVATE_KEY`), an **RPC** endpoint, and an **Ocean Node** URL.
-- Network access to the target chain's **RPC** and to an **Ocean Node**.
-  - For the **RPC**, you can use a [public RPC](https://chainlist.org/chain/11155420) or contact deltaDAO for RPC access.
-  - For the **Ocean Node**, you can run your own or use one provided by a service provider like deltaDAO.
-- The **`did:ope`** of a published v5 dataset.
+本ガイドは [ocean.js でデータセットを利用する](/ja/docs/oe-automation/consume/ocean-js) と
+**同じ結果**（DDO v5 のデータセットの注文とダウンロード）を得るための手順ですが、コードを書く代わりに
+既製の [Ocean CLI](https://github.com/oceanprotocol/ocean-cli) を使います。対象は `did:ope` の DID で
+識別される Ocean Enterprise のアセットです。
 
 :::info
-Find a `did:ope` in the Pontus-X Catalogue, and make sure your `RPC` and
-`NODE_URL` point at the **same network** the asset was published on
-([Pontus-X Networks](/ja/docs/pontus-x-networks/quick-start)).
+とにかくファイルが欲しい場合や、ライブラリを自分のアプリに組み込む前に DID を確認したい場合は、この
+**ノーコードの方法** を使ってください。処理の背景にある考え方については
+[利用の概要](/ja/docs/oe-automation/consume/overview) を参照してください。
 :::
 
-## Step 1 — Install the CLI (required)
+## 前提条件（必須）
+
+- **Node.js**（ocean.js のサンプルリポジトリに合わせ Node 24 を推奨）。
+- **Git**。
+- 資金のあるアカウント（`PRIVATE_KEY`）、**RPC** エンドポイント、**Ocean Node** の URL。
+- 対象チェーンの **RPC** と **Ocean Node** へのネットワークアクセス。
+  - **RPC** については、[公開 RPC](https://chainlist.org/chain/11155420) を使うか、deltaDAO に RPC の利用について問い合わせてください。
+  - **Ocean Node** については、自前で運用するか、deltaDAO などのサービス提供者が提供するものを利用できます。
+- 公開済み v5 データセットの **`did:ope`**。
+
+:::info
+`did:ope` は Pontus-X カタログで探せます。`RPC` と `NODE_URL` が、そのアセットが公開された
+**同じネットワーク** を指していることを確認してください
+（[Pontus-X ネットワーク](/ja/docs/pontus-x-networks/quick-start)）。
+:::
+
+## ステップ 1 — CLI をインストールする（必須）
 
 ```bash
 git clone https://github.com/oceanprotocol/ocean-cli.git
@@ -41,44 +40,40 @@ npm install
 npm run build
 ```
 
-## Step 2 — Configure the environment (required)
+## ステップ 2 — 環境を設定する（必須）
 
-The CLI is driven entirely by environment variables:
+CLI はすべて環境変数で制御します。
 
 ```bash
-# Account: use either PRIVATE_KEY or MNEMONIC
+# アカウント: PRIVATE_KEY か MNEMONIC のいずれかを使います
 export PRIVATE_KEY="0x..."
 
-# JSON-RPC endpoint for the asset's chain
+# アセットが存在するチェーンの JSON-RPC エンドポイント
 export RPC="https://your-rpc-endpoint"
 
-# Ocean Node (metadata cache + provider)
+# Ocean Node（メタデータキャッシュ + provider）
 export NODE_URL="https://your-ocean-node"
 ```
 
 :::warning
-Use a private key intended **only for development** and keep it secure. Never
-commit or share your key.
+**開発専用** の秘密鍵を使い、安全に保管してください。鍵をコミットしたり共有したりしないでください。
 :::
 
 :::info
-`MNEMONIC` is an **optional** alternative to `PRIVATE_KEY` — set one or the other.
+`MNEMONIC` は `PRIVATE_KEY` の **任意の** 代替手段です。どちらか一方を設定してください。
 :::
 
-### Step 2a — Get your `PRIVATE_KEY` from a wallet file (optional)
+### ステップ 2a — ウォレットファイルから `PRIVATE_KEY` を取り出す（任意）
 
-If you onboarded through the
-[wallet file setup](/ja/docs/getting-started/wallet-setup), you hold an
-**encrypted JSON keystore** (v3) rather than a raw private key. It looks like
-this:
+[ウォレットファイルの設定](/ja/docs/getting-started/wallet-setup) を通じてオンボーディングした場合、
+手元にあるのは生の秘密鍵ではなく **暗号化された JSON キーストア**（v3）です。次のような形をしています。
 
 ```json
 {"address":"cb638bc3e4ea03072f6e0ebf43a8f514c63f0eea","id":"71fe0cd9-77cc-4539-a0d4-f5ee68a0754d","version":3,"Crypto":{ ... },"x-ethers":{ ... }}
 ```
 
-Decrypt it once to obtain the `0x…` private key that the CLI expects. `ethers`
-is bundled with the CLI's dependencies, so you can run a short script from the
-`ocean-cli` folder:
+CLI が期待する `0x…` 形式の秘密鍵を得るために、一度だけ復号します。`ethers` は CLI の依存関係に
+含まれているため、`ocean-cli` フォルダから次の短いスクリプトを実行できます。
 
 ```js
 // extract-key.mjs
@@ -96,74 +91,73 @@ console.log(wallet.privateKey); // 0x...
 WALLET_PASSWORD="your-wallet-password" node extract-key.mjs ./wallet.json
 ```
 
-Export the printed `0x…` value as `PRIVATE_KEY`.
+出力された `0x…` の値を `PRIVATE_KEY` としてエクスポートします。
 
 :::warning
-Decrypt the wallet file only on a trusted machine. Never commit the wallet file,
-its password, or the extracted private key.
+ウォレットファイルの復号は信頼できるマシン上でのみ行ってください。ウォレットファイル、そのパスワード、
+取り出した秘密鍵は決してコミットしないでください。
 :::
 
-### Step 2b — SSI wallet variables (optional)
+### ステップ 2b — SSI ウォレット関連の変数（任意）
 
-For **credential-gated (SSI) v5 assets**, also set the SSI wallet variables so
-the CLI can complete the policy-server presentation flow (see
-[dual-wallet setup for v2](/ja/docs/getting-started/wallet-setup)):
+**クレデンシャルで保護された（SSI）v5 アセット** の場合は、CLI がポリシーサーバーへのプレゼンテーション
+処理を完了できるよう、SSI ウォレット関連の変数も設定します
+（[v2 の 2 ウォレット構成](/ja/docs/getting-started/wallet-setup) を参照）。
 
 ```bash
 export SSI_WALLET_API="https://your-ssi-wallet/api"
 export SSI_WALLET_ID="your-wallet-id"
-export SSI_WALLET_DID="did:example:your-did"   # optional; defaults to first wallet DID
+export SSI_WALLET_DID="did:example:your-did"   # 任意。省略時は最初のウォレット DID が使われます
 ```
 
 :::info
-If the asset is **not** credential-gated, the SSI variables can be omitted.
+アセットがクレデンシャルで保護されて **いない** 場合、SSI 関連の変数は省略できます。
 :::
 
-## Step 3 — Download the dataset (required)
+## ステップ 3 — データセットをダウンロードする（必須）
 
-Positional form:
+位置引数の形式：
 
 ```bash
 npm run cli download <did> [folder] [serviceId]
 ```
 
-Flag form:
+フラグの形式：
 
 ```bash
 npm run cli download --did <did> --folder ./downloads --service <serviceId>
 ```
 
-- `<did>` — **required**, e.g. `did:ope:abc123...`
-- `[folder]` — *optional*; output directory (defaults to the current directory).
-- `[serviceId]` — *optional*; defaults to the first download service on the asset.
+- `<did>` — **必須**。例：`did:ope:abc123...`
+- `[folder]` — *任意*。出力先ディレクトリ（既定はカレントディレクトリ）。
+- `[serviceId]` — *任意*。既定ではアセットの最初のダウンロードサービスが使われます。
 
-Example:
+例：
 
 ```bash
 npm run cli download did:ope:1234abcd... ./downloads
 ```
 
-On success the CLI prints `File downloaded successfully: ./downloads/<filename>`.
+成功すると、CLI は `File downloaded successfully: ./downloads/<filename>` と出力します。
 
-## What the CLI does under the hood
+## CLI が内部で行っていること
 
-It runs the very same steps as the [library guide](/ja/docs/oe-automation/consume/ocean-js):
+CLI は[ライブラリ版のガイド](/ja/docs/oe-automation/consume/ocean-js) とまったく同じ手順を実行します。
 
-1. Resolves the DDO from the Ocean Node (`aquarius.waitForIndexer`).
-2. Detects the DDO version; for `>= 5.0.0` it builds a **policy-server object**
-   via the SSI presentation flow (`getPolicyServerOBJ`).
-3. Orders the datatoken for the target service (`orderAsset`).
-4. Requests a signed download URL (`ProviderInstance.getDownloadUrl`).
-5. Writes the file to the output folder.
+1. Ocean Node から DDO を解決する（`aquarius.waitForIndexer`）。
+2. DDO のバージョンを判定し、`>= 5.0.0` の場合は SSI のプレゼンテーション処理を通じて
+   **ポリシーサーバー用オブジェクト** を構築する（`getPolicyServerOBJ`）。
+3. 対象サービスの datatoken を注文する（`orderAsset`）。
+4. 署名付きのダウンロード URL を要求する（`ProviderInstance.getDownloadUrl`）。
+5. ファイルを出力フォルダへ書き出す。
 
 :::info
-The difference from the library guide is that the CLI **fully implements** the
-SSI credential presentation, whereas the ocean.js example ships a non-blocking
-stub you can extend.
+ライブラリ版のガイドとの違いは、CLI が SSI のクレデンシャル提示を **完全に実装している** 点です。
+一方 ocean.js のサンプルには、処理を止めないスタブが同梱されており、必要に応じて拡張できます。
 :::
 
-## Related
+## 関連ページ
 
-- [Consume a Dataset with ocean.js](/ja/docs/oe-automation/consume/ocean-js) — the code-level equivalent.
-- [Consume overview](/ja/docs/oe-automation/consume/overview) — concepts and prerequisites.
-- [Wallet Setup (v1 & v2)](/ja/docs/getting-started/wallet-setup) — agent wallet + SSI wallet.
+- [ocean.js でデータセットを利用する](/ja/docs/oe-automation/consume/ocean-js) — コードレベルでの同等の手順。
+- [利用の概要](/ja/docs/oe-automation/consume/overview) — 考え方と前提条件。
+- [ウォレットの設定（v1・v2）](/ja/docs/getting-started/wallet-setup) — エージェント用ウォレットと SSI ウォレット。

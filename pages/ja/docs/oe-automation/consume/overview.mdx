@@ -1,91 +1,87 @@
 ---
-title: Consume a Dataset (Ocean Enterprise v2) — Overview
+title: データセットを利用する（Ocean Enterprise v2）— 概要
 ---
 
-# Consume a Dataset without a Portal (Ocean Enterprise v2)
+# ポータルを使わずにデータセットを利用する（Ocean Enterprise v2）
 
-This chapter shows how to **access and download data services programmatically**
-— directly from your own application or scripts, **without using a Portal**.
-It targets the Pontus-X **v2 stack based on [Ocean Enterprise](https://www.oceanenterprise.io/)**,
-where assets are described with **DDO v5** and identified by a `did:ope` DID.
+本章では、**ポータルを使わずに**、自分のアプリケーションやスクリプトから直接
+**データサービスへプログラム的にアクセスしてダウンロードする** 方法を解説します。
+対象は **[Ocean Enterprise](https://www.oceanenterprise.io/) を基盤とする Pontus-X の v2 スタック**であり、
+アセットは **DDO v5** で記述され、`did:ope` の DID で識別されます。
 
-Use this when you want to integrate consumption into your own product, automate
-downloads, or sanity-check a DID before wiring the library into an application.
+利用処理を自社製品に組み込みたい場合、ダウンロードを自動化したい場合、あるいはライブラリを
+アプリケーションに組み込む前に DID を手早く確認したい場合に役立ちます。
 
 :::info
-**`did:ope` vs `did:op`** — Ocean Enterprise (v2) assets use the **`did:ope:`**
-prefix. The legacy Pontus-X (v1) stack used `did:op:`. Everything in this chapter
-is for **`did:ope`** / DDO v5 assets. If you are on the v1 stack, see
-[Download Assets](/ja/docs/use-cases/download) (Nautilus) instead.
+**`did:ope` と `did:op` の違い** — Ocean Enterprise（v2）のアセットは **`did:ope:`**
+接頭辞を使います。従来の Pontus-X（v1）スタックでは `did:op:` でした。本章の内容はすべて
+**`did:ope`** / DDO v5 のアセットを対象としています。v1 スタックを使っている場合は、
+代わりに [アセットのダウンロード](/ja/docs/use-cases/download)（Nautilus）を参照してください。
 :::
 
-## What "consuming" means
+## 「利用する」とは
 
-Downloading a data service in Ocean Enterprise is a short, ordered flow:
+Ocean Enterprise におけるデータサービスのダウンロードは、次の短い一連の流れです。
 
-1. **Resolve** the asset's metadata (the DDO) from the Ocean Node.
-2. **Order** the datatoken for the service you want (the on-chain payment /
-   access grant).
-3. **Exchange** that order for a short-lived, signed **download URL** issued by
-   the Ocean Node's provider component.
-4. **Download** the bytes.
+1. Ocean Node からアセットのメタデータ（DDO）を **解決（resolve）** する。
+2. 利用したいサービスの datatoken を **注文（order）** する（オンチェーンでの支払い／アクセス付与）。
+3. その注文を、Ocean Node の provider コンポーネントが発行する短命の署名付き
+   **ダウンロード URL** と **交換（exchange）** する。
+4. 実データを **ダウンロード** する。
 
-The account you use must either already hold the datatoken, or be able to buy it
-(fixed-rate priced assets) / claim it (free / dispenser assets).
+使用するアカウントは、すでに datatoken を保有しているか、購入できる（固定価格のアセットの場合）か、
+受け取れる（無償／ディスペンサーのアセットの場合）必要があります。
 
-## Two integration paths
+## 2 つの統合方法
 
-| Path | Best for | Effort |
+| 方法 | 向いている場面 | 手間 |
 | --- | --- | --- |
-| **[ocean.js](/ja/docs/oe-automation/consume/ocean-js)** | Integrating consumption into a Node.js/TypeScript app; full control. | Write code |
-| **[Ocean CLI](/ja/docs/oe-automation/consume/ocean-cli)** | Getting the file with no code; sanity-checking a DID. | No code |
+| **[ocean.js](/ja/docs/oe-automation/consume/ocean-js)** | Node.js／TypeScript のアプリに利用処理を組み込みたい場合。細かく制御できます。 | コードを書く |
+| **[Ocean CLI](/ja/docs/oe-automation/consume/ocean-cli)** | コードを書かずにファイルを取得したい場合。DID の動作確認にも。 | ノーコード |
 
-Both perform the **same steps** and reach the same result. Start with the Ocean
-CLI if you just want the file; use ocean.js when you are embedding consumption
-into your own application.
+どちらも **同じ手順** を実行し、同じ結果に至ります。とにかくファイルが欲しい場合は Ocean CLI から、
+自分のアプリケーションに利用処理を組み込む場合は ocean.js を使ってください。
 
-## Prerequisites checklist
+## 前提条件のチェックリスト
 
-| Requirement | Required? | Purpose |
+| 必要なもの | 必須か | 用途 |
 | --- | --- | --- |
-| Account private key (`PRIVATE_KEY`) | **Yes** | Consumer account that pays for / claims the datatoken. |
-| RPC endpoint (`RPC`) | **Yes** | JSON-RPC for the asset's chain. |
-| Ocean Node URL (`NODE_URL`) | **Yes** | Metadata cache + provider (off-chain lookups). |
-| A published v5 `did:ope` | **Yes** | The asset you want to download. |
-| Native token for gas | **Yes** | To submit the order transaction. |
-| Payment token balance | If priced | Only for fixed-rate priced services. |
-| SSI wallet (`SSI_WALLET_*`) | Optional | Only for **credential-gated** assets (see below). |
+| アカウントの秘密鍵（`PRIVATE_KEY`） | **必須** | datatoken の支払い／受け取りを行う利用者アカウント。 |
+| RPC エンドポイント（`RPC`） | **必須** | アセットが存在するチェーンの JSON-RPC。 |
+| Ocean Node の URL（`NODE_URL`） | **必須** | メタデータキャッシュと provider（オフチェーンの参照）。 |
+| 公開済みの v5 `did:ope` | **必須** | ダウンロード対象のアセット。 |
+| ガス用のネイティブトークン | **必須** | 注文トランザクションを送信するため。 |
+| 決済トークンの残高 | 有償の場合のみ | 固定価格のサービスにのみ必要。 |
+| SSI ウォレット（`SSI_WALLET_*`） | 任意 | **クレデンシャルで保護された** アセットの場合のみ（後述）。 |
 
 :::info
-You can find published assets and their `did:ope` in the Pontus-X Catalogue.
-Make sure the `NODE_URL` and `RPC` point at the **same network** the asset was
-published on — see [Pontus-X Networks](/ja/docs/pontus-x-networks/quick-start).
+公開済みのアセットとその `did:ope` は Pontus-X カタログで探せます。
+`NODE_URL` と `RPC` が、そのアセットが公開された **同じネットワーク** を指していることを確認してください。
+[Pontus-X ネットワーク](/ja/docs/pontus-x-networks/quick-start) を参照してください。
 :::
 
-## Credential-gated (SSI) assets
+## クレデンシャルで保護された（SSI）アセット
 
-DDO v5 assets can be **credential-gated**: before releasing the data, the Ocean
-Node asks a policy server to verify a verifiable presentation (via walt.id). This
-requires an **SSI wallet** in addition to your transaction account — see the
-[dual-wallet setup for v2](/ja/docs/getting-started/wallet-setup).
+DDO v5 のアセットは **クレデンシャルによる保護** を設定できます。データを引き渡す前に、Ocean Node が
+ポリシーサーバーに問い合わせ、検証可能プレゼンテーションを（walt.id 経由で）検証します。この場合、
+トランザクション用アカウントに加えて **SSI ウォレット** が必要です。
+[v2 の 2 ウォレット構成](/ja/docs/getting-started/wallet-setup) を参照してください。
 
 :::info
-The SSI steps are **optional** and only needed for credential-gated assets. If an
-asset is not gated, you can omit the `SSI_WALLET_*` variables entirely. The Ocean
-Node is always the final authority — if a credential is genuinely required, it
-rejects the download and you will see that error.
+SSI に関する手順は **任意** であり、クレデンシャルで保護されたアセットにのみ必要です。保護されていない
+アセットであれば、`SSI_WALLET_*` の変数は省略して構いません。最終的な判断は常に Ocean Node が行います。
+クレデンシャルが実際に必要な場合は、ダウンロードが拒否され、その旨のエラーが返ります。
 :::
 
-## Example code
+## サンプルコード
 
-The runnable TypeScript example used throughout the ocean.js guide lives in its
-own repository:
+ocean.js のガイド全体で使う、実行可能な TypeScript のサンプルは、独立したリポジトリに置かれています。
 
-- **Example repo:** [`deltaDAO/oe-automation-examples`](https://github.com/deltaDAO/oe-automation-examples) *(placeholder — repository to be published)*
+- **サンプルリポジトリ：** [`deltaDAO/oe-automation-examples`](https://github.com/deltaDAO/oe-automation-examples) *（プレースホルダー — リポジトリは今後公開予定）*
 
-## Related
+## 関連ページ
 
-- [Consume with ocean.js](/ja/docs/oe-automation/consume/ocean-js) — the code path.
-- [Consume with the Ocean CLI](/ja/docs/oe-automation/consume/ocean-cli) — the no-code path.
-- [Wallet Setup (v1 & v2)](/ja/docs/getting-started/wallet-setup) — agent wallet + SSI wallet.
-- [Asset Metadata Standard (DDO)](/ja/docs/ddo_credential/ddo_intro) — how v5 assets are described.
+- [ocean.js で利用する](/ja/docs/oe-automation/consume/ocean-js) — コードを書く方法。
+- [Ocean CLI で利用する](/ja/docs/oe-automation/consume/ocean-cli) — ノーコードの方法。
+- [ウォレットの設定（v1・v2）](/ja/docs/getting-started/wallet-setup) — エージェント用ウォレットと SSI ウォレット。
+- [アセットメタデータ標準（DDO）](/ja/docs/ddo_credential/ddo_intro) — v5 のアセットがどう記述されるか。
