@@ -1,119 +1,118 @@
+# Pontus-X エコシステム入門
 
-# Introduction to the Pontus-X ecosystem
-
-From here on you will be able to interact with the Pontus-X network, sign and approve transactions, cover fees and publish, manage and consume service offerings associated with the network.
+ここから先では、Pontus-X ネットワークとやり取りし、トランザクションに署名・承認し、手数料を支払い、ネットワークに紐づくサービス提供物を公開・管理・利用できるようになります。
 
 
-## 1. How to find services
+## 1. サービスを見つける
 
-The easiest way to discover services published in the network is through the various portals, such as https://portal.pontus-x.eu/ or https://euprogigant.pontus-x.eu/.
+ネットワーク上に公開されたサービスを探す最も簡単な方法は、https://portal.pontus-x.eu/ や https://euprogigant.pontus-x.eu/ といった各種ポータルを使うことです。
 
-The portal landing page will offer an overview of selected service offerings and the catalogue will show a (filtered) overview of available services (depending on the portal used).
+ポータルのトップページでは選ばれたサービス提供物の概要が示され、カタログでは（利用するポータルに応じて絞り込まれた）利用可能なサービスの一覧を確認できます。
 
 ![Portal Assets Overview](/images/onboarding/community_onboarding_12.jpg)
 
-The service metadata summary already informs you about some important aspects of the displayed services, such as name, title, short description, price, number of consumptions/sales, the network where the service and its contracts are residing and if it is a data service for download or actually an application to be used with data. 
+サービスのメタデータ要約からは、表示されているサービスに関する重要な情報を読み取れます。名称、タイトル、短い説明、価格、利用・販売回数、そのサービスと契約が置かれているネットワーク、そしてダウンロード型のデータサービスなのか、データとともに使うアプリケーションなのか、といった点です。
 
-When we inspect a service in detail more information becomes available.
+個々のサービスを詳しく見ると、さらに多くの情報が得られます。
 
 ![Portal Asset Detail](/images/onboarding/community_onboarding_13.jpg)
 
-All services are identified by a unique identifier, the DID.
+すべてのサービスは、一意の識別子である DID によって識別されます。
 
-You are informed about the owner of the asset, identified by the public address. This can be manually resolved to a participant using the participant register https://docs.genx.minimal-gaia-x.eu/docs/Community/participants
+アセットの所有者は公開アドレスによって示されます。これは参加者レジストリ https://docs.genx.minimal-gaia-x.eu/docs/Community/participants を使って手動で参加者に対応づけられます。
 
-Below the owner information the access token for this service is displayed.
+所有者情報の下には、このサービスのアクセストークンが表示されます。
 
-You can also see if a Gaia-X compliant service credential has been added to the service and if it matches this services DID.
+また、Gaia-X 準拠のサービスクレデンシャルがこのサービスに付与されているか、そしてそれがこのサービスの DID と一致しているかも確認できます。
 
-On the righthand side you will find a summary of the costs of consumption for this services, denominated in a currency specified by the service provider, i.e. in EUROe. This currency will be used for pre-paid settlement for a subscription and the settlement must be completed before the service can be accessed during the subscription period. 
+右側には、このサービスの利用にかかる費用の要約が、サービス提供者が指定した通貨（たとえば EUROe）建てで表示されます。この通貨はサブスクリプションの前払い決済に用いられ、サブスクリプション期間中にサービスへアクセスするには、事前に決済を完了しておく必要があります。
 ![Portal Asset Consumption Detail](/images/onboarding/community_onboarding_14.jpg)
 
-This initial guide will not cover the full extent of information given here in the service details page for now.
+この入門ガイドでは、サービス詳細ページに表示される情報のすべてを扱うわけではありません。
 
-## 2. How to consume services
+## 2. サービスを利用する
 
-To consume a selected service the following requirements must be met:
+選んだサービスを利用するには、次の条件を満たす必要があります。
 
-1. You must be eligible to consume the service or combination of services. By default, services can be consumed by any participant unless the service provider restricts access to certain consumers or purposes.
-2. You must have a sufficient balance associated with your selected public address: a) sufficient to cover network fees, and b) sufficient to cover costs for the service offering.
-3. You must be connected with the portal and network using the correct public address.
+1. そのサービス、またはサービスの組み合わせを利用する資格があること。既定では、サービス提供者が利用者や用途を制限していない限り、どの参加者もサービスを利用できます。
+2. 選択した公開アドレスに紐づく残高が十分であること。a) ネットワーク手数料をまかなえること、b) サービス提供物の費用をまかなえること。
+3. 正しい公開アドレスでポータルおよびネットワークに接続していること。
 
-If all conditions are met, the buy button will be available and not greyed out.
+すべての条件が満たされていれば、購入（buy）ボタンが有効になり、グレーアウトしません。
 
- 
+
 ![Portal Asset Consumption Detail](/images/onboarding/community_onboarding_15.jpg)
- 
 
-If not, you will receive an indication in the frontend.
 
- 
+条件を満たしていない場合は、画面上にその旨が表示されます。
+
+
 ![Portal Asset Consumption Detail: Not Connected](/images/onboarding/community_onboarding_16.jpg)
 
-If you want to start consumption you press the "buy" button and will be asked to sign a number of transactions to
+利用を開始するには「buy」ボタンを押します。すると、次の目的で複数のトランザクションへの署名を求められます。
 
-- document your consent with the Terms and Conditions of the service(s)
-- make your balance available for a transaction
-- pay for the service and to acquire an access token
-- (exchange the acquired access token for access to the service)
+- 該当サービスの利用規約への同意を記録する
+- 残高を取引に利用できる状態にする
+- サービスの代金を支払い、アクセストークンを取得する
+- （取得したアクセストークンをサービスへのアクセス権と交換する）
 
-The first transaction will set and approve a maximum spending cap for the following transaction that determines how much you allow to be paid for the service. This is a security feature which is not really useful for a service with a fixed price, but needs to be completed nonetheless. This will NOT increase the price of the service, even if you enter a higher number.
+最初のトランザクションでは、次のトランザクションに対する支払い上限額を設定・承認します。これはサービスに対して支払いを許可する最大額を定めるものです。固定価格のサービスではあまり意味のない安全機構ですが、手続きとしては完了させる必要があります。上限額を大きく入力しても、サービスの価格が上がることはありません。
 
- 
+
 ![MetaMask EUROe Approval](/images/onboarding/community_onboarding_17.jpg)
 
 
-When you approve this transaction it will be submitted to the network and documented which will take a few seconds.
+このトランザクションを承認すると、ネットワークへ送信され記録されます。完了までに数秒かかります。
 
- 
-![Portal EUROe Approval](/images/onboarding/community_onboarding_18.jpg) 
 
-In the next step you will approve the transaction with the service provider to exchange currency against the access token required for the service.
+![Portal EUROe Approval](/images/onboarding/community_onboarding_18.jpg)
+
+次のステップでは、サービスに必要なアクセストークンと通貨を交換するトランザクションを、サービス提供者との間で承認します。
 
 ![MetaMask Transaction Details](/images/onboarding/community_onboarding_19.jpg)
 
-This transaction will incur network fees to cover the cost of federation services and infrastructure provided by federators (network validators). When approved, the transaction will be submitted to the network, the exchange will be facilitated, and the acquired access token will be exchanged to execute the right to use the service. This creates an audit trail entry and marks the beginning of the service subscription, which is documented in the federated logging service.
+このトランザクションには、フェデレーター（ネットワークのバリデータ）が提供するフェデレーションサービスとインフラの費用をまかなうためのネットワーク手数料がかかります。承認するとトランザクションがネットワークへ送信され、交換が実行され、取得したアクセストークンがサービスの利用権の行使のために交換されます。これにより監査証跡の記録が作られ、サービスのサブスクリプション開始が、フェデレーテッドなロギングサービスに記録されます。
 
-The access controller used by the service provider will use this audit trail event and proof of transaction to determine if a user has the right to access the service and to check the identity of the user.
+サービス提供者が用いるアクセスコントローラーは、この監査証跡のイベントと取引の証跡を使って、利用者がサービスへアクセスする権利を持つかどうかを判定し、利用者の身元を確認します。
 
-You will be able to assess the status of the transaction through the logging service and the wallet.
+トランザクションの状況は、ロギングサービスとウォレットから確認できます。
 
-![Activity Log](/images/onboarding/community_onboarding_20.jpg) 
+![Activity Log](/images/onboarding/community_onboarding_20.jpg)
 
-The results of both transactions can also be seen in the Blockchain Explorer for the used network.
+2 つのトランザクションの結果は、利用したネットワークのブロックチェーンエクスプローラーでも確認できます。
 
-![Blockchain Explorer Transaction Details](/images/onboarding/community_onboarding_21.jpg) 
+![Blockchain Explorer Transaction Details](/images/onboarding/community_onboarding_21.jpg)
 
-Now the service can be consumed and results can be accessed. Please note that in the case of a Compute-to-Data process there will be a second service offering and contracting process involved and at least 5 transactions are required as two contracts with up to three parties will be stipulated.
+これでサービスを利用し、結果にアクセスできるようになりました。なお Compute-to-Data の場合は、2 つ目のサービス提供物と契約手続きが関わり、最大 3 者による 2 件の契約が結ばれるため、少なくとも 5 件のトランザクションが必要になります。
 
-## 3. How to access results
+## 3. 結果にアクセスする
 
-Now the service can be consumed by the consumer, which is indicated by a download button.
+これでサービスを利用できる状態になり、ダウンロードボタンが表示されます。
 
-![Portal Download Asset](/images/onboarding/community_onboarding_22.jpg) 
+![Portal Download Asset](/images/onboarding/community_onboarding_22.jpg)
 
-If a download is requested from the access controller designated by the service provider the identity of the consumer must be confirmed to match the identity of the party who signed the contract with the service provider. For this reason you will need to answer a signature request to prove you have control of the private key associated with the public address of the consumer.
+サービス提供者が指定したアクセスコントローラーにダウンロードを要求すると、利用者の身元が、サービス提供者と契約した当事者の身元と一致することを確認する必要があります。そのため、利用者の公開アドレスに対応する秘密鍵を管理していることを証明する署名要求に応じる必要があります。
 
-![MetaMask Sign Request](/images/onboarding/community_onboarding_23.jpg) 
+![MetaMask Sign Request](/images/onboarding/community_onboarding_23.jpg)
 
-If the signature has been verified successfully by the access controller the HTTPS download will be initiated and the file can be downloaded.
+アクセスコントローラーが署名の検証に成功すると、HTTPS によるダウンロードが開始され、ファイルを取得できます。
 
-All these processes can be initiated without the graphical user interface of the portal using the Python or JS libraries or Nautilus.
+これらの一連の処理は、ポータルのグラフィカルなインターフェースを使わずに、Python や JS のライブラリ、あるいは Nautilus からも実行できます。
 
-## 4. How to access consumption history
+## 4. 利用履歴を確認する
 
-To access your consumption history via the GUI you can visit the "profile" section of any portal that has not filtered out the services you did consume.
+GUI から利用履歴を確認するには、自分が利用したサービスを除外していない任意のポータルの「profile」セクションを開きます。
 
-Under the section "Downloads" you will find a full overview of all services that have been contracted for download.
+「Downloads」のセクションには、ダウンロード契約を結んだすべてのサービスの一覧が表示されます。
 
-![Portal Downloads Overview](/images/onboarding/community_onboarding_24.jpg) 
+![Portal Downloads Overview](/images/onboarding/community_onboarding_24.jpg)
 
-Under the section "Compute Jobs" you will find a summary for all compute processes, the respective audit trails and the options to access the results of previous computations.
+「Compute Jobs」のセクションには、すべての計算処理の要約、それぞれの監査証跡、そして過去の計算結果へアクセスするための手段が表示されます。
 
-![Portal Compute Jobs Overview](/images/onboarding/community_onboarding_25.jpg) 
+![Portal Compute Jobs Overview](/images/onboarding/community_onboarding_25.jpg)
 
-## 5. Further Help
+## 5. さらに支援が必要な場合
 
-Thank you for contributing to Pontus-X. If you need help with anything, just let us know, we are happy to assist you. Just contact [thomas@delta-dao.com](mailto:thomas@delta-dao.com) and [kai@delta-dao.com](mailto:kai@delta-dao.com) if you have questions or need help.
+Pontus-X への貢献ありがとうございます。何かお困りのことがあれば、お気軽にお知らせください。質問や支援が必要な場合は、[thomas@delta-dao.com](mailto:thomas@delta-dao.com) および [kai@delta-dao.com](mailto:kai@delta-dao.com) までご連絡ください。
 
-If you want to get started with some additional quick links to the ecosystem and additional resources, please follow [/ja/docs/quick_links](/ja/docs/quick_links).
+エコシステムへのその他の入口や追加の資料については、[/ja/docs/quick_links](/ja/docs/quick_links) を参照してください。

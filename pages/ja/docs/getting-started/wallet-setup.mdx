@@ -1,33 +1,33 @@
-# Notes on Version Changes (v1 vs. v2)
+# バージョンの違いについて（v1 と v2）
 
-This part of the documentation has been updated to describe the updated wallet setup for Pontus-X (v1) which now includes a simple wallet file configuration flow for Pontus-X portals, but also to include updates for Ocean Enterprise stack (v2) introduced in 2026.
+本ドキュメントのこの部分は、Pontus-X（v1）向けに更新されたウォレット設定手順を反映して改訂されています。Pontus-X ポータル向けの簡便なウォレットファイル設定フローに加え、2026 年に導入された Ocean Enterprise スタック（v2）の変更点も扱います。
 
-With v2, based on Ocean Enterprise, a dual wallet process has been introduced which includes:
+Ocean Enterprise を基盤とする v2 では、次の 2 種類のウォレットを用いる方式が導入されました。
 
-1.  a participant agent wallet holding SECP256k1 keys for signing transactions and interacting with smart contracts and Ocean Enterprise components, such as the connector
-2. a SSI wallet holding Verifiable Credentials and RSA keys for the signature of Verifiable Credentials and Presentations to engage a with Policy Decision Point and to sign catalogue items in the updated catalogue components.
+1.  トランザクションの署名と、スマートコントラクトやコネクタなどの Ocean Enterprise コンポーネントとのやり取りに用いる SECP256k1 鍵を保持する、参加者エージェント用ウォレット
+2. 検証可能クレデンシャルと RSA 鍵を保持する SSI ウォレット。Policy Decision Point とやり取りするための検証可能クレデンシャル／プレゼンテーションの署名や、更新されたカタログコンポーネントでのカタログ項目の署名に用います。
 
-When using Pontus-X v1 only the wallet file setup is relevant.
+Pontus-X v1 のみを使う場合は、ウォレットファイルの設定だけが関係します。
 
-When using Ocean Enterprise v2 the wallet file setup and the SSI wallet are relevant during the setup.
+Ocean Enterprise v2 を使う場合は、設定時にウォレットファイルと SSI ウォレットの両方が関係します。
 
-# Wallet File Setup (v1 and v2)
+# ウォレットファイルの設定（v1・v2 共通）
 
-To get started as a participant in the ecosystem you need to take control over your private key(s) and insert it(them) in a wallet. The wallet file allows a participant to load private keys for signatures and smart contract interactions into a participant agent, e.g. a Portal,  to perform interactions, such a signing and submitting transactions. 
+エコシステムの参加者として始めるには、自分の秘密鍵を自ら管理し、それをウォレットに取り込む必要があります。ウォレットファイルにより、参加者は署名やスマートコントラクト操作のための秘密鍵を、ポータルなどの参加者エージェントへ読み込ませ、トランザクションの署名や送信といった操作を行えるようになります。
 
-You will either use your private SECP256K1 keys you have created yourself using an [offline wallet file generator](https://github.com/deltaDAO/wallet-generator) OR use a set of SECP256K1 keys you [created during guided onboarding](https://docs.onboarding.delta-dao.com/walkthrough#step-3-of-5---create-a-wallet) with the [Fast Track Application](https://onboarding.delta-dao.com/).
+利用する鍵は、[オフラインのウォレットファイル生成ツール](https://github.com/deltaDAO/wallet-generator) で自分で作成した SECP256K1 の秘密鍵か、[ファストトラックアプリケーション](https://onboarding.delta-dao.com/) を用いた[ガイド付きオンボーディングの過程で作成した](https://docs.onboarding.delta-dao.com/walkthrough#step-3-of-5---create-a-wallet) SECP256K1 の鍵のいずれかです。
 
-Your private key SECP256K1 will look like this (just an example, not to be used!):
+SECP256K1 の秘密鍵は次のような形をしています（あくまで例であり、実際には使用しないでください）。
 
 `0d9619d1702c7a4ff89ecf37201TEST2f0d124ca503a61c5f3a60e0451236365`
 
-From this private key an account address will be derived, e.g.
+この秘密鍵からアカウントアドレスが導出されます。例：
 
 `0x29080D654eFD6AC00f8b26F4741E82CD0c2C0778`
 
-which will be a public and unique identifier of the controlled account.
+これが、管理対象アカウントの公開された一意の識別子になります。
 
-The wallet file is an AES-encrypted JSON file holding your private key, protected with a password.
+ウォレットファイルは、秘密鍵を保持しパスワードで保護された、AES 暗号化済みの JSON ファイルです。
 
 ```json
 {
@@ -53,71 +53,71 @@ The wallet file is an AES-encrypted JSON file holding your private key, protecte
 }
 ```
 
-Some important notes before you continue:
+先へ進む前に、次の点にご注意ください。
 
-- This private key controls your identity in the ecosystem, create a secure offline backup.
-- Do not share it with anybody outside your organization , don't store it in the cloud.
-- If you lose control over your private key please inform us immediately so that the Pontus-X federators can denylist it for the network and inform potential other data space authorities about it.
-- You are not allowed to store any personal information on the network , i.e., names, or e-mail addresses when publishing own service offerings on the network.
+- この秘密鍵はエコシステム上のあなたのアイデンティティを支配します。安全なオフラインバックアップを作成してください。
+- 組織外の誰とも共有せず、クラウドに保存しないでください。
+- 秘密鍵の管理を失った場合は、直ちにご連絡ください。Pontus-X のフェデレーターがネットワーク上で当該鍵を拒否リストに登録し、他のデータスペース当局にも周知できるようにするためです。
+- ネットワーク上に自らのサービス提供物を公開する際、氏名やメールアドレスなどの個人情報をネットワークに保存することは認められていません。
 
-The wallet file can also be imported into MetaMask, a commonly used Web3 wallet.
+ウォレットファイルは、広く使われている Web3 ウォレットである MetaMask にインポートすることもできます。
 
-# Wallet File Usage (v1 and v2)
+# ウォレットファイルの利用（v1・v2 共通）
 
-When opening your participant agent, e.g. a data space portal, you are prompted to configure the participant agent so that it represents you. This is done by loading your private key into the participant agent with the wallet file.
+データスペースのポータルなどの参加者エージェントを開くと、そのエージェントが自分を代理するように設定を促されます。これは、ウォレットファイルを通じて秘密鍵をエージェントに読み込ませることで行います。
 
 ![image.png](/images/onboarding/wallet_setup_01.png)
 
-*Screenshot of the wallet selection in a v1 data space portal.*
+*v1 のデータスペースポータルにおけるウォレット選択画面のスクリーンショット。*
 
 ![image.png](/images/onboarding/wallet_setup_02.png)
 
-Screenshot of the wallet selection in a v2 data space portal.
+v2 のデータスペースポータルにおけるウォレット選択画面のスクリーンショット。
 
-When selecting the wallet file and uploading it into the participant agent you will be prompted to insert the password to allow the decryption process.
+ウォレットファイルを選んで参加者エージェントにアップロードすると、復号のためにパスワードの入力を求められます。
 
 ![image.png](/images/onboarding/wallet_setup_03.png)
 
-*Screenshot of the wallet decryption dialogue in a v1 data space portal.*
+*v1 のデータスペースポータルにおけるウォレット復号ダイアログのスクリーンショット。*
 
 ![image.png](/images/onboarding/wallet_setup_04.png)
 
-*Screenshot of the wallet decrytion dialogue in a v2 data space portal.*
+*v2 のデータスペースポータルにおけるウォレット復号ダイアログのスクリーンショット。*
 
-Once the wallet file has been successfully decrypted and imported into the participant agent a short notification will appear and the public address can be verified through the indicator in the upper right corner of the interface.
+ウォレットファイルの復号と参加者エージェントへの取り込みが成功すると、短い通知が表示され、画面右上のインジケーターで公開アドレスを確認できます。
 
 ![image.png](/images/onboarding/wallet_setup_05.png)
 
-*Screenshot of the Account Menu in a v1 data space portal.*
+*v1 のデータスペースポータルにおけるアカウントメニューのスクリーンショット。*
 
 ![image.png](/images/onboarding/wallet_setup_06.png)
 
-*Screenshot of the Account Menu in a v2 data space portal.*
+*v2 のデータスペースポータルにおけるアカウントメニューのスクリーンショット。*
 
-## Funding the Wallet for Transactions (v1 and v2)
+## 取引のためのウォレットへの入金（v1・v2 共通）
 
-To be able to perform writing transactions to the data space ecosystem and to conduct payments the account needs to be funded. In the development and testing systems this is done through a Faucet. Once connected to a Pontus-X Portal with a faucet integration an organization can request initial and additional funding through the faucet.
+データスペースエコシステムへ書き込みを伴うトランザクションを実行し、支払いを行うには、アカウントに資金を入れておく必要があります。開発・テスト環境では、これはフォーセット（Faucet）を通じて行います。フォーセットが組み込まれた Pontus-X ポータルに接続すれば、組織は初回およびその後の資金供給をフォーセット経由で申請できます。
 
-In the v1 network (Pontus-X Devnet and Testnet) fees will be covered through EURAU fee tokens and payments through EURAU payment tokens to simulate the fee and payment structures of a production environment, but without real economic value.
+v1 のネットワーク（Pontus-X 開発ネットおよびテストネット）では、手数料は EURAU の手数料用トークンで、支払いは EURAU の決済用トークンでまかなわれます。これは本番環境の手数料・決済構造を、実際の経済的価値を伴わずに模したものです。
 
-In the v2 network (Optimism Sepolia) fees will be covered through ETH and EURAU payment tokens to simulate the fee and payment structures of a production environment, but without real economic value.
+v2 のネットワーク（Optimism Sepolia）では、手数料は ETH、支払いは EURAU の決済用トークンでまかなわれます。こちらも同様に、実際の経済的価値を伴わない模擬です。
 
-In the production implementation fees can be abstracted and payments can either be performed via e-money or via alternative payment channels.
+本番実装では、手数料は抽象化でき、支払いは電子マネーまたは代替の決済チャネルで行えます。
 
-## Connecting the SSI Wallet with the Participant Agent (v2 only)
+## SSI ウォレットと参加者エージェントの接続（v2 のみ）
 
-In the v2 participant agent the user will be prompted to connect to an SSI wallet. For the connection the wallet file private key, just loaded into the participant agent, will be used.
+v2 の参加者エージェントでは、SSI ウォレットへの接続を促されます。この接続には、直前に参加者エージェントへ読み込ませたウォレットファイルの秘密鍵が使われます。
 
 ![image.png](/images/onboarding/wallet_setup_07.png)
 
-Screenshot of the SSI wallet connection dialogue in a v2 data space portal.
+v2 のデータスペースポータルにおける SSI ウォレット接続ダイアログのスクリーンショット。
 
-Here you configure your own SSI wallet which has been setup already and contains the necessary private keys, verifiable credentials and is linked to at least one DID:WEB. The setup of such a wallet (not the deployment) is discussed in the next chapter.
+ここでは、すでに構築済みで、必要な秘密鍵と検証可能クレデンシャルを保持し、少なくとも 1 つの DID:WEB に紐づいた自分の SSI ウォレットを設定します。そのようなウォレットの設定（デプロイではありません）については、次章で説明します。
 
-# SSI Wallet Setup (v2 only)
+# SSI ウォレットの設定（v2 のみ）
 
-To be described after public release of the v2 stack.
+v2 スタックの一般公開後に記述予定です。
 
 ![image.png](/images/onboarding/wallet_setup_08.png)
 
-*Screenshot of [walt.id](http://walt.id) wallet as SSI wallet in the v2 stack.*
+*v2 スタックで SSI ウォレットとして用いる [walt.id](http://walt.id) ウォレットのスクリーンショット。*

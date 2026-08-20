@@ -1,104 +1,104 @@
-# Use Case Publication Guide
+# ユースケース公開ガイド
 
-This section guides data, AI, and software providers in the Pontus‑X Data Space Ecosystem in the publication of their use cases on the Pontus‑X Devnet and Testnet.
+本セクションでは、Pontus-X データスペースエコシステムのデータ・AI・ソフトウェア提供者に向けて、Pontus-X 開発ネットおよびテストネットへユースケースを公開する手順を解説します。
 
-## Prerequisites
+## 前提条件
 
-As an onboarded participant in the Pontus‑X Data Space Ecosystem, ensure you have the required network and payment tokens to interact with the [Pontus‑X Data Space Ecosystem](https://portal.pontus-x.eu/). If you need tokens or have not received them, you can use the [Pontus-X faucet](https://portal.pontus-x.eu/faucet) to acquire them for free.
+Pontus-X データスペースエコシステムにオンボーディング済みの参加者として、[Pontus-X データスペースエコシステム](https://portal.pontus-x.eu/) とやり取りするために必要なネットワークトークンと決済トークンを保有していることを確認してください。トークンが必要な場合、あるいはまだ受け取っていない場合は、[Pontus-X フォーセット](https://portal.pontus-x.eu/faucet) から無償で取得できます。
 
-If you have not been onboarded to the Pontus-X Data Space Ecosystem yet, you can directly register through the deltaDAO [Fast Track Onboarding Application](https://onboarding.delta-dao.com/).
+まだ Pontus-X データスペースエコシステムにオンボーディングしていない場合は、deltaDAO の[ファストトラックオンボーディングアプリケーション](https://onboarding.delta-dao.com/) から直接登録できます。
 
-## Publication Process
+## 公開の手順
 
-Publishing your use cases to the Pontus‑X Testnet/Devnet can be achieved through two primary methods. You can either use the [Pontus‑X Portal]((https://portal.pontus-x.eu/), accessible at [portal.pontus‑x.eu](https://portal.pontus-x.eu) (as well as any other Pontus‑X Data Space Ecosystem Portals), or utilize [Nautilus](https://nautilus.delta-dao.com/), our comprehensive TypeScript data economy toolkit. In the following sections, we will guide you through each method in detail.
+Pontus-X テストネット／開発ネットへのユースケース公開には、主に 2 つの方法があります。[portal.pontus-x.eu](https://portal.pontus-x.eu) で利用できる [Pontus-X ポータル](https://portal.pontus-x.eu/)（およびその他の Pontus-X データスペースエコシステムのポータル）を使う方法と、包括的な TypeScript 製データエコノミーツールキットである [Nautilus](https://nautilus.delta-dao.com/) を使う方法です。以下では、それぞれの方法を順に解説します。
 
-### Publication Process: Using the Pontus‑X Portal
+### 公開手順：Pontus-X ポータルを使う場合
 
-#### 1. Connect to Your Wallet
+#### 1. ウォレットに接続する
 
-Connect to the portal using either your organizational automation wallet you created with the [Fast Track Onboarding Application](https://onboarding.delta-dao.com/) or your already onboarded wallet via MetaMask. We recommend using the Automation Wallet additionally as it eliminates the need for manual transaction signing during the publication process.
+[ファストトラックオンボーディングアプリケーション](https://onboarding.delta-dao.com/) で作成した組織の自動化ウォレット、またはオンボーディング済みのウォレットを MetaMask 経由で使って、ポータルに接続します。自動化ウォレットを併用すると、公開作業中に手動でトランザクションへ署名する必要がなくなるため推奨されます。
 
 ![Portal Wallet Connect](/images/use-cases/use-case-connect.png)
 
-#### 2. Connect to the Pontus‑X Testnet
+#### 2. Pontus-X テストネットに接続する
 
-Hover over your displayed wallet address, click "Add Pontus‑X Testnet," and confirm both MetaMask transactions.
+表示されているウォレットアドレスにカーソルを合わせ、「Add Pontus-X Testnet」をクリックして、MetaMask の 2 件のトランザクションを承認します。
 
 ![Portal Network Connect](/images/use-cases/use-case-connect-testnet.png)
 
-#### 3. Start Publishing Process for Service Asset
+#### 3. サービスアセットの公開を開始する
 
-1. Click "Publish"
-2. Fill out the metadata:
-   - **Asset Type**: Select "Dataset" or "Algorithm."
-   - **Title**: Enter at least 4 characters.
-   - **Description**: Enter at least 10 characters.
-   - (Optional) Upload a Gaia‑X service credential and define tags.
-   - (If algorithm): Define Docker Image
-3. Agree to the Terms and Conditions.
-4. Click "Continue"
+1. 「Publish」をクリックします。
+2. メタデータを入力します。
+   - **アセット種別**：「Dataset」または「Algorithm」を選択します。
+   - **タイトル**：4 文字以上で入力します。
+   - **説明**：10 文字以上で入力します。
+   - （任意）Gaia-X のサービスクレデンシャルをアップロードし、タグを設定します。
+   - （アルゴリズムの場合）Docker イメージを指定します。
+3. 利用規約に同意します。
+4. 「Continue」をクリックします。
 
 
 ![Start Publishing Process](/images/use-cases/use-case-define-access-information.png)
 
-#### 4. Define Access Information
+#### 4. アクセス情報を定義する
 
-1. Choose access type: "Download" or "Compute."
-2. Select provider URL (relevant if your own provider is set up). deltaDAO provider is added by default.
-3. Provide file information and click "Submit."
-   - **Note:** Only access information is provided; files are never transferred to Pontus‑X. More information about supported data sources can be found [here](/ja/docs/getting-started/data-service-offerings).
-4. (Optional) Provide a sample file and click "Validate."
-5. Choose a timeout period, defining how long buyers can download the asset after the initial purchase.
-6. (Optional) Provide user-defined parameters, allowlist and/or denylist participants (otherwise, all onboarded participants listed [here](/ja/docs/participants-and-federators/ecosystem-participants) will have access). Provide a license and add a link to asset-specific Terms and Conditions.
-7. Click "Continue"
+1. アクセス種別として「Download」または「Compute」を選びます。
+2. Provider の URL を選択します（自前の Provider を構築している場合に関係します）。既定では deltaDAO の Provider が設定されています。
+3. ファイル情報を入力し、「Submit」をクリックします。
+   - **注：** 提供されるのはアクセス情報のみで、ファイル自体が Pontus-X へ転送されることはありません。対応しているデータソースについては[こちら](/ja/docs/getting-started/data-service-offerings) を参照してください。
+4. （任意）サンプルファイルを指定し、「Validate」をクリックします。
+5. タイムアウト期間を選びます。これは、購入者が初回購入後どれだけの期間アセットをダウンロードできるかを定めるものです。
+6. （任意）ユーザー定義パラメータを指定し、参加者の許可リストや拒否リストを設定します（設定しない場合は、[こちら](/ja/docs/participants-and-federators/ecosystem-participants) に掲載されたオンボーディング済み参加者全員がアクセスできます）。ライセンスを指定し、アセット固有の利用規約へのリンクを追加します。
+7. 「Continue」をクリックします。
 
 ![Portal Define Access Information](/images/use-cases/use-case-publish.png)
 
-#### 5. Define Pricing Information
+#### 5. 価格情報を定義する
 
-1. Define a price or select "Free" if the asset should be free of charge.
-2. Click "Continue."
+1. 価格を設定するか、無償で提供する場合は「Free」を選びます。
+2. 「Continue」をクリックします。
 
-**Notes:**
-- Since the Pontus‑X Testnet is a staging environment, no real monetary transactions occur. Only test tokens are exchanged.
+**注：**
+- Pontus-X テストネットはステージング環境であるため、実際の金銭のやり取りは発生しません。交換されるのはテスト用トークンのみです。
 
 
-#### 6. Finalize Submission
+#### 6. 送信を完了する
 
-1. Click "Submit."
-2. If using MetaMask for transaction signing, confirm the transaction requests.
+1. 「Submit」をクリックします。
+2. MetaMask でトランザクションに署名する場合は、要求されたトランザクションを承認します。
 
-#### 7. Compute‑to‑Data Use Cases
+#### 7. Compute-to-Data のユースケース
 
-Repeat the process for the algorithm asset to be allowlisted for computation on the data source of the previously published data asset.
+先に公開したデータアセットのデータソース上で計算を許可（許可リストに登録）するため、アルゴリズムのアセットについても同じ手順を繰り返します。
 
-#### 8. Compute‑to‑Data Use Cases: Allowlist Algorithm Asset
+#### 8. Compute-to-Data のユースケース：アルゴリズムアセットを許可リストに登録する
 
-1. Click "Catalogue" and select the previously published data asset.
+1. 「Catalogue」をクリックし、先ほど公開したデータアセットを選びます。
    ![Portal Catalogue](/images/use-cases/use-case-catalogue.png)
 
-2. Click "Edit Asset."
+2. 「Edit Asset」をクリックします。
    ![Portal Catalogue](/images/use-cases/use-case-edit-asset.png)
 
-3. Click "Edit Compute Settings" and set the previously published algorithm asset for allowlisting.
+3. 「Edit Compute Settings」をクリックし、先に公開したアルゴリズムアセットを許可リストに設定します。
    ![Portal Catalogue](/images/use-cases/use-case-compute-settings.png)
 
-4. Click "Submit"
+4. 「Submit」をクリックします。
 
-### Publication Process: Using Nautilus
+### 公開手順：Nautilus を使う場合
 
-**Overview of Nautilus**
+**Nautilus の概要**
 
-Nautilus is a developer-focused TypeScript library designed to simplify and streamline the development experience within OceanEnterprise ecosystems. It addresses common pain points such as configuring metadata, defining pricing schemes, and managing access controls, which can often be time-consuming and error-prone.
+Nautilus は、OceanEnterprise エコシステムでの開発体験を簡潔かつ円滑にするために設計された、開発者向けの TypeScript ライブラリです。メタデータの設定、価格体系の定義、アクセス制御の管理といった、時間がかかり間違いも起きやすい作業の課題に対処します。
 
-**Key Features:**
-- **Builder Pattern:** Simplifies configuration of data economy assets and services, enhancing readability, maintainability, and flexibility.
-- **Feature Complete:** Manages data assets and services, supports publish and edit functionalities, and leverages OceanEnterprise's Compute-to-Data capabilities.
-- **Seamless Compute Jobs:** Start, monitor, and retrieve compute job results within your development environment.
+**主な特徴：**
+- **ビルダーパターン：** データエコノミーのアセットとサービスの設定を簡潔にし、可読性・保守性・柔軟性を高めます。
+- **機能の網羅：** データアセットとサービスを管理し、公開・編集の機能を備え、OceanEnterprise の Compute-to-Data 機能を活用できます。
+- **計算ジョブの円滑な実行：** 開発環境の中から計算ジョブを開始・監視し、結果を取得できます。
 
-For a detailed guide on the publishing process, refer to the [publishing section](https://nautilus.delta-dao.com/docs/guides/edit) of the [Nautilus Documentation](https://nautilus.delta-dao.com/).
+公開手順の詳細については、[Nautilus のドキュメント](https://nautilus.delta-dao.com/) の[公開に関するセクション](https://nautilus.delta-dao.com/docs/guides/edit) を参照してください。
 
-**Notes:**
-- To install Nautilus, refer to our [GitHub repository](https://github.com/deltaDAO/nautilus).
-- For quick coding examples, check out the [nautilus-examples repository](https://github.com/deltaDAO/nautilus-examples).
-- After installation, update the `.env` file with the `NETWORK` configuration for Pontus‑X Testnet (`pontusxtestnet`) and the `PRIVATE_KEY` of your onboarded wallet.
+**注：**
+- Nautilus のインストール方法は [GitHub リポジトリ](https://github.com/deltaDAO/nautilus) を参照してください。
+- 手早く試せるコード例は [nautilus-examples リポジトリ](https://github.com/deltaDAO/nautilus-examples) にあります。
+- インストール後、`.env` ファイルの `NETWORK` を Pontus-X テストネット用（`pontusxtestnet`）に設定し、オンボーディング済みウォレットの `PRIVATE_KEY` を記入してください。
