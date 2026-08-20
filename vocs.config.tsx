@@ -2,6 +2,7 @@ import { defineConfig } from 'vocs'
 import { sidebar } from './sidebar'
 import { sidebarJa } from './sidebar.ja'
 import remarkGemoji from 'remark-gemoji'
+import { basePathAssets } from './scripts/basePathAssets'
 
 // Set BASE_PATH when deploying to a sub-path (e.g. GitHub Pages project site:
 // https://<user>.github.io/pontusx-docs -> BASE_PATH=/pontusx-docs).
@@ -106,5 +107,8 @@ export default defineConfig({
   ],
   markdown: {
     remarkPlugins: [remarkGemoji],
+  },
+  vite: {
+    plugins: [basePathAssets(basePath)],
   },
 })

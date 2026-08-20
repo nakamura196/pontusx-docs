@@ -1,3 +1,8 @@
+// Vite sets BASE_URL from the vocs `basePath`; it is "/" on a root deployment
+// and e.g. "/pontusx-docs/" on a GitHub Pages project site. Without it the
+// footer's Privacy link points outside the deployment and 404s.
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, '')
+
 export default function Footer() {
   return (
     <footer className="md:w-2xl mx-auto">
@@ -12,7 +17,7 @@ export default function Footer() {
                 <a className="vocs_Anchor" href="mailto:contact@delta-dao.com">Contact us</a>
               </span>
               <span className="px-2 border-l">
-                <a className="vocs_Anchor" href="/privacy">Privacy Policy</a>
+                <a className="vocs_Anchor" href={`${basePath}/privacy`}>Privacy Policy</a>
               </span>
               <span className="px-2 border-l">
                 <a className="vocs_Anchor" href="http://delta-dao.com/imprint">Imprint</a>
