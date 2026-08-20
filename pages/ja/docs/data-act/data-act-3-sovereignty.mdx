@@ -1,25 +1,25 @@
-# The EU Data Act 
+# EU データ法（Data Act）
 
-## Data Spaces: Architecture of Sovereignty 
-Implementing the requirements of the Data Act requires a new approach to data sharing. See [Pontus-X Core Concepts](/ja/docs/getting-started/core-concepts#data-sovereignty)
+## データスペース：主権のアーキテクチャ
+データ法の要件を実装するには、データ共有に対する新しい取り組み方が必要です。[Pontus-X の基本概念](/ja/docs/getting-started/core-concepts#データ主権data-sovereignty) を参照してください。
 
-### The Federation Principle
-In a Data Space, data is not stored centrally. It remains with the owner (‘Data Owner’). Exchange takes place peer-to-peer, based on defined rules. This reflects the decentralised nature of the European economy and prevents the emergence of monolithic data monopolies. 
+### フェデレーションの原則
+データスペースでは、データは中央に保管されません。データは所有者（データオーナー）の手元にとどまり、定められたルールに基づいてピアツーピアで交換されます。これは欧州経済の分散的な性質を反映しており、一枚岩のデータ独占が生まれるのを防ぎます。
 
 
-### Compute-to-Data (C2D): The solution to the trade secret dilemma 
-Perhaps the most important technology in Pontus-X for businesses is Compute-to-Data. It directly addresses the conflict between Article 4 (duty of access) and Article 8 (protection of trade secrets) of the Data Act. 
+### Compute-to-Data（C2D）：営業秘密のジレンマへの解
+Pontus-X の技術のうち、企業にとっておそらく最も重要なのが Compute-to-Data です。これは、データ法の第 4 条（アクセスの義務）と第 8 条（営業秘密の保護）の対立に正面から対処します。
 
-How it works: 
+仕組み：
 
-Instead of sending raw data, the data owner allows the data user to run an algorithm (e.g. a machine learning script) in a secure environment hosted by the data owner. 
+データオーナーは生データを送る代わりに、データ利用者が自らのホストする安全な環境の中でアルゴリズム（たとえば機械学習のスクリプト）を実行できるようにします。
 
-    - The user sends an audited algorithm. 
+    - 利用者は監査済みのアルゴリズムを送ります。
 
-    - The algorithm runs locally on the owner’s data. 
+    - アルゴリズムはオーナーのデータ上でローカルに実行されます。
 
-    - Only the result (e.g. a trained model or a statistical analysis) is sent back. 
+    - 返されるのは結果のみ（たとえば学習済みモデルや統計分析）です。
 
-Strategic advantage: The raw data never leaves the businesses jurisdiction. This eliminates the risk of reverse engineering whilst ensuring compliance with the Data Act (enabling data use). C2D transforms data access from a risk into a controlled service. 
+戦略上の利点：生データが企業の管轄外に出ることは一切ありません。これによりリバースエンジニアリングのリスクを排除しつつ、データ法（データ利活用の実現）への準拠も確保できます。C2D は、データアクセスをリスクから管理されたサービスへと変えるのです。
 
-### 
+###

@@ -1,31 +1,31 @@
-# Setup Instructions for Oasis Node
+# Oasis ノードの構築手順
 
-## System User Setup
+## システムユーザーの作成
 
-Add a system user for running the Oasis node:
+Oasis ノードを実行するためのシステムユーザーを追加します。
 
 ```bash
 sudo adduser --system oasis --shell /usr/sbin/nologin
 ```
 
-Grant the user permission to use SGX:
+そのユーザーに SGX の利用権限を付与します。
 
 ```bash
 adduser oasis sgx
 adduser oasis sgx_prv
 ```
 
-## Directory Structure
+## ディレクトリ構成
 
-Create the required directories with the appropriate permissions:
+必要なディレクトリを、適切なパーミッションで作成します。
 
 ```bash
 mkdir -m700 -p /node/{etc,bin,runtimes,data,web3_gateway}
 ```
 
-## File Downloads
+## ファイルのダウンロード
 
-Download the genesis file, Oasis node, and runtimes:
+genesis ファイル、Oasis ノード、ランタイムをダウンロードします。
 
 ```bash
 wget https://github.com/oasisprotocol/testnet-artifacts/releases/download/2023-10-12/genesis.json -P /node/etc/
@@ -33,21 +33,21 @@ wget https://github.com/oasisprotocol/oasis-core/releases/download/v25.4/oasis_c
 wget https://github.com/oasisprotocol/pontusx-paratime/releases/download/v0.0.2-testnet/pontusx-paratime.orc -P /node/runtimes/
 ```
 
-Download the attestation tool:
+アテステーションツールをダウンロードします。
 
 ```bash
 wget https://github.com/oasisprotocol/tools/releases/download/attestation-tool-0.3.4/attestation-tool
 ```
 
-## SGX Installation
+## SGX のインストール
 
-Follow the Oasis documentation to set up the Trusted Execution Environment:
+信頼実行環境（TEE）の構築は、Oasis のドキュメントに従って行ってください。
 
-[Oasis SGX Setup Documentation](https://docs.oasis.io/node/run-your-node/prerequisites/set-up-trusted-execution-environment-tee)
+[Oasis の SGX セットアップ手順](https://docs.oasis.io/node/run-your-node/prerequisites/set-up-trusted-execution-environment-tee)
 
-## Oasis Node Configuration
+## Oasis ノードの設定
 
-Create the node configuration file at `/node/etc/config.yml` with the following content:
+ノードの設定ファイルを `/node/etc/config.yml` に作成し、次の内容を記述します。
 
 ```yaml
 mode: compute
@@ -92,11 +92,11 @@ runtime:
   sgx_loader: /node/bin/oasis-core-runtime-loader
 ```
 
-## Oasis Node Service
+## Oasis ノードのサービス化
 
-Configure the system service for the Oasis node:
+Oasis ノードをシステムサービスとして設定します。
 
-Create the service file `/etc/systemd/system/oasis-node.service` with the following content:
+サービスファイル `/etc/systemd/system/oasis-node.service` を作成し、次の内容を記述します。
 
 ```ini
 [Unit]
@@ -116,21 +116,21 @@ LimitNOFILE=1024000
 WantedBy=multi-user.target
 ```
 
-## Oasis Gateway Setup
+## Oasis Gateway の構築
 
-Download the Oasis Web3 Gateway:
+Oasis Web3 Gateway をダウンロードします。
 
 ```bash
 wget https://github.com/oasisprotocol/oasis-web3-gateway/releases/download/v5.3.4/oasis_web3_gateway_5.3.4_linux_amd64.tar.gz -P /node/web3_gateway/
 ```
 
-Create the directory for Docker setup:
+Docker 用のディレクトリを作成します。
 
 ```bash
 mkdir -m700 /node/web3_gateway/docker
 ```
 
-Create `docker-compose.yaml` for running PostgreSQL and set a custom password for the database user:
+PostgreSQL を実行するための `docker-compose.yaml` を作成し、データベースユーザーのパスワードを任意の値に設定します。
 
 ```yaml
 version: '3'
@@ -154,26 +154,26 @@ services:
       - ./postgresql.conf:/etc/postgresql/postgresql.conf
 ```
 
-Create `postgresql.conf`:
+`postgresql.conf` を作成します。
 
 ```ini
-# Custom PostgreSQL configuration
+# PostgreSQL のカスタム設定
 logging_collector = on
 log_statement = 'all'
 log_connections = on
 log_directory = '/var/log/postgresql/'
 ```
 
-Create the Oasis Gateway configuration file `/node/web3_gateway/gateway.yaml`:
+Oasis Gateway の設定ファイル `/node/web3_gateway/gateway.yaml` を作成します。
 
 ```yaml
-# Uncomment the runtime_id below.
+# 下の runtime_id のコメントを外してください。
 runtime_id: 00000000000000000000000000000000000000000000000004a6f9071c007069
-# Path to your internal.sock file in the root Oasis node datadir.
+# Oasis ノードのデータディレクトリ直下にある internal.sock へのパス。
 node_address: "unix:/node/data/internal.sock"
-# By default, we index the entire blockchain history.
-# If you are low on disk space or you use the gateway just for submitting transactions, enable
-# pruning below.
+# 既定ではブロックチェーンの全履歴をインデックスします。
+# ディスク容量が逼迫している場合や、ゲートウェイをトランザクション送信専用に使う場合は、
+# 以下の pruning を有効にしてください。
 enable_pruning: false
 pruning_step: 100000
 indexing_start: 0
@@ -181,10 +181,10 @@ log:
   level: debug
   format: json
 database:
-  # Change host and port, if PostgreSQL is running somewhere else.
+  # PostgreSQL を別の場所で動かしている場合は、host と port を変更してください。
   host: "127.0.0.1"
   port: 4432
-  # Enter your database name, username and password.
+  # データベース名、ユーザー名、パスワードを記入してください。
   db: pontusx
   user: pontusx_admin
   password: "${PASSWORD}"
@@ -195,24 +195,24 @@ database:
 gateway:
   chain_id: 32457
   http:
-    # Change host to your external IP address if you have users accessing Web3 from the outside.
+    # 外部から Web3 にアクセスさせる場合は、host を外部 IP アドレスに変更してください。
     host: "0.0.0.0"
-    # Use different port for each Web3 gateway instance, if all run locally.
+    # 複数の Web3 ゲートウェイをローカルで動かす場合は、インスタンスごとに別のポートを使ってください。
     port: 8545
     cors: ["*"]
   ws:
-    # Change host to your external IP address if you have users accessing Web3 from the outside.
+    # 外部から Web3 にアクセスさせる場合は、host を外部 IP アドレスに変更してください。
     host: "0.0.0.0"
-    # Use different port for each Web3 gateway instance, if all run locally.
+    # 複数の Web3 ゲートウェイをローカルで動かす場合は、インスタンスごとに別のポートを使ってください。
     port: 8546
     origins: ["*"]
   method_limits:
     get_logs_max_rounds: 300
 ```
 
-## Oasis Gateway Service
+## Oasis Gateway のサービス化
 
-Create the service file `/etc/systemd/system/oasis-gateway.service` with the following content:
+サービスファイル `/etc/systemd/system/oasis-gateway.service` を作成し、次の内容を記述します。
 
 ```ini
 [Unit]
