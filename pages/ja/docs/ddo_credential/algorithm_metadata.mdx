@@ -1,8 +1,8 @@
-# Algorithm Metadata
+# アルゴリズムのメタデータ
 
-| Attribute            | Type                                                           | Description                                                                                | Required           |
+| 属性 | 型 | 説明 | 必須 |
 | -------------------- | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | ------------------ |
-| `container`          | [`container`](/ja/docs/ddo_credential/container.mdx)                   | Object describing the Docker container image.                                              | :white_check_mark: |
-| `language`           | `string`                                                       | Language used to implement the software.                                                   |                    |
-| `version`            | `string`                                                       | Version of the software preferably in [SemVer](https://semver.org) notation. E.g. `1.0.0`. |                    |
-| `consumerParameters` | [`consumerParameters`](/ja/docs/ddo_credential/algorithm_consumer_parameters.mdx) | An object that defines required consumer input before running the algorithm                |                    |
+| `container`          | [`container`](/ja/docs/ddo_credential/container)                   | Docker コンテナイメージを記述するオブジェクト。 | :white_check_mark: |
+| `language`           | `string`                                                       | ソフトウェアの実装に用いた言語。 |                    |
+| `version`            | `string`                                                       | ソフトウェアのバージョン。[SemVer](https://semver.org) 表記が望ましい（例：`1.0.0`）。 |                    |
+| `consumerParameters` | [`consumerParameters`](/ja/docs/ddo_credential/algorithm_consumer_parameters) | アルゴリズムの実行前に利用者からの入力として必要な項目を定義するオブジェクト。 |                    |

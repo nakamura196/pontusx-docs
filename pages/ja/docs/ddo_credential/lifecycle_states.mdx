@@ -1,27 +1,27 @@
-# Lifecycle States
+# ライフサイクル状態
 
-#### Asset State
+#### アセットの状態
 
-Each asset has a state, which is held by the NFT contract. The possible states are:
+各アセットは状態を持ち、それは NFT コントラクトによって保持されます。取り得る状態は次のとおりです。
 
-| State | Description                    | Discoverable in Ocean Market | Ordering allowed | Listed under profile |
+| 状態 | 説明 | Ocean Market で検索可能 | 注文可能 | プロフィールに表示 |
 | ----- | ------------------------------ | ---------------------------- | ---------------- | -------------------- |
-| `0`   | Active                         | Yes                          | Yes              | Yes                  |
-| `1`   | End-of-life                    | Yes                          | No               | No                   |
-| `2`   | Deprecated (by another asset)  | No                           | No               | No                   |
-| `3`   | Revoked by publisher           | No                           | No               | No                   |
-| `4`   | Ordering is temporary disabled | Yes                          | No               | Yes                  |
-| `5`   | Asset unlisted.                | No                           | Yes              | Yes                  |
+| `0`   | 有効（Active） | はい | はい | はい |
+| `1`   | 提供終了（End-of-life） | はい | いいえ | いいえ |
+| `2`   | 他のアセットにより非推奨化 | いいえ | いいえ | いいえ |
+| `3`   | 公開者により失効 | いいえ | いいえ | いいえ |
+| `4`   | 注文を一時的に停止 | はい | いいえ | はい |
+| `5`   | 一覧非掲載（unlisted） | いいえ | はい | はい |
 
-#### Service State
+#### サービスの状態
 
-Each service has a state, which is defined in the `service` object in the OE service credential. The possible states are:
+各サービスは状態を持ち、それは OE サービスクレデンシャルの `service` オブジェクト内で定義されます。取り得る状態は次のとおりです。
 
-| State | Description                    | Discoverable in Market | Ordering allowed | Listed under profile |
+| 状態 | 説明 | マーケットで検索可能 | 注文可能 | プロフィールに表示 |
 | ----- | ------------------------------ | ---------------------- | ---------------- | -------------------- |
-| `0`   | Active                         | Yes                    | Yes              | Yes                  |
-| `1`   | End-of-life                    | Yes                    | No               | No                   |
-| `2`   | Deprecated (by another asset)  | No                     | No               | No                   |
-| `3`   | Revoked by publisher           | No                     | No               | No                   |
-| `4`   | Ordering is temporary disabled | Yes                    | No               | Yes                  |
-| `5`   | Asset unlisted.                | No                     | Yes              | Yes                  |
+| `0`   | 有効（Active） | はい | はい | はい |
+| `1`   | 提供終了（End-of-life） | はい | いいえ | いいえ |
+| `2`   | 他のアセットにより非推奨化 | いいえ | いいえ | いいえ |
+| `3`   | 公開者により失効 | いいえ | いいえ | いいえ |
+| `4`   | 注文を一時的に停止 | はい | いいえ | はい |
+| `5`   | 一覧非掲載（unlisted） | いいえ | はい | はい |

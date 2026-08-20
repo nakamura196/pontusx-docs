@@ -1,19 +1,19 @@
-# Compute Object
+# Compute オブジェクト
 
-Required for type compute services.
+compute 型のサービスでは必須です。
 
-| Attribute                             | Type                                                                 | Description                                                                                                                                                                                                               | Required           |
+| 属性 | 型 | 説明 | 必須 |
 | ------------------------------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
-| `allowRawAlgorithm`                   | `boolean`                                                            | If `true`, any passed raw text will be allowed to run. Useful for an algorithm drag & drop use case, but increases risk of data escape through malicious user input. Should be `false` by default in all implementations. | :white_check_mark: |
-| `allowNetworkAccess`                  | `boolean`                                                            | If `true`, the algorithm job will have network access.                                                                                                                                                                    | :white_check_mark: |
-| `publisherTrustedAlgorithmPublishers` | Array of `string`                                                    | If not defined, then any published algorithm is allowed. If empty array, then no algorithm is allowed. If not empty any algo published by the defined publishers is allowed.                                              | :white_check_mark: |
-| `publisherTrustedAlgorithms`          | Array of [`publisherTrustedAlgorithms`](#publishertrustedalgorithms) | If not defined, then any published algorithm is allowed. If empty array, then no algorithm is allowed. Otherwise only the algorithms defined in the array are allowed. (see below).                                       | :white_check_mark: |
+| `allowRawAlgorithm`                   | `boolean`                                                            | `true` の場合、渡された任意の生テキストの実行が許可されます。アルゴリズムをドラッグ＆ドロップで扱うユースケースでは便利ですが、悪意ある入力によるデータ流出のリスクが高まります。どの実装でも既定値は `false` とすべきです。 | :white_check_mark: |
+| `allowNetworkAccess`                  | `boolean`                                                            | `true` の場合、アルゴリズムのジョブがネットワークにアクセスできます。 | :white_check_mark: |
+| `publisherTrustedAlgorithmPublishers` | `string` の配列 | 未定義の場合、公開されたすべてのアルゴリズムが許可されます。空配列の場合は、いずれのアルゴリズムも許可されません。空でない場合は、指定した公開者が公開したアルゴリズムが許可されます。 | :white_check_mark: |
+| `publisherTrustedAlgorithms`          | [`publisherTrustedAlgorithms`](#publishertrustedalgorithms) の配列 | 未定義の場合、公開されたすべてのアルゴリズムが許可されます。空配列の場合は、いずれのアルゴリズムも許可されません。それ以外の場合は、配列で定義されたアルゴリズムのみが許可されます（下記参照）。 | :white_check_mark: |
 
 ## publisherTrustedAlgorithms
 
-| Attribute                  | Type     | Description                                                        | Required           |
+| 属性 | 型 | 説明 | 必須 |
 | -------------------------- | -------- | ------------------------------------------------------------------ | ------------------ |
-| `did`                      | `string` | The DID of the algorithm which is trusted by the publisher.        | :white_check_mark: |
-| `serviceId`                | `string` | The service ID of the algorithm which is trusted by the publisher. | :white_check_mark: |
-| `filesChecksum`            | `string` | Hash of algorithm's files (as `string`).                           | :white_check_mark: |
-| `containerSectionChecksum` | `string` | Hash of algorithm's image details (as `string`).                   | :white_check_mark: |
+| `did`                      | `string` | 公開者が信頼するアルゴリズムの DID。 | :white_check_mark: |
+| `serviceId`                | `string` | 公開者が信頼するアルゴリズムのサービス ID。 | :white_check_mark: |
+| `filesChecksum`            | `string` | アルゴリズムのファイルのハッシュ（`string` として）。 | :white_check_mark: |
+| `containerSectionChecksum` | `string` | アルゴリズムのイメージ情報のハッシュ（`string` として）。 | :white_check_mark: |

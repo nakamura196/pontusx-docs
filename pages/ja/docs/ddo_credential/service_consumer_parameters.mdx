@@ -1,10 +1,10 @@
-# Service consumerParameters
+# サービスの consumerParameters
 
-The Service [`consumerParameters`](/ja/docs/ddo_credential/consumer_parameters) are used to specify optional or required parameters that the consumer must provide when consuming the service. They can be used to add query strings to URLs for `GET` requests or to add additional fields into the `POST` header.
+サービスの [`consumerParameters`](/ja/docs/ddo_credential/consumer_parameters) は、利用者がサービスを利用する際に提供しなければならない、任意または必須のパラメータを指定するために用います。`GET` リクエストの URL にクエリ文字列を付加したり、`POST` のヘッダーに追加のフィールドを加えたりできます。
 
-Sometimes, the asset needs additional input data before downloading or running a Compute-to-Data job. 
+ダウンロードや Compute-to-Data のジョブ実行の前に、アセット側が追加の入力データを必要とする場合があります。
 
-**Example:**
+**例：**
 
-- The publisher needs to know the sampling interval before the buyer downloads it. Suppose the dataset URL is https://example.com/mydata. 
-- The publisher defines a field called sampling and asks the buyer to enter a value. This parameter is then added to the URL of the published dataset as query parameters: https://example.com/mydata?sampling=10
+- 公開者は、購入者がダウンロードする前にサンプリング間隔を知る必要があります。データセットの URL が https://example.com/mydata だとします。
+- 公開者は sampling というフィールドを定義し、購入者に値の入力を求めます。このパラメータは、公開されたデータセットの URL にクエリパラメータとして付加されます：https://example.com/mydata?sampling=10

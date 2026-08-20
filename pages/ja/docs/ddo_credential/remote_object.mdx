@@ -1,27 +1,27 @@
 # remoteObject
 
-| Attribute               | Type                                     | Description                                                              | Required           |
+| 属性 | 型 | 説明 | 必須 |
 | ----------------------- | ---------------------------------------- | ------------------------------------------------------------------------ | ------------------ |
-| `name`                  | `string`                                 | Describing name                                                          | :white_check_mark: |
-| `displayName`           | [`language value object`](/ja/docs/ddo_credential/language_i18n)                  | Descriptive name of the file used for human readability in applications. |                    |
-| `description`           | [`language value object`](/ja/docs/ddo_credential/language_i18n)                  | File description                                                         |                    |
-| `fileType`              | `string`                                 | MIME Filetype of the remote object. E.g.: `application/pdf`              | :white_check_mark: |
-| `sha256`                | `string`                                 | `sha256` hash of the rremote object                                      | :white_check_mark: |
-| `mirrors`               | Array of [`remoteSource`](#remotesource) | Can include source `type` `url` and `ipfs`. Array must not be empty.     | :white_check_mark: |
-| `additionalInformation` | `Object`                                 | Stores additional information, this is customizable by publisher         |                    |
+| `name`                  | `string`                                 | 内容を表す名称。 | :white_check_mark: |
+| `displayName`           | [`language value オブジェクト`](/ja/docs/ddo_credential/language_i18n)                  | アプリケーション上で人が読みやすいよう表示する、ファイルの説明的な名称。 |                    |
+| `description`           | [`language value オブジェクト`](/ja/docs/ddo_credential/language_i18n)                  | ファイルの説明。 |                    |
+| `fileType`              | `string`                                 | リモートオブジェクトの MIME タイプ。例：`application/pdf` | :white_check_mark: |
+| `sha256`                | `string`                                 | リモートオブジェクトの `sha256` ハッシュ。 | :white_check_mark: |
+| `mirrors`               | [`remoteSource`](#remotesource) の配列 | ソースの `type` として `url` と `ipfs` を含められます。配列を空にすることはできません。 | :white_check_mark: |
+| `additionalInformation` | `Object`                                 | 追加情報を格納します。公開者が自由に定義できます。 |                    |
 
 ## remoteSource
 
-### type `url`
+### 型 `url`
 
-| Attribute | Type     | Description                           | Required           |
+| 属性 | 型 | 説明 | 必須 |
 | --------- | -------- | ------------------------------------- | ------------------ |
-| `type`    | `string` | value `url`                           | :white_check_mark: |
-| `url`     | `string` | Remote object URL                     | :white_check_mark: |
-| `method`  | `string` | The HTTP method (e.g.: `GET`, `POST`) | :white_check_mark: |
-| `headers` | `string` | additional http headers               |                    |
+| `type`    | `string` | 値は `url`。 | :white_check_mark: |
+| `url`     | `string` | リモートオブジェクトの URL。 | :white_check_mark: |
+| `method`  | `string` | HTTP メソッド（例：`GET`、`POST`）。 | :white_check_mark: |
+| `headers` | `string` | 追加の HTTP ヘッダー。 |                    |
 
-**Example:**
+**例：**
 
 ```json
 {
@@ -36,16 +36,16 @@
 
 
 
-### type `ipfs`
+### 型 `ipfs`
 
-| Attribute | Type     | Description                                                  | Required           |
+| 属性 | 型 | 説明 | 必須 |
 | --------- | -------- | ------------------------------------------------------------ | ------------------ |
-| `type`    | `string` | value `ipfs`                                                 | :white_check_mark: |
-| `ipfsCID` | `string` | A *content identifier*, or [CID](https://docs.ipfs.tech/concepts/content-addressing/#what-is-a-cid), is a label used to point to material in IPFS. | :white_check_mark: |
+| `type`    | `string` | 値は `ipfs`。 | :white_check_mark: |
+| `ipfsCID` | `string` | *コンテンツ識別子*（[CID](https://docs.ipfs.tech/concepts/content-addressing/#what-is-a-cid)）は、IPFS 上の資料を指し示すためのラベルです。 | :white_check_mark: |
 
 
 
-Example:
+例：
 
 ```json
 {

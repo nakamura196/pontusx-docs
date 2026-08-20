@@ -1,22 +1,22 @@
-# On-chain Metadata - Anchoring of OE service credentials
+# オンチェーンメタデータ — OE サービスクレデンシャルの記録
 
-Specific metadata of the catalogue entries is saved (anchored) on the blockchain to ensure the reliability and integrity of the data. On-chain storage is immutable and cannot be deleted. Therefore, only selected metadata is allowed to be stored on the blockchain.
+カタログ項目の特定のメタデータは、データの信頼性と完全性を確保するためにブロックチェーン上に保存（アンカリング）されます。オンチェーンの保存内容は不変であり、削除できません。そのため、ブロックチェーンに保存してよいのは限られたメタデータのみです。
 
-As an additional layer of protection, the data is also encrypted to ensure extra privacy and access control for data spaces.
+さらなる保護層として、データスペースにおけるプライバシーとアクセス制御を強化するために、データは暗号化もされます。
 
-## On-chain remote object
+## オンチェーンの remote オブジェクト
 
 :::danger
-Never store any data besides the remote data object defined below on-chain. Both on-chain and off-chain data MUST always be encrypted. 
+以下で定義する remote データオブジェクト以外のデータを、オンチェーンに保存してはいけません。オンチェーン・オフチェーンいずれのデータも、常に暗号化されなければ **なりません**。
 :::
 
 :::info
-Any other metadata MUST be stored off-chain using IPFS or other web storage solutions. This is important to comply with the GDPR and other data protection regulations (e.g., the GDPR right to erasure). 
+その他のメタデータは、IPFS などのウェブストレージを用いてオフチェーンに保存しなければ **なりません**。これは GDPR その他のデータ保護規制（たとえば GDPR の消去権）に準拠するうえで重要です。
 
-The `fileHash` ensures integrity of the off-chain data (OE Verifiable Presentation). It eliminates the need to store regulated data (e.g., personally identifiable information) on-chain.
+`fileHash` がオフチェーンデータ（OE 検証可能プレゼンテーション）の完全性を担保します。これにより、規制対象のデータ（個人を特定できる情報など）をオンチェーンに保存する必要がなくなります。
 :::
 
-Example remote objects before encryption:
+暗号化前の remote オブジェクトの例：
 
 ```ts
 export const remoteDDOTypeURL = {
@@ -41,18 +41,18 @@ export const remoteDDOTypeIPFS = {
 }
 ```
 
-| Attribute         | Type                      | Description                                          | Required                                       |
+| 属性 | 型 | 説明 | 必須 |
 | ----------------- | ------------------------- | ---------------------------------------------------- | ---------------------------------------------- |
-| `type`            | `sring` (`ipfs` , `url`)  | specifies the type of remote location                | :white_check_mark:                             |
-| `hash`            | `string`                  | CID of the IPFS resource       | :ballot_box_with_check: (For `ipfs` type only) |
-| `method`          | `string`(`GET`, `POST`)   | HTTP method                                         | :ballot_box_with_check: (For `url` type only)  |
-| `url`             | `string`                  | URL pointing to encrypted OE Verifiable Presentation | :ballot_box_with_check: (For `url` type only)  |
-| `fileHash`        | `string`                  | sha256 hash of the data object                       | :white_check_mark:                             |
-| `encryptedBy`     | `string`                  | ocean-node id (derived from private key)             | :white_check_mark:                             |
-| `encryptedMethod` | `string` (`ecies`, `aes`) | Encryption method used                               | :white_check_mark:                             |
+| `type`            | `string`（`ipfs`、`url`）  | リモート格納先の種別を指定します。 | :white_check_mark:                             |
+| `hash`            | `string`                  | IPFS リソースの CID。 | :ballot_box_with_check:（`ipfs` 型のみ） |
+| `method`          | `string`（`GET`、`POST`）   | HTTP メソッド。 | :ballot_box_with_check:（`url` 型のみ）  |
+| `url`             | `string`                  | 暗号化された OE 検証可能プレゼンテーションを指す URL。 | :ballot_box_with_check:（`url` 型のみ）  |
+| `fileHash`        | `string`                  | データオブジェクトの sha256 ハッシュ。 | :white_check_mark:                             |
+| `encryptedBy`     | `string`                  | ocean-node の ID（秘密鍵から導出）。 | :white_check_mark:                             |
+| `encryptedMethod` | `string`（`ecies`、`aes`） | 使用した暗号化方式。 | :white_check_mark:                             |
 
 
 
-## On-chain / off-chain data overview
+## オンチェーン／オフチェーンデータの全体像
 
 ![on-chain and offchain data diagram](/images/on-chain.webp 'on-chain and offchain data diagram')

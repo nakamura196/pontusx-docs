@@ -1,12 +1,12 @@
 # files
 
-Ocean does not handle the actual storage of files directly. The files are stored via other services which are then specified within the DDO.
+Ocean はファイルの実体の保管を直接は扱いません。ファイルは他のサービスに保管され、その所在が DDO 内で指定されます。
 
-During the publish process, file URLs must be encrypted with a respective _Provider_ API call before storing the DDO on-chain. For this, you need to send the following object to Provider (where "files" contains one or more storage objects):
+公開の過程では、DDO をオンチェーンに保存する前に、対応する _Provider_ の API 呼び出しでファイルの URL を暗号化しなければなりません。そのために、次のオブジェクトを Provider へ送信します（"files" には 1 つ以上のストレージオブジェクトが含まれます）。
 
-The files object is stored in the format of an encrypted string.
+files オブジェクトは、暗号化された文字列の形で保存されます。
 
-**Example:**
+**例：**
 
 ```json
 {
@@ -14,13 +14,13 @@ The files object is stored in the format of an encrypted string.
 }
 ```
 
-### Static URLs
+### 静的な URL
 
-Parameters:
+パラメータ：
 
-- `url` - File _URL_, **required**
-- `method` - The HTTP _method_, **required**
-- `headers` - Additional HTTP _headers_, **optional**
+- `url` — ファイルの _URL_（**必須**）
+- `method` — HTTP の _メソッド_（**必須**）
+- `headers` — 追加の HTTP _ヘッダー_（**任意**）
 
 ```json
 {
@@ -34,11 +34,11 @@ Parameters:
 }
 ```
 
-### Interplanetary File System
+### IPFS（Interplanetary File System）
 
-Parameters:
+パラメータ：
 
-- `hash` - The file _hash,_ **required**
+- `hash` — ファイルの _ハッシュ_（**必須**）
 
 ```json
 {
@@ -49,11 +49,11 @@ Parameters:
 
 ### GraphQL
 
-Parameters:
+パラメータ：
 
-- `url` - Server endpoint _URL_, **required**
-- `query` - The _query_ to be executed, **required**
-- `headers` - Additional HTTP headers, **optional**
+- `url` — サーバーのエンドポイント _URL_（**必須**）
+- `query` — 実行する _クエリ_（**必須**）
+- `headers` — 追加の HTTP ヘッダー（**任意**）
 
 ```json
 {
@@ -73,13 +73,13 @@ Parameters:
 }
 ```
 
-### Smart Contract Data
+### スマートコントラクト上のデータ
 
-Parameters:
+パラメータ：
 
-- `chainId` - The _chainId_ used to query the contract, **required**
-- `address` - The smartcontract _address_, **required**
-- `abi` - The function _abi_ (NOT the entire contract abi), **required**
+- `chainId` — コントラクトへの問い合わせに用いる _chainId_（**必須**）
+- `address` — スマートコントラクトの _アドレス_（**必須**）
+- `abi` — 対象関数の _abi_（コントラクト全体の abi ではありません）（**必須**）
 
 ```json
 {
@@ -98,9 +98,9 @@ Parameters:
 
 ### Arweave
 
-Parameters:
+パラメータ：
 
-- `transactionId` - The _transaction identifier,_ **required**
+- `transactionId` — _トランザクション識別子_（**必須**）
 
 ```json
 {

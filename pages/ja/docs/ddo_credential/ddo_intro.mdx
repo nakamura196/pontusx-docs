@@ -1,27 +1,27 @@
-# OE Service Credential (DDO)
+# OE サービスクレデンシャル（DDO）
 
-Asset metadata plays a critical role within the Ocean Enterprise ecosystem, enabling the cataloging and management of service offerings. Each asset can include multiple service offerings. The metadata is intended for publication to federated catalogues, ensuring that service offerings are easily discoverable across different data spaces and data ecosystems. To ensure confidentiality and integrity, the metadata is encrypted by default.
+アセットのメタデータは Ocean Enterprise エコシステムにおいて重要な役割を果たし、サービス提供物のカタログ化と管理を可能にします。1 つのアセットには複数のサービス提供物を含められます。メタデータはフェデレーテッドなカタログへ公開されることを想定しており、異なるデータスペースやデータエコシステムをまたいでサービス提供物を容易に発見できるようにします。機密性と完全性を確保するため、メタデータは既定で暗号化されます。
 
-Additionally, while the majority of the metadata is stored off-chain to optimize performance and scalability, a hash of this metadata is anchored on-chain. This approach combines the benefits of off-chain storage with the immutability and security of blockchain technology, ensuring both the scalability of data management and the verifiability of metadata integrity.
+また、性能とスケーラビリティを最適化するためにメタデータの大部分はオフチェーンに保存されますが、そのハッシュはオンチェーンに記録されます。この方式により、オフチェーン保存の利点と、ブロックチェーンがもたらす不変性・安全性を両立させ、データ管理のスケーラビリティとメタデータの完全性の検証可能性をともに確保します。
 
-## Version
+## バージョン
 
-The current version of the service credential standard is `0.1.0`.
-You can find out more in the [changelog](/ja/docs/ddo_credential/changelog).
+サービスクレデンシャル標準の現行バージョンは `0.1.0` です。
+詳しくは[変更履歴](/ja/docs/ddo_credential/changelog) を参照してください。
 
-## On-chain / off-chain distinction
+## オンチェーンとオフチェーンの区別
 
-Due to privacy and efficiency reasons, the asset metadata is split into two parts:
+プライバシーと効率の理由から、アセットのメタデータは 2 つの部分に分けられます。
 
-### on-chain
+### オンチェーン
 
-The on-chain part is stored on the blockchain and contains a `remote` object pointing to a W3C compliant verifiable presentation in `JWT` format.
-More about the on-chain metadata can be found [here](/ja/docs/ddo_credential/on_chain).
+オンチェーン部分はブロックチェーン上に保存され、`JWT` 形式の W3C 準拠検証可能プレゼンテーションを指す `remote` オブジェクトを含みます。
+オンチェーンのメタデータについて詳しくは[こちら](/ja/docs/ddo_credential/on_chain) を参照してください。
 
-### off-chain
+### オフチェーン
 
-The off-chain part is a W3C compliant verifiable presentation stored using `IPFS` or any other webservice. The off-chain part is encrypted and signed by the service provider.
-The verifiable presentation includes an `OceanEnterpriseServiceCredential` W3C compliant verifiable credential and potentially other ecosystem specific credentials.
-Verifiable credentials are encoded in VC-JWT (Json-LD) format.
+オフチェーン部分は、`IPFS` またはその他のウェブサービス上に保存される W3C 準拠の検証可能プレゼンテーションです。オフチェーン部分はサービス提供者によって暗号化・署名されます。
+この検証可能プレゼンテーションには、W3C 準拠の検証可能クレデンシャルである `OceanEnterpriseServiceCredential` と、場合によってはエコシステム固有のその他のクレデンシャルが含まれます。
+検証可能クレデンシャルは VC-JWT（JSON-LD）形式でエンコードされます。
 
-You can find the full specification of the `OceanEnterpriseServiceCredential` [here](/ja/docs/ddo_credential/ddo_schema).
+`OceanEnterpriseServiceCredential` の完全な仕様は[こちら](/ja/docs/ddo_credential/ddo_schema) にあります。

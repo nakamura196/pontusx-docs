@@ -1,16 +1,16 @@
-# Language and Base Direction (i18n)
+# 言語と基底方向 (i18n)
 
-Use W3C standard: https://w3c.github.io/vc-data-model/#language-and-base-direction
+W3C の標準に従います: https://w3c.github.io/vc-data-model/#language-and-base-direction
 
 https://www.w3.org/TR/string-meta/
 
-| Attribute    | Type     | Description                                                                                                                                                                                                                                                      | Required           |
+| 属性 | 型 | 説明 | 必須 |
 | ------------ | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
-| `@value`     | `string` | Text in one specific language                                                                                                                                                                                                                                    | :white_check_mark: |
-| `@language`  | `string` | `Language-Tag` as defined by [[BCP47](https://w3c.github.io/vc-data-model/#bib-bcp47)]                                                                                                                                                                           | :white_check_mark: |
-| `@direction` | `string` | _MAY_ contain a `@direction` property whose value is a [base direction](https://www.w3.org/TR/i18n-glossary/#dfn-base-direction) string defined by the `@direction` property in [[JSON-LD11](https://w3c.github.io/vc-data-model/#bib-json-ld11)] Example: `rtl` |                    |
+| `@value`     | `string` | 特定の 1 言語で書かれたテキスト。 | :white_check_mark: |
+| `@language`  | `string` | [[BCP47](https://w3c.github.io/vc-data-model/#bib-bcp47)] で定義される `Language-Tag`。 | :white_check_mark: |
+| `@direction` | `string` | [[JSON-LD11](https://w3c.github.io/vc-data-model/#bib-json-ld11)] の `@direction` プロパティで定義される[基底方向](https://www.w3.org/TR/i18n-glossary/#dfn-base-direction)の文字列を値とする `@direction` プロパティを含めても _よい_（MAY）。例：`rtl` |                    |
 
-Single translation:
+単一の訳：
 
 ```json
 "title": {
@@ -20,7 +20,7 @@ Single translation:
 }
 ```
 
-Multiple translations:
+複数の訳：
 
 ```json
 "title": [

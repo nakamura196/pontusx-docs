@@ -1,14 +1,14 @@
-# Container
+# コンテナ
 
-| Attribute    | Type     | Description                                                                                                                             | Required           |
+| 属性 | 型 | 説明 | 必須 |
 | ------------ | -------- | --------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
-| `image`      | `string` | The Docker image name the algorithm will run with.                                                                                      | :white_check_mark: |
-| `tag`        | `string` | The Docker image tag that you are going to use.                                                                                         | :white_check_mark: |
-| `entrypoint` | `string` | The Docker entrypoint. `$ALGO` is a macro that gets replaced inside the compute job, depending where your algorithm code is downloaded. | :white_check_mark: |
+| `image`      | `string` | アルゴリズムを実行する Docker イメージ名。 | :white_check_mark: |
+| `tag`        | `string` | 使用する Docker イメージのタグ。 | :white_check_mark: |
+| `entrypoint` | `string` | Docker のエントリーポイント。`$ALGO` はマクロで、アルゴリズムのコードがどこにダウンロードされるかに応じて、計算ジョブ内で置き換えられます。 | :white_check_mark: |
 
-**Example:**
+**例：**
 
-Run an algorithm written in JavaScript/Node.js, based on Node.js v18:
+Node.js v18 を基盤として、JavaScript／Node.js で書かれたアルゴリズムを実行する場合：
 
 ```json
 {

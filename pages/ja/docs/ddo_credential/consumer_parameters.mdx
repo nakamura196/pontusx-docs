@@ -1,20 +1,20 @@
 # consumerParameters
 
-The `consumerParameters` is an array of objects. Each object defines a field and has the following structure:
+`consumerParameters` はオブジェクトの配列です。各オブジェクトが 1 つのフィールドを定義し、次の構造を持ちます。
 
-| Attribute     | Type                             | Description                                                                | Required                                              |
+| 属性 | 型 | 説明 | 必須 |
 | ------------- | -------------------------------- | -------------------------------------------------------------------------- | ----------------------------------------------------- |
-| `name`        | `string`                         | The parameter name (this is sent as HTTP param or key towards algo)        | :white_check_mark:                                    |
-| `type`        | `string`                         | The field type (text, number, boolean, select)                             | :white_check_mark:                                    |
-| `label`       | `string`                         | The field label which is displayed                                         | :white_check_mark:                                    |
-| `required`    | `boolean`                        | If customer input for this field is mandatory.                             | :white_check_mark:                                    |
-| `description` | `string`                         | The field description.                                                     | :white_check_mark:                                    |
-| `default`     | `string`, `number`, or `boolean` | The field default value. For select types, `string` key of default option. | :white_check_mark:                                    |
-| `options`     | Array of `option`                | For select types, a list of options.                                       | :ballot_box_with_check: (required for `select` types) |
+| `name`        | `string`                         | パラメータ名（HTTP のパラメータ、またはアルゴリズムへ渡すキーとして送られます）。 | :white_check_mark:                                    |
+| `type`        | `string`                         | フィールドの型（text、number、boolean、select）。 | :white_check_mark:                                    |
+| `label`       | `string`                         | 表示されるフィールドのラベル。 | :white_check_mark:                                    |
+| `required`    | `boolean`                        | このフィールドへの利用者の入力が必須かどうか。 | :white_check_mark:                                    |
+| `description` | `string`                         | フィールドの説明。 | :white_check_mark:                                    |
+| `default`     | `string`、`number`、`boolean` のいずれか | フィールドの既定値。select 型の場合は、既定の選択肢を表す `string` のキー。 | :white_check_mark:                                    |
+| `options`     | `option` の配列                | select 型の場合の選択肢の一覧。 | :ballot_box_with_check:（`select` 型では必須） |
 
-Each `option` is an `object` containing a single key: value pair where the key is the option name, and the value is the option value.
+各 `option` は、キーが選択肢名、値が選択肢の値である単一のキーと値の組を持つ `object` です。
 
-**Example:**
+**例：**
 
 ```json
 [
