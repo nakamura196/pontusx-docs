@@ -1,84 +1,84 @@
-# Network Details
+# ネットワーク詳細
 
-This page contains all the necessary configuration details,contract addresses and middleware endpoints for connecting to the Pontus-X Testnet and Devnet.
+このページには、Pontus-X テストネットおよび開発ネットに接続するために必要な設定情報、コントラクトアドレス、ミドルウェアのエンドポイントをまとめています。
 
-## MetaMask Parameters
+## MetaMask 用のパラメータ
 
-Use these parameters to add the Pontus-X Testnet and Devnet to your MetaMask wallet.
+Pontus-X のテストネットおよび開発ネットを MetaMask ウォレットに追加する際は、以下のパラメータを使用してください。
 
-### Testnet
+### テストネット
 
-- Network name: Pontus-X Testnet
+- ネットワーク名: Pontus-X Testnet
 - RPC URL: https://rpc.test.pontus-x.eu/
-- Chain ID: 32457
-- Currency Symbol: EURAU (Fee)
-- Block Explorer URL: [https://explorer.pontus-x.eu/pontusx/test](https://explorer.pontus-x.eu/pontusx/test)
+- チェーン ID: 32457
+- 通貨シンボル: EURAU（手数料用）
+- ブロックエクスプローラー URL: [https://explorer.pontus-x.eu/pontusx/test](https://explorer.pontus-x.eu/pontusx/test)
 
-### Devnet
+### 開発ネット
 
-- Network name: Pontus-X Devnet
+- ネットワーク名: Pontus-X Devnet
 - RPC URL: https://rpc.dev.pontus-x.eu/
-- Chain ID: 32456
-- Currency Symbol: EURAU (Fee)
-- Block Explorer URL: [https://explorer.pontus-x.eu/pontusx/dev](https://explorer.pontus-x.eu/pontusx/dev)
+- チェーン ID: 32456
+- 通貨シンボル: EURAU（手数料用）
+- ブロックエクスプローラー URL: [https://explorer.pontus-x.eu/pontusx/dev](https://explorer.pontus-x.eu/pontusx/dev)
 
 :::info
-You can use the Pontus-X Devnet and Testnet without Metamask. See chapter [Wallet Setup](/ja/docs/getting-started/wallet-setup)
+MetaMask を使わずに Pontus-X の開発ネット・テストネットを利用することもできます。[ウォレットの設定](/ja/docs/getting-started/wallet-setup) の章を参照してください。
 :::
 
 :::info
-You can also operate your custom RPC node and Explorer and use it instead.
+独自の RPC ノードやエクスプローラーを運用し、それらを代わりに利用することもできます。
 :::
 
-## ERC20 Token Smart Contracts for Payments
+## 決済用 ERC20 トークンのスマートコントラクト
 
-The fee token will be automatically added to your wallet when adding the network. The payment tokens need to be manually imported to be visible as your wallet balance. For this use "import token" and use the below smart contract address.
+手数料用トークンは、ネットワークを追加した時点でウォレットに自動で追加されます。決済用トークンは、ウォレットの残高として表示するために手動でインポートする必要があります。「トークンをインポート」から、以下のスマートコントラクトアドレスを指定してください。
 
 :::info
-**Note** that [EURAU](https://allunity.com/) is also used as a network fee token and is not identical with the ERC-20 EURAU token. The formerly used [EUROe](https://www.euroe.com/) token is deprecated.
+**注意：** [EURAU](https://allunity.com/) はネットワーク手数料用トークンとしても使われますが、ERC-20 の EURAU トークンとは同一ではありません。かつて使われていた [EUROe](https://www.euroe.com/) トークンは非推奨です。
 :::
 
-### Testnet
+### テストネット
 
-| Token Name                          | Smart Contract Address                     | Comment       |
+| トークン名 | スマートコントラクトアドレス | 備考 |
 | ----------------------------------- | ------------------------------------------ | ------------- |
-| [EURAU](https://allunity.com/)      | 0xE158265FD2be5BCc208621f2c0f8AfCF11aC8408 | Payment Token |
-| [EUROe](https://www.euroe.com/)     | 0xdd0a0278f6BAF167999ccd8Aa6C11A9e2fA37F0a | Payment Token |
-| [Ocean](https://oceanprotocol.com/) | 0x5B190F9E2E721f8c811E4d584383E3d57b865C69 | Payment Token |
+| [EURAU](https://allunity.com/)      | 0xE158265FD2be5BCc208621f2c0f8AfCF11aC8408 | 決済用トークン |
+| [EUROe](https://www.euroe.com/)     | 0xdd0a0278f6BAF167999ccd8Aa6C11A9e2fA37F0a | 決済用トークン |
+| [Ocean](https://oceanprotocol.com/) | 0x5B190F9E2E721f8c811E4d584383E3d57b865C69 | 決済用トークン |
 
-### Devnet
+### 開発ネット
 
-| Token Name                          | Smart Contract Address                     | Comment       |
+| トークン名 | スマートコントラクトアドレス | 備考 |
 | ----------------------------------- | ------------------------------------------ | ------------- |
-| [EURAU](https://allunity.com/)      | 0x852381bB887d3Cf4AEB9e1E9De3eB033AF82fBeE | Payment Token |
-| [EUROe](https://www.euroe.com/)     | 0x8A4826071983655805bF4f29828577Cd6b1aC0cB | Payment Token |
-| [Ocean](https://oceanprotocol.com/) | 0xdF171F74a8d3f4e2A789A566Dce9Fa4945196112 | Payment Token |
+| [EURAU](https://allunity.com/)      | 0x852381bB887d3Cf4AEB9e1E9De3eB033AF82fBeE | 決済用トークン |
+| [EUROe](https://www.euroe.com/)     | 0x8A4826071983655805bF4f29828577Cd6b1aC0cB | 決済用トークン |
+| [Ocean](https://oceanprotocol.com/) | 0xdF171F74a8d3f4e2A789A566Dce9Fa4945196112 | 決済用トークン |
 
-## Query from Nodes and Validators
+## ノード・バリデータへの問い合わせ
 
-Use these curl commands to directly query the public RPC nodes to verify their status or retrieve block data.
+以下の curl コマンドで公開 RPC ノードに直接問い合わせ、状態の確認やブロックデータの取得ができます。
 
-### Get latest block
+### 最新ブロックを取得する
 
 ```bash
 curl -X POST -H "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["latest", false],"id":1}' https://rpc.test.pontus-x.eu/
 ```
 
-### Get syncing status
+### 同期状況を取得する
 
 ```bash
 curl -X POST -H "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_syncing","params":[],"id":1}' https://rpc.test.pontus-x.eu/
 ```
 
-# Pontus-X Infrastructure
+# Pontus-X のインフラ
 
-This section provides the addresses for all core Pontus-X infrastructure components, including deployed Ocean Protocol contracts and middleware service endpoints.
+このセクションでは、デプロイ済みの Ocean Protocol コントラクトやミドルウェアサービスのエンドポイントを含め、Pontus-X の中核インフラコンポーネントのアドレスをまとめています。
 
-## Ocean Protocol Contracts
+## Ocean Protocol のコントラクト
 
-Here are the deployed addresses of the core Ocean Protocol smart contracts on each network.
+各ネットワークにデプロイされた、Ocean Protocol の中核スマートコントラクトのアドレスは次のとおりです。
 
-### Testnet
+### テストネット
 
 ```json
 {
@@ -96,7 +96,7 @@ Here are the deployed addresses of the core Ocean Protocol smart contracts on ea
 }
 ```
 
-### Devnet
+### 開発ネット
 
 ```json
 {
@@ -114,11 +114,11 @@ Here are the deployed addresses of the core Ocean Protocol smart contracts on ea
 }
 ```
 
-## Portal Config File
+## ポータルの設定ファイル
 
-This is the `chains.config.js` object used by the Pontus-X Portal front-end to connect to the Pontus-X infrastructure.
+以下は、Pontus-X ポータルのフロントエンドが Pontus-X のインフラに接続するために用いる `chains.config.js` のオブジェクトです。
 
-### Testnet
+### テストネット
 
 ```javascript
 chainId: 32457,
@@ -144,9 +144,9 @@ opfCommunityFeeCollector: '0xACC8d1B2a0007951fb4ed622ACB1C4fcCAbe778D',
 providerAddress: '0x9546d39CE3E48BC942f0be4AA9652cBe0Aff3592'
 ```
 
-Source: https://github.com/deltaDAO/mvg-portal/blob/development/chains.config.js
+出典: https://github.com/deltaDAO/mvg-portal/blob/development/chains.config.js
 
-### Devnet
+### 開発ネット
 
 ```javascript
 chainId: 32456,
@@ -172,23 +172,23 @@ opfCommunityFeeCollector: '0x1f84fB438292269219f9396D57431eA9257C23d4',
 providerAddress: '0x68C24FA5b2319C81b34f248d1f928601D2E5246B'
 ```
 
-Source: https://github.com/deltaDAO/mvg-portal/blob/development/chains.config.js
+出典: https://github.com/deltaDAO/mvg-portal/blob/development/chains.config.js
 
-## Middleware Components
+## ミドルウェアコンポーネント
 
-These are the public API endpoints for the core middleware services (Provider, Aquarius, and Subgraph) that power the ecosystem.
+以下は、エコシステムを支える中核ミドルウェアサービス（Provider、Aquarius、サブグラフ）の公開 API エンドポイントです。
 
 :::info
-You also have the option to run your custom middleware components. These publicly available components are available for quick onboarding and less resource-intensive testing.
+独自のミドルウェアコンポーネントを運用することもできます。ここで公開しているコンポーネントは、素早く始めたい場合や、負荷の軽いテストに利用できます。
 :::
 
-### Testnet
+### テストネット
 
 - Provider: [https://provider.test.pontus-x.eu](https://provider.test.pontus-x.eu)
 - Aquarius: [https://aquarius.pontus-x.eu](https://aquarius.test.pontus-x.eu)
 - Subgraph: [https://subgraph.test.pontus-x.eu](https://subgraph.test.pontus-x.eu)
 
-### Devnet
+### 開発ネット
 
 - Provider: [https://provider.dev.pontus-x.eu/](https://provider.dev.pontus-x.eu/)
 - Aquarius: [https://aquarius.pontus-x.eu/](https://aquarius.pontus-x.eu/)

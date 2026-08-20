@@ -2,30 +2,35 @@ import ParticipantsList from '../../../docs/_components/ParticipantsList'
 import ExternalLinkIcon from '../../../docs/_components/icons/ExternalLink'
 import { Callout } from 'vocs/components'
 
-# Pontus-X Ecosystem Participant Registry
+# Pontus-X エコシステム参加者レジストリ
 
-The Registry of all [Pontus-X ecosystem](https://www.pontus-x.eu/) participants keeps track of the onboarded and identified legal persons that are able to use the [Pontus-X ecosystem](https://www.pontus-x.eu/). It summarizes and makes available the participants' information provided in the form of [Gaia-X Participant Credentials](https://docs.gaia-x.eu/ontology/development/classes/LegalPerson/) that have been either collected by the Pontus-X ecosystem orchestrators or made available by the participants.
+[Pontus-X エコシステム](https://www.pontus-x.eu/) の全参加者レジストリは、エコシステムを利用できるオンボーディング済み・本人確認済みの法人を記録するものです。Pontus-X エコシステムのオーケストレーターが収集した、あるいは参加者自身が公開した [Gaia-X Participant Credentials](https://docs.gaia-x.eu/ontology/development/classes/LegalPerson/) の形で提供された参加者情報を集約し、参照できるようにしています。
 
-Within the [Pontus-X ecosystem](https://www.pontus-x.eu/), participants are primarily identified through their public addresses and the associated [Gaia-X Participant Credentials](https://docs.gaia-x.eu/ontology/development/classes/LegalPerson/). Besides this Pontus-X Registry, this information is also used on the application layer of the ecosystem in
+[Pontus-X エコシステム](https://www.pontus-x.eu/) では、参加者は主にその公開アドレスと、それに紐づく [Gaia-X Participant Credentials](https://docs.gaia-x.eu/ontology/development/classes/LegalPerson/) によって識別されます。この Pontus-X レジストリのほか、これらの情報はエコシステムのアプリケーション層でも次のように利用されます。
 
-- [Pontus-X Portals](https://portal.pontus-x.eu/)
-- [Pontus-X Logging Service](https://explorer.pontus-x.eu/pontusx/test)
-- [Pontus-X Faucet](https://portal.pontus-x.eu/faucet)
-- Applications connected to the data space ecosystem
-- Pontus-X Governance Tools (Voting)
+- [Pontus-X ポータル](https://portal.pontus-x.eu/)
+- [Pontus-X ロギングサービス](https://explorer.pontus-x.eu/pontusx/test)
+- [Pontus-X フォーセット](https://portal.pontus-x.eu/faucet)
+- データスペースエコシステムに接続されたアプリケーション
+- Pontus-X のガバナンスツール（投票）
 
-If you notice an identity or credential being outdated or an address missing here, please let us know via contact@delta-dao.com or use the [Onboarding Application to join the ecosystem](https://onboarding.delta-dao.com/).
+アイデンティティやクレデンシャルが古い、あるいはアドレスがここに載っていないことに気づいた場合は、contact@delta-dao.com までご連絡いただくか、[エコシステム参加用のオンボーディング申請](https://onboarding.delta-dao.com/) をご利用ください。
 
-## Ecosystem Participants
+## エコシステム参加者
 
-The **Pontus-X Ecosystem Registry** data is based on the dynamically updated and distributed source of truth loaded from the underlying smart contracts via a cached REST API. This results in an open identity registry system, based on the Gaia-X Framework with multiple onboarding service providers and orchestrators, removing a central point of failure and control.
+**Pontus-X エコシステムレジストリ** のデータは、キャッシュ付き REST API を通じて基盤のスマートコントラクトから読み込まれる、動的に更新・分散された信頼の源に基づいています。その結果、複数のオンボーディングサービス事業者とオーケストレーターを備えた、Gaia-X フレームワークに基づくオープンなアイデンティティレジストリが実現し、単一の障害点・支配点が排除されています。
+
+:::info
+以下の一覧は、原典（英語版）の参加者リストコンポーネントをそのまま利用しています。表示ラベルは英語のままです。
+:::
+
 <ParticipantsList />
 
 
-## Registry 1.0 (Deprecated)
+## レジストリ 1.0（非推奨）
 
-The initial Pontus-X ecosystem registry 1.0 relied on static data which was manually maintained by community members and within the codebase of ecosystem services. This version of the registry has been deprecated in favor of an automated, decentralized and scalable approach.
+初期の Pontus-X エコシステムレジストリ 1.0 は、コミュニティメンバーとエコシステムサービスのコードベース内で手作業により保守される静的データに依存していました。このバージョンは、自動化され分散的でスケーラブルな方式に置き換えられ、非推奨となっています。
 
 <Callout type="info">
-  The outdated v1.0 participant overview has been removed from the docs. The old state can be viewed here: <a href="https://raw.githubusercontent.com/deltaDAO/mvg-portal/refs/heads/main/pontusxAddresses.json" target="_blank" rel="noopener noreferrer" className="vocs_Anchor inline-flex items-center gap-1">pontusxAddresses.json <ExternalLinkIcon /></a>
+  古い v1.0 の参加者一覧はドキュメントから削除されました。当時の状態は次で参照できます: <a href="https://raw.githubusercontent.com/deltaDAO/mvg-portal/refs/heads/main/pontusxAddresses.json" target="_blank" rel="noopener noreferrer" className="vocs_Anchor inline-flex items-center gap-1">pontusxAddresses.json <ExternalLinkIcon /></a>
 </Callout>

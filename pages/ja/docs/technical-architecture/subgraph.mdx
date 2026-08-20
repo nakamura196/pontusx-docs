@@ -1,18 +1,18 @@
-# Subgraph - Transaction Cache
+# サブグラフ — トランザクションキャッシュ
 
-The subgraph isis built on top of [The Graph](https://thegraph.com/) and responsible for the extraction of service pricing and purchase history data from the blockchain, subsequent processing of this data, and its storage in a format that allows for straightforward querying via GraphQL.
+サブグラフは [The Graph](https://thegraph.com/) の上に構築されており、ブロックチェーンからサービスの価格情報と購入履歴を抽出し、それらを加工したうえで、GraphQL から素直に問い合わせられる形式で保存する役割を担います。
 
 :::info
-The Subgraph retrieves data related to access tokens and transactions directly from the blockchain. However, it lacks the capability to decrypt or serve metadata associated with service offerings. This functionality is provided by two distinct components: the metadata cache, known as "Aquarius," which is responsible for serving the metadata, and the Access Controller, referred to as "Provider," which handles the decryption of the metadata.
+サブグラフは、アクセストークンとトランザクションに関するデータをブロックチェーンから直接取得します。ただし、サービス提供物に紐づくメタデータを復号したり配信したりする機能は持ちません。この役割は 2 つの別コンポーネントが担います。メタデータの配信を担うメタデータキャッシュ「Aquarius」と、メタデータの復号を担うアクセスコントローラー「Provider」です。
 :::
 
 :::warning
-When making subgraph queries, ensure that parameters like token addresses are in lowercase. This is crucial for accurate query processing.
+サブグラフへのクエリでは、トークンアドレスなどのパラメータを小文字で指定してください。これはクエリを正しく処理するために不可欠です。
 :::
 
 
-## Further documentation and repositories
+## 関連ドキュメントとリポジトリ
 
-Ocean Protocol Docs: https://docs.oceanprotocol.com/developers/subgraph
+Ocean Protocol ドキュメント: https://docs.oceanprotocol.com/developers/subgraph
 
-Subgraph Repository: https://github.com/OceanProtocolEnterprise/ocean-subgraph
+サブグラフのリポジトリ: https://github.com/OceanProtocolEnterprise/ocean-subgraph

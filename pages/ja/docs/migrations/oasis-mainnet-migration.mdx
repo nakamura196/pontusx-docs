@@ -1,16 +1,16 @@
-## Oasis Sapphire Mainnet Migration Guide
+## Oasis Sapphire メインネット移行ガイド
 
-This guide will help you migrate from testnet to Oasis Sapphire Mainnet, covering configuration updates, asset publishing, funding your account, PTX tokens, and troubleshooting.
+本ガイドは、テストネットから Oasis Sapphire メインネットへ移行するための手順をまとめたものです。設定の更新、アセットの公開、アカウントへの入金、PTX トークン、トラブルシューティングを扱います。
 
-Whether you’re a developer or a business user, this guide ensures a smooth and secure transition, even if you’re not familiar with Web3 technologies.
+開発者の方にも業務担当者の方にも、Web3 技術に詳しくない場合でも円滑かつ安全に移行できるよう構成しています。
 
-## 1. Updating to Mainnet Configuration
+## 1. メインネット設定への更新
 
-To interact with Oasis Sapphire Mainnet, update your settings to match the following mainnet configuration.
+Oasis Sapphire メインネットとやり取りするには、以下のメインネット設定に合わせて構成を更新してください。
 
-### Mainnet Configuration
+### メインネットの設定
 
-Make sure to update your application or service configuration with these settings:
+アプリケーションやサービスの設定を、次の値で更新してください。
 ```
 "oasis_sapphire": {
     "chainId": 23294,
@@ -34,95 +34,95 @@ Make sure to update your application or service configuration with these setting
 }
 ```
 
-### Mainnet Backend Services
+### メインネットのバックエンドサービス
 
-Service	URL
-- Subgraph Mainnet	https://subgraph.main.pontus-x.eu
-- Provider	https://provider.main.pontus-x.eu
-- Aquarius	https://aquarius.main.pontus-x.eu
-- Contracting Provider https://contracting.main.delta-dao.com
-- Oasis RPC Node	https://1rpc.io/oasis/sapphire (or contact us for a dedicated RPC node)
+サービス／URL
+- サブグラフ（メインネット）　https://subgraph.main.pontus-x.eu
+- Provider　https://provider.main.pontus-x.eu
+- Aquarius　https://aquarius.main.pontus-x.eu
+- Contracting Provider　https://contracting.main.delta-dao.com
+- Oasis RPC ノード　https://1rpc.io/oasis/sapphire （専用 RPC ノードが必要な場合はお問い合わせください）
 
-### Provider & Aquarius Addresses
+### Provider と Aquarius のアドレス
 
-**Service	Address**
-- Aquarius	*0x560920844190C4c703536D550f5322D41bE45124*
-- Provider	*0x566c1Bd445392Fd3bCd7D7D8D63dd0d8f3B14571*
+**サービス／アドレス**
+- Aquarius　*0x560920844190C4c703536D550f5322D41bE45124*
+- Provider　*0x566c1Bd445392Fd3bCd7D7D8D63dd0d8f3B14571*
 
-## 2. Funding Your Address for Mainnet Transactions
+## 2. メインネット取引のためのアドレスへの入金
 
-Before publishing assets, you need to fund your institutional wallet with OASIS ROSE tokens.
+アセットを公開する前に、組織のウォレットに OASIS ROSE トークンを入金する必要があります。
 
-Steps to Transfer Tokens
-	1.	Log in to your assigned account.
-	2.	Transfer OASIS ROSE tokens to your own controlled address.
-	3.	Use your institutional address for all publishing and transaction activities.
+トークン移転の手順
+	1.	割り当てられたアカウントにログインします。
+	2.	OASIS ROSE トークンを、自分が管理するアドレスへ移します。
+	3.	公開や取引の操作には、すべて組織のアドレスを使用します。
 
-**Security Note**: Shared accounts are considered compromised. Always transfer funds to a institutional account first before using it.
+**セキュリティ上の注意**：共有アカウントは侵害されているものとみなしてください。利用前に必ず、組織のアカウントへ資金を移してください。
 
-## 3. PTX Tokens – Usage & Acquisition
+## 3. PTX トークン — 用途と入手方法
 
-### What Are PTX Tokens?
-- PTX tokens are used to log the price of assets in the ecosystem during the MVP.
-- They serve as the logging token for exchanges and later invoicing.
-- Logging Tokens will be replaced by e-money as soon as available.
+### PTX トークンとは
+- PTX トークンは、MVP 期間中にエコシステム内でアセットの価格を記録するために使われます。
+- 交換の記録用トークンとして機能し、のちの請求処理にも用いられます。
+- 記録用トークンは、電子マネーが利用可能になり次第、置き換えられる予定です。
 
-### How to Get PTX Tokens
-- Send your new wallet address to deltaDAO to receive PTX.
-- (PTX will later be replaced by a stablecoin to ensure long-term pricing stability.)
+### PTX トークンの入手方法
+- 新しいウォレットアドレスを deltaDAO に送ると、PTX を受け取れます。
+- （長期的な価格の安定性を確保するため、PTX はのちにステーブルコインへ置き換えられる予定です。）
 
-### How PTX is Used
-- For Nautilus Users: PTX must be manually set as the price token in asset configurations.
-- For MVP Portal Users: PTX is automatically handled by the portal when publishing assets.
+### PTX の使われ方
+- Nautilus 利用者の場合：アセット設定で PTX を価格トークンとして手動で指定する必要があります。
+- MVP ポータル利用者の場合：アセット公開時に、ポータルが PTX を自動的に扱います。
 
-## 4. Publishing Your Assets on Mainnet
+## 4. メインネットへのアセット公開
 
-There are two ways to publish assets on mainnet:
+メインネットにアセットを公開する方法は 2 つあります。
 
-### Method 1: Nautilus (For Developers)
-- Recommended for developers who prefer programmatic asset management.
-- Supports custom configurations, automation, and integration with existing systems.
+### 方法 1：Nautilus（開発者向け）
+- プログラムによるアセット管理を好む開発者に推奨されます。
+- カスタム設定、自動化、既存システムとの統合に対応します。
 
-**Resources**
-- [Nautilus GitHub Examples](https://github.com/deltaDAO/nautilus-examples)
-- [Mainnet Configuration File](https://github.com/deltaDAO/nautilus-examples/blob/main/config.ts)
-- [Nautilus Setup Guide and Docs](https://nautilus.delta-dao.com/docs/getting-started)
+**参考資料**
+- [Nautilus の GitHub サンプル](https://github.com/deltaDAO/nautilus-examples)
+- [メインネット用の設定ファイル](https://github.com/deltaDAO/nautilus-examples/blob/main/config.ts)
+- [Nautilus のセットアップガイドとドキュメント](https://nautilus.delta-dao.com/docs/getting-started)
 
-### Method 2: MVP Portal (For Non-Developers)
-- A user-friendly web-based solution for publishing and managing assets.
-- Recommended for businesses and users who prefer a no-code approach.
+### 方法 2：MVP ポータル（非開発者向け）
+- アセットの公開と管理を行える、使いやすい Web ベースの手段です。
+- ノーコードで進めたい企業・利用者に推奨されます。
 
-**Resources**:
-- [MVP Portal](https://portal.main.pontus-x.eu/)
-- [MVP Portal GitHub](https://github.com/deltaDAO/mvp-portal)
+**参考資料**：
+- [MVP ポータル](https://portal.main.pontus-x.eu/)
+- [MVP ポータルの GitHub](https://github.com/deltaDAO/mvp-portal)
 
-## 5. Verification & Troubleshooting
+## 5. 確認とトラブルシューティング
 
-### Final Verification Steps
+### 最終確認の手順
 
-After publishing an asset, confirm the following:
-- The asset appears correctly in Nautilus or the MVP Portal.
-- The asset can be accessed and consumed by other users without errors.
+アセットを公開したら、次を確認してください。
+- Nautilus または MVP ポータル上で、アセットが正しく表示されていること。
+- 他の利用者がエラーなくアセットにアクセスし、利用できること。
 
-### Common Issues & Solutions
+### よくある問題と対処
 
-- Asset not appearing:	Check if the correct chain ID and configuration were used.
-- Transaction failed: 	Ensure enough OASIS ROSE tokens are available for gas fees.
-- Asset not consumable:	Verify PTX token balance and contract settings.
+- アセットが表示されない：正しいチェーン ID と設定が使われているか確認してください。
+- トランザクションが失敗する：ガス代に足りるだけの OASIS ROSE トークンがあるか確認してください。
+- アセットを利用できない：PTX トークンの残高とコントラクトの設定を確認してください。
 
-Need Help?
-- Join the support community to ask questions and get assistance.
-- Contact enterprise support for priority technical help.
+困ったときは
+- サポートコミュニティに参加して質問し、助言を得られます。
+- 優先的な技術支援が必要な場合は、エンタープライズサポートにお問い合わせください。
 
-## 6. To-Do List: Your Next Steps
+## 6. やることリスト：次のステップ
 
-- [ ] Fund your institutional wallet with OASIS ROSE Tokens.
-- [ ] Update your Nautilus or MVP Portal config with the latest mainnet settings.
-- [ ] Publish an asset using either Nautilus or the MVP Portal.
-- [ ] Request PTX tokens from deltaDAO.
-- [ ] Verify that your asset is accessible and functional.
-- [ ] Reach out for support if you encounter issues.
+- [ ] 組織のウォレットに OASIS ROSE トークンを入金する。
+- [ ] Nautilus または MVP ポータルの設定を、最新のメインネット設定に更新する。
+- [ ] Nautilus か MVP ポータルのいずれかでアセットを公開する。
+- [ ] deltaDAO に PTX トークンを申請する。
+- [ ] 公開したアセットにアクセスでき、正しく機能することを確認する。
+- [ ] 問題が起きた場合はサポートに連絡する。
 
-By completing this guide, you are now fully set up to publish and manage assets on Oasis Sapphire Mainnet.
+ここまで完了すれば、Oasis Sapphire メインネット上でアセットを公開・管理する準備は整っています。
 
-If you run into issues, consult the documentation, reach out to the support team, or connect with other users in the community.
+問題が生じた場合は、ドキュメントを参照するか、サポートチームに連絡するか、コミュニティの他の利用者に相談してください。

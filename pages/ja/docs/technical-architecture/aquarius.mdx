@@ -1,29 +1,29 @@
-# Service Catalogue - Metadata Cache (Aquarius)
+# サービスカタログ — メタデータキャッシュ (Aquarius)
 
-Aquarius is a service designed to streamline the management and caching of metadata from multiple blockchain networks. Operating off-chain with an Elasticsearch database, Aquarius simplifies the process of querying metadata generated on-chain by maintaining an up-to-date record of metadata activities across multiple chains.
+Aquarius は、複数のブロックチェーンネットワークから得られるメタデータの管理とキャッシュを効率化するためのサービスです。Elasticsearch データベースを用いてオフチェーンで動作し、複数チェーンにまたがるメタデータの活動を最新の状態で保持することで、オンチェーンで生成されたメタデータへの問い合わせを簡潔にします。
 
-## Functionalities
+## 機能
 
-### Caching of Service Catalogue entries
+### サービスカタログ項目のキャッシュ
 
-Aquarius continuously monitors for `MetadataCreated` and `MetadataUpdated` smart contract events on the blockchain. It processes new or updated metadata of catalogue entries and updates its off-chain database to ensure it is always current with the latest information.
+Aquarius は、ブロックチェーン上のスマートコントラクトイベント `MetadataCreated` と `MetadataUpdated` を継続的に監視します。新規または更新されたカタログ項目のメタデータを処理し、自身のオフチェーンデータベースを更新して、常に最新の情報を保つようにします。
 
-Since the metadata is encrypted, the provider calls the Access Controller to decrypt the metadata.
+メタデータは暗号化されているため、Provider がアクセスコントローラーを呼び出して復号を行います。
 
-### Metadata Query API
+### メタデータ問い合わせ API
 
-The Aquarius API provides a straightforward way to query metadata from the service catalogue leverging elastic search queries. This eliminates the need for users to directly interact with the blockchain and enables efficient catalogue queries, e.g. when using the portals.
+Aquarius の API は、Elasticsearch のクエリを活用して、サービスカタログのメタデータを簡潔に問い合わせる手段を提供します。これにより利用者がブロックチェーンを直接操作する必要がなくなり、ポータル利用時などにカタログを効率よく検索できます。
 
-#### API docs
+#### API ドキュメント
 
-- Asset requests: https://docs.oceanprotocol.com/developers/aquarius/asset-requests
-- Chain requests: https://docs.oceanprotocol.com/developers/aquarius/chain-requests
-- Other: https://docs.oceanprotocol.com/developers/aquarius/other-requests
+- アセット関連のリクエスト: https://docs.oceanprotocol.com/developers/aquarius/asset-requests
+- チェーン関連のリクエスト: https://docs.oceanprotocol.com/developers/aquarius/chain-requests
+- その他: https://docs.oceanprotocol.com/developers/aquarius/other-requests
 
 
 
-## What technology does Aquarius use?
+## Aquarius が使っている技術
 
-- **Python:** Primary programming language for Aquarius.
-- **Flask:** Python framework for building the Aquarius API.
-- **Elasticsearch:** Engine for efficient data indexing and retrieval.
+- **Python：** Aquarius の主要なプログラミング言語。
+- **Flask：** Aquarius の API を構築するための Python フレームワーク。
+- **Elasticsearch：** 効率的なデータのインデックス化と検索を担うエンジン。
