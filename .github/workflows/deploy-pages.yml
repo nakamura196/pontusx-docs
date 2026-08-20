@@ -1,0 +1,53 @@
+# Builds the docs (English + Japanese translation) and publishes them to
+# GitHub Pages at https://<owner>.github.io/pontusx-docs/.
+#
+# This workflow lives in a fork; the upstream project deploys docs.pontus-x.eu
+# by its own means and is unaffected.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ja]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      # vocs build resolves every asset and link against BASE_PATH, so it must
+      # match the repository name for a GitHub Pages project site.
+      - run: npm run build
+        env:
+          BASE_PATH: /${{ github.event.repository.name }}
+      # GitHub Pages serves 404.html for unknown paths; vocs emits one already,
+      # but .nojekyll is still required so that _-prefixed assets are served.
+      - run: touch dist/.nojekyll
+      - uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
+      - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4

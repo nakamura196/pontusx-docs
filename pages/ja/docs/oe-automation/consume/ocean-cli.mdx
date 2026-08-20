@@ -1,0 +1,169 @@
+---
+title: Consume a Dataset with the Ocean CLI (v2)
+---
+
+# Consume a Dataset with the Ocean CLI (Ocean Enterprise v2)
+
+This guide achieves the **same result** as
+[Consume a Dataset with ocean.js](/ja/docs/oe-automation/consume/ocean-js) —
+ordering and downloading a DDO v5 dataset — but using the ready-made
+[Ocean CLI](https://github.com/oceanprotocol/ocean-cli) instead of writing code.
+It targets Ocean Enterprise assets identified by a `did:ope` DID.
+
+:::info
+Use this **no-code path** when you just want the file, or to sanity-check a DID
+before integrating the library into your own app. For the concepts behind the
+flow, see the [Consume overview](/ja/docs/oe-automation/consume/overview).
+:::
+
+## Prerequisites (required)
+
+- **Node.js** (Node 24 recommended, matching the ocean.js example repo).
+- **Git**.
+- A funded account (`PRIVATE_KEY`), an **RPC** endpoint, and an **Ocean Node** URL.
+- Network access to the target chain's **RPC** and to an **Ocean Node**.
+  - For the **RPC**, you can use a [public RPC](https://chainlist.org/chain/11155420) or contact deltaDAO for RPC access.
+  - For the **Ocean Node**, you can run your own or use one provided by a service provider like deltaDAO.
+- The **`did:ope`** of a published v5 dataset.
+
+:::info
+Find a `did:ope` in the Pontus-X Catalogue, and make sure your `RPC` and
+`NODE_URL` point at the **same network** the asset was published on
+([Pontus-X Networks](/ja/docs/pontus-x-networks/quick-start)).
+:::
+
+## Step 1 — Install the CLI (required)
+
+```bash
+git clone https://github.com/oceanprotocol/ocean-cli.git
+cd ocean-cli
+npm install
+npm run build
+```
+
+## Step 2 — Configure the environment (required)
+
+The CLI is driven entirely by environment variables:
+
+```bash
+# Account: use either PRIVATE_KEY or MNEMONIC
+export PRIVATE_KEY="0x..."
+
+# JSON-RPC endpoint for the asset's chain
+export RPC="https://your-rpc-endpoint"
+
+# Ocean Node (metadata cache + provider)
+export NODE_URL="https://your-ocean-node"
+```
+
+:::warning
+Use a private key intended **only for development** and keep it secure. Never
+commit or share your key.
+:::
+
+:::info
+`MNEMONIC` is an **optional** alternative to `PRIVATE_KEY` — set one or the other.
+:::
+
+### Step 2a — Get your `PRIVATE_KEY` from a wallet file (optional)
+
+If you onboarded through the
+[wallet file setup](/ja/docs/getting-started/wallet-setup), you hold an
+**encrypted JSON keystore** (v3) rather than a raw private key. It looks like
+this:
+
+```json
+{"address":"cb638bc3e4ea03072f6e0ebf43a8f514c63f0eea","id":"71fe0cd9-77cc-4539-a0d4-f5ee68a0754d","version":3,"Crypto":{ ... },"x-ethers":{ ... }}
+```
+
+Decrypt it once to obtain the `0x…` private key that the CLI expects. `ethers`
+is bundled with the CLI's dependencies, so you can run a short script from the
+`ocean-cli` folder:
+
+```js
+// extract-key.mjs
+import { readFileSync } from "node:fs";
+import { Wallet } from "ethers";
+
+const json = readFileSync(process.argv[2], "utf8");
+const password = process.env.WALLET_PASSWORD;
+
+const wallet = await Wallet.fromEncryptedJson(json, password);
+console.log(wallet.privateKey); // 0x...
+```
+
+```bash
+WALLET_PASSWORD="your-wallet-password" node extract-key.mjs ./wallet.json
+```
+
+Export the printed `0x…` value as `PRIVATE_KEY`.
+
+:::warning
+Decrypt the wallet file only on a trusted machine. Never commit the wallet file,
+its password, or the extracted private key.
+:::
+
+### Step 2b — SSI wallet variables (optional)
+
+For **credential-gated (SSI) v5 assets**, also set the SSI wallet variables so
+the CLI can complete the policy-server presentation flow (see
+[dual-wallet setup for v2](/ja/docs/getting-started/wallet-setup)):
+
+```bash
+export SSI_WALLET_API="https://your-ssi-wallet/api"
+export SSI_WALLET_ID="your-wallet-id"
+export SSI_WALLET_DID="did:example:your-did"   # optional; defaults to first wallet DID
+```
+
+:::info
+If the asset is **not** credential-gated, the SSI variables can be omitted.
+:::
+
+## Step 3 — Download the dataset (required)
+
+Positional form:
+
+```bash
+npm run cli download <did> [folder] [serviceId]
+```
+
+Flag form:
+
+```bash
+npm run cli download --did <did> --folder ./downloads --service <serviceId>
+```
+
+- `<did>` — **required**, e.g. `did:ope:abc123...`
+- `[folder]` — *optional*; output directory (defaults to the current directory).
+- `[serviceId]` — *optional*; defaults to the first download service on the asset.
+
+Example:
+
+```bash
+npm run cli download did:ope:1234abcd... ./downloads
+```
+
+On success the CLI prints `File downloaded successfully: ./downloads/<filename>`.
+
+## What the CLI does under the hood
+
+It runs the very same steps as the [library guide](/ja/docs/oe-automation/consume/ocean-js):
+
+1. Resolves the DDO from the Ocean Node (`aquarius.waitForIndexer`).
+2. Detects the DDO version; for `>= 5.0.0` it builds a **policy-server object**
+   via the SSI presentation flow (`getPolicyServerOBJ`).
+3. Orders the datatoken for the target service (`orderAsset`).
+4. Requests a signed download URL (`ProviderInstance.getDownloadUrl`).
+5. Writes the file to the output folder.
+
+:::info
+The difference from the library guide is that the CLI **fully implements** the
+SSI credential presentation, whereas the ocean.js example ships a non-blocking
+stub you can extend.
+:::
+
+## Related
+
+- [Consume a Dataset with ocean.js](/ja/docs/oe-automation/consume/ocean-js) — the code-level equivalent.
+- [Consume overview](/ja/docs/oe-automation/consume/overview) — concepts and prerequisites.
+- [Wallet Setup (v1 & v2)](/ja/docs/getting-started/wallet-setup) — agent wallet + SSI wallet.

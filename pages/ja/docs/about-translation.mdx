@@ -1,0 +1,42 @@
+# この日本語版について
+
+このページ以下の日本語ドキュメントは、[Pontus-X 公式ドキュメント](https://docs.pontus-x.eu/)（deltaDAO AG ほか）の**非公式な日本語訳**です。
+
+:::warning
+公式版はあくまで英語版です。訳文と原文に食い違いがある場合、また技術的な判断を行う場合は、**英語版を正としてください**。
+:::
+
+## 出典と翻訳の範囲
+
+| 項目 | 内容 |
+| --- | --- |
+| 原典 | [deltaDAO/pontusx-docs](https://github.com/deltaDAO/pontusx-docs) |
+| 原典の公開サイト | https://docs.pontus-x.eu/ |
+| 翻訳の基準コミット | [`c356d02`](https://github.com/deltaDAO/pontusx-docs/commit/c356d02afc188282daa0c905d938fc0d9fdc924d)（2026-08-14 時点） |
+| 翻訳版のリポジトリ | [nakamura196/pontusx-docs](https://github.com/nakamura196/pontusx-docs)（`ja` ブランチ） |
+| 翻訳の範囲 | `/docs/` 配下の全ページ |
+| 翻訳していないもの | プライバシーポリシー（[Privacy](/privacy)）と [Imprint](https://delta-dao.com/imprint)。法的効力を持つ文書のため、原文の英語版へのリンクのみとしています |
+
+## 改変点
+
+原典に対して、翻訳版では次の変更を加えています。
+
+- `pages/docs/` 配下の本文を日本語に翻訳し、`pages/ja/docs/` として追加（英語版のページはそのまま残しています）
+- ドキュメント内部のリンクを日本語版のパスへ張り替え
+- サイドバーの日本語版（`sidebar.ja.ts`）とトップナビゲーションの言語切替を追加
+- GitHub Pages 向けのビルド設定（`BASE_PATH`）と公開用ワークフローを追加
+- 上流サイトのアクセス解析タグは、フォーク版のビルドでは読み込まないよう変更
+
+## 訳語の方針
+
+- 製品名・プロトコル名・コンポーネント名（Pontus-X, Gaia-X, Ocean Enterprise, Aquarius, Nautilus, Compute-to-Data など）は原語のまま表記します
+- API のフィールド名・型名・コード中の識別子は翻訳せず、説明文のみを日本語にします
+- 定訳のない概念語は、初出時に「データ主権（data sovereignty）」のように原語を併記します
+
+## ライセンス
+
+原典の `pages/` 配下は **[Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)](https://creativecommons.org/licenses/by-sa/4.0/deed.ja)** で提供されています。本翻訳はその二次的著作物であり、**同じ CC BY-SA 4.0** の下で提供します。
+
+## 誤訳の報告
+
+訳文の誤りや改善案は、翻訳版リポジトリの [Issue](https://github.com/nakamura196/pontusx-docs/issues) までお知らせください。内容そのものに関する指摘は、原典の [deltaDAO/pontusx-docs](https://github.com/deltaDAO/pontusx-docs/issues) へお願いします。

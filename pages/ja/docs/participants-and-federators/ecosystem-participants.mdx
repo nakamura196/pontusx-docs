@@ -1,0 +1,31 @@
+import ParticipantsList from '../../../docs/_components/ParticipantsList'
+import ExternalLinkIcon from '../../../docs/_components/icons/ExternalLink'
+import { Callout } from 'vocs/components'
+
+# Pontus-X Ecosystem Participant Registry
+
+The Registry of all [Pontus-X ecosystem](https://www.pontus-x.eu/) participants keeps track of the onboarded and identified legal persons that are able to use the [Pontus-X ecosystem](https://www.pontus-x.eu/). It summarizes and makes available the participants' information provided in the form of [Gaia-X Participant Credentials](https://docs.gaia-x.eu/ontology/development/classes/LegalPerson/) that have been either collected by the Pontus-X ecosystem orchestrators or made available by the participants.
+
+Within the [Pontus-X ecosystem](https://www.pontus-x.eu/), participants are primarily identified through their public addresses and the associated [Gaia-X Participant Credentials](https://docs.gaia-x.eu/ontology/development/classes/LegalPerson/). Besides this Pontus-X Registry, this information is also used on the application layer of the ecosystem in
+
+- [Pontus-X Portals](https://portal.pontus-x.eu/)
+- [Pontus-X Logging Service](https://explorer.pontus-x.eu/pontusx/test)
+- [Pontus-X Faucet](https://portal.pontus-x.eu/faucet)
+- Applications connected to the data space ecosystem
+- Pontus-X Governance Tools (Voting)
+
+If you notice an identity or credential being outdated or an address missing here, please let us know via contact@delta-dao.com or use the [Onboarding Application to join the ecosystem](https://onboarding.delta-dao.com/).
+
+## Ecosystem Participants
+
+The **Pontus-X Ecosystem Registry** data is based on the dynamically updated and distributed source of truth loaded from the underlying smart contracts via a cached REST API. This results in an open identity registry system, based on the Gaia-X Framework with multiple onboarding service providers and orchestrators, removing a central point of failure and control.
+<ParticipantsList />
+
+
+## Registry 1.0 (Deprecated)
+
+The initial Pontus-X ecosystem registry 1.0 relied on static data which was manually maintained by community members and within the codebase of ecosystem services. This version of the registry has been deprecated in favor of an automated, decentralized and scalable approach.
+
+<Callout type="info">
+  The outdated v1.0 participant overview has been removed from the docs. The old state can be viewed here: <a href="https://raw.githubusercontent.com/deltaDAO/mvg-portal/refs/heads/main/pontusxAddresses.json" target="_blank" rel="noopener noreferrer" className="vocs_Anchor inline-flex items-center gap-1">pontusxAddresses.json <ExternalLinkIcon /></a>
+</Callout>

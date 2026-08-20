@@ -1,0 +1,104 @@
+# Use Case Publication Guide
+
+This section guides data, AI, and software providers in the Pontus‑X Data Space Ecosystem in the publication of their use cases on the Pontus‑X Devnet and Testnet.
+
+## Prerequisites
+
+As an onboarded participant in the Pontus‑X Data Space Ecosystem, ensure you have the required network and payment tokens to interact with the [Pontus‑X Data Space Ecosystem](https://portal.pontus-x.eu/). If you need tokens or have not received them, you can use the [Pontus-X faucet](https://portal.pontus-x.eu/faucet) to acquire them for free.
+
+If you have not been onboarded to the Pontus-X Data Space Ecosystem yet, you can directly register through the deltaDAO [Fast Track Onboarding Application](https://onboarding.delta-dao.com/).
+
+## Publication Process
+
+Publishing your use cases to the Pontus‑X Testnet/Devnet can be achieved through two primary methods. You can either use the [Pontus‑X Portal]((https://portal.pontus-x.eu/), accessible at [portal.pontus‑x.eu](https://portal.pontus-x.eu) (as well as any other Pontus‑X Data Space Ecosystem Portals), or utilize [Nautilus](https://nautilus.delta-dao.com/), our comprehensive TypeScript data economy toolkit. In the following sections, we will guide you through each method in detail.
+
+### Publication Process: Using the Pontus‑X Portal
+
+#### 1. Connect to Your Wallet
+
+Connect to the portal using either your organizational automation wallet you created with the [Fast Track Onboarding Application](https://onboarding.delta-dao.com/) or your already onboarded wallet via MetaMask. We recommend using the Automation Wallet additionally as it eliminates the need for manual transaction signing during the publication process.
+
+![Portal Wallet Connect](/images/use-cases/use-case-connect.png)
+
+#### 2. Connect to the Pontus‑X Testnet
+
+Hover over your displayed wallet address, click "Add Pontus‑X Testnet," and confirm both MetaMask transactions.
+
+![Portal Network Connect](/images/use-cases/use-case-connect-testnet.png)
+
+#### 3. Start Publishing Process for Service Asset
+
+1. Click "Publish"
+2. Fill out the metadata:
+   - **Asset Type**: Select "Dataset" or "Algorithm."
+   - **Title**: Enter at least 4 characters.
+   - **Description**: Enter at least 10 characters.
+   - (Optional) Upload a Gaia‑X service credential and define tags.
+   - (If algorithm): Define Docker Image
+3. Agree to the Terms and Conditions.
+4. Click "Continue"
+
+
+![Start Publishing Process](/images/use-cases/use-case-define-access-information.png)
+
+#### 4. Define Access Information
+
+1. Choose access type: "Download" or "Compute."
+2. Select provider URL (relevant if your own provider is set up). deltaDAO provider is added by default.
+3. Provide file information and click "Submit."
+   - **Note:** Only access information is provided; files are never transferred to Pontus‑X. More information about supported data sources can be found [here](/ja/docs/getting-started/data-service-offerings).
+4. (Optional) Provide a sample file and click "Validate."
+5. Choose a timeout period, defining how long buyers can download the asset after the initial purchase.
+6. (Optional) Provide user-defined parameters, allowlist and/or denylist participants (otherwise, all onboarded participants listed [here](/ja/docs/participants-and-federators/ecosystem-participants) will have access). Provide a license and add a link to asset-specific Terms and Conditions.
+7. Click "Continue"
+
+![Portal Define Access Information](/images/use-cases/use-case-publish.png)
+
+#### 5. Define Pricing Information
+
+1. Define a price or select "Free" if the asset should be free of charge.
+2. Click "Continue."
+
+**Notes:**
+- Since the Pontus‑X Testnet is a staging environment, no real monetary transactions occur. Only test tokens are exchanged.
+
+
+#### 6. Finalize Submission
+
+1. Click "Submit."
+2. If using MetaMask for transaction signing, confirm the transaction requests.
+
+#### 7. Compute‑to‑Data Use Cases
+
+Repeat the process for the algorithm asset to be allowlisted for computation on the data source of the previously published data asset.
+
+#### 8. Compute‑to‑Data Use Cases: Allowlist Algorithm Asset
+
+1. Click "Catalogue" and select the previously published data asset.
+   ![Portal Catalogue](/images/use-cases/use-case-catalogue.png)
+
+2. Click "Edit Asset."
+   ![Portal Catalogue](/images/use-cases/use-case-edit-asset.png)
+
+3. Click "Edit Compute Settings" and set the previously published algorithm asset for allowlisting.
+   ![Portal Catalogue](/images/use-cases/use-case-compute-settings.png)
+
+4. Click "Submit"
+
+### Publication Process: Using Nautilus
+
+**Overview of Nautilus**
+
+Nautilus is a developer-focused TypeScript library designed to simplify and streamline the development experience within OceanEnterprise ecosystems. It addresses common pain points such as configuring metadata, defining pricing schemes, and managing access controls, which can often be time-consuming and error-prone.
+
+**Key Features:**
+- **Builder Pattern:** Simplifies configuration of data economy assets and services, enhancing readability, maintainability, and flexibility.
+- **Feature Complete:** Manages data assets and services, supports publish and edit functionalities, and leverages OceanEnterprise's Compute-to-Data capabilities.
+- **Seamless Compute Jobs:** Start, monitor, and retrieve compute job results within your development environment.
+
+For a detailed guide on the publishing process, refer to the [publishing section](https://nautilus.delta-dao.com/docs/guides/edit) of the [Nautilus Documentation](https://nautilus.delta-dao.com/).
+
+**Notes:**
+- To install Nautilus, refer to our [GitHub repository](https://github.com/deltaDAO/nautilus).
+- For quick coding examples, check out the [nautilus-examples repository](https://github.com/deltaDAO/nautilus-examples).
+- After installation, update the `.env` file with the `NETWORK` configuration for Pontus‑X Testnet (`pontusxtestnet`) and the `PRIVATE_KEY` of your onboarded wallet.

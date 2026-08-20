@@ -1,3 +1,23 @@
+> **This is a fork of [deltaDAO/pontusx-docs](https://github.com/deltaDAO/pontusx-docs) that adds an unofficial Japanese translation.**
+>
+> 本リポジトリは [Pontus-X 公式ドキュメント](https://docs.pontus-x.eu/) の**非公式な日本語訳**を追加したフォークです。
+>
+> - 日本語版: https://nakamura196.github.io/pontusx-docs/ja/docs/introduction/overview
+> - 翻訳について: [`pages/ja/docs/about-translation.mdx`](pages/ja/docs/about-translation.mdx)
+> - 原典の `pages/` 配下は CC BY-SA 4.0。本翻訳も同ライセンスで提供します。
+> - 英語版のページは原文のまま保持しており、翻訳は `pages/ja/` 以下にのみ存在します。
+>
+> ### このフォークでの変更点
+>
+> | ファイル | 変更 |
+> | --- | --- |
+> | `pages/ja/**` | 日本語訳（新規） |
+> | `sidebar.ja.ts` | 日本語サイドバー（新規） |
+> | `vocs.config.tsx` | `BASE_PATH` 対応、言語切替、フォーク時の解析タグ無効化 |
+> | `scripts/patch-vocs.mjs` | `basePath` 指定時に Vocs のプリレンダが空になる不具合の回避（新規） |
+> | `.github/workflows/deploy-pages.yml` | GitHub Pages への公開（新規） |
+> | `.nvmrc` | Node 22 固定（Node 25 では `@typescript/vfs` がビルド時に落ちるため） |
+
 # Vision, Mission and Values
 
 [Pontus-X](https://www.pontus-x.eu/) is a decentralized digital ecosystem that aims to enable secure, compliant, and innovative data sharing, AI services and monetization across Europe, based on [Ocean Enterprise](https://www.oceanenterprise.io/), and within the [Gaia-X Framework](https://docs.gaia-x.eu/).

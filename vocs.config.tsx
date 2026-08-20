@@ -1,13 +1,23 @@
 import { defineConfig } from 'vocs'
 import { sidebar } from './sidebar'
+import { sidebarJa } from './sidebar.ja'
 import remarkGemoji from 'remark-gemoji'
 
+// Set BASE_PATH when deploying to a sub-path (e.g. GitHub Pages project site:
+// https://<user>.github.io/pontusx-docs -> BASE_PATH=/pontusx-docs).
+// Left undefined for root deployments such as https://docs.pontus-x.eu.
+const basePath = process.env.BASE_PATH || undefined
+
 export default defineConfig({
+  basePath,
   title: 'Pontus-X Docs',
   titleTemplate: '%s · Pontus-X Docs',
   description:
     'The official documentation for Pontus-X, a decentralized data and AI ecosystem.',
   head() {
+    // The upstream Plausible tracker is bound to docs.pontus-x.eu. A fork
+    // deployed under a BASE_PATH must not pollute that site's statistics.
+    if (basePath) return <></>
     return (
       <>
         <script
@@ -22,7 +32,7 @@ export default defineConfig({
   iconUrl: { light: '/favicons/icon.png', dark: '/favicons/icon.png' },
   logoUrl: { light: '/icon-light.png', dark: '/icon-dark.png' },
   rootDir: '.',
-  sidebar,
+  sidebar: { ...sidebar, ...sidebarJa },
   socials: [
     {
       icon: 'github',
@@ -37,6 +47,13 @@ export default defineConfig({
     },
   },
   topNav: [
+    {
+      text: 'Language / 言語',
+      items: [
+        { text: 'English', link: '/docs/introduction/overview' },
+        { text: '日本語 (Japanese)', link: '/ja/docs/introduction/overview' }
+      ]
+    },
     {
       text: 'Portals',
       items: [

@@ -3,8 +3,8 @@
   "version": "0.7.0",
   "type": "module",
   "scripts": {
-    "dev": "vocs dev",
-    "build": "vocs build",
+    "dev": "node scripts/patch-vocs.mjs && vocs dev",
+    "build": "node scripts/patch-vocs.mjs && vocs build",
     "preview": "vocs preview"
   },
   "dependencies": {
