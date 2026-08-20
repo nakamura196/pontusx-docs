@@ -1,16 +1,16 @@
-# Publishing with Nautilus
+# Nautilus による公開（パブリッシュ）
 
-In the decentralized data economy of Pontus-X, publishing data, applications, and services is essential for enabling a thriving ecosystem. By making your assets available, you contribute to the collective value and utility of the network. This chapter guides you through the process of publishing assets using the Nautilus interface, simplifying the creation and configuration of assets.
+Pontus-X の分散型データエコノミーでは、データ・アプリケーション・サービスを公開することが、エコシステムを豊かにするうえで欠かせません。自らのアセットを利用可能にすることで、ネットワーク全体の価値と有用性に貢献できます。本章では、アセットの作成と設定を簡潔にする Nautilus のインターフェースを用いた公開の手順を解説します。
 
-## Introduction to Publishing
+## 公開とは
 
-Publishing in Pontus-X involves describing your asset in a standardized way so that it can be displayed in catalogs, offered on marketplaces, and sold to others. Constructing a Decentralized Identifier Document (DDO) can be complex, but Nautilus streamlines this process with two main builder classes: `AssetBuilder` and `ServiceBuilder`.
+Pontus-X における公開とは、アセットを標準化された方法で記述し、カタログに表示され、マーケットプレイスで提供され、他者に販売できる状態にすることです。分散型識別子ドキュメント（DDO）の構築は複雑になりがちですが、Nautilus は `AssetBuilder` と `ServiceBuilder` という 2 つの主要なビルダークラスで、この作業を簡潔にします。
 
-## Creating Asset Metadata with AssetBuilder
+## AssetBuilder でアセットのメタデータを作る
 
-The `AssetBuilder` class in Nautilus helps you construct the metadata for your asset. Follow these steps to set up and build your asset's metadata:
+Nautilus の `AssetBuilder` クラスは、アセットのメタデータの構築を支援します。次の手順でメタデータを設定し、構築します。
 
-1. **Setup and Initialization:** Begin by creating an instance of `AssetBuilder`.
+1. **セットアップと初期化：** まず `AssetBuilder` のインスタンスを作成します。
 
    ```javascript
    import { AssetBuilder } from '@deltadao/nautilus'
@@ -18,7 +18,7 @@ The `AssetBuilder` class in Nautilus helps you construct the metadata for your a
    const assetBuilder = new AssetBuilder()
    ```
 
-2. **Configure Metadata:** Use the builder pattern to set up the metadata information for the asset, such as type, name, description, and author.
+2. **メタデータを設定する：** ビルダーパターンを用いて、種別・名称・説明・作成者といったアセットのメタデータを設定します。
 
    ```javascript
    assetBuilder
@@ -28,17 +28,17 @@ The `AssetBuilder` class in Nautilus helps you construct the metadata for your a
      .setAuthor('Company Ltd.')
    ```
 
-3. **Build the Asset:** Finalize the configuration by calling the `build()` method, which returns a correctly configured asset ready for publishing.
+3. **アセットを構築する：** `build()` メソッドを呼び出して設定を確定します。公開できる状態に正しく構成されたアセットが返ります。
 
    ```javascript
    const asset = assetBuilder.build()
    ```
 
-## Defining Services with ServiceBuilder
+## ServiceBuilder でサービスを定義する
 
-While the asset now has metadata, it needs defined services to be functional. The `ServiceBuilder` class allows you to specify how the asset can be accessed or interacted with.
+ここまででアセットにはメタデータが備わりましたが、実際に機能させるにはサービスの定義が必要です。`ServiceBuilder` クラスを使うと、アセットへのアクセス方法や操作方法を指定できます。
 
-1. **Setup ServiceBuilder:** Initialize `ServiceBuilder` with the appropriate service type and file type.
+1. **ServiceBuilder を用意する：** 適切なサービス種別とファイル種別を指定して `ServiceBuilder` を初期化します。
 
    ```javascript
    import { UrlFile, FileTypes, ServiceTypes, ServiceBuilder } from '@deltadao/nautilus'
@@ -49,7 +49,7 @@ While the asset now has metadata, it needs defined services to be functional. Th
    })
    ```
 
-2. **Declare the File:** Define the file you want to publish. This example uses an HTTP GET request to access the asset.
+2. **ファイルを宣言する：** 公開したいファイルを定義します。この例では、HTTP の GET リクエストでアセットにアクセスします。
 
    ```javascript
    const urlFile = {
@@ -60,11 +60,11 @@ While the asset now has metadata, it needs defined services to be functional. Th
    ```
 
 :::info
-For quick testing, you can use any publicly available file on e.g. GitHub. Ensure that you have the rights to the file and that the endpoint is reliably reachable.
+手早く試すには、GitHub などで公開されている任意のファイルを利用できます。そのファイルに対する権利を有していること、およびエンドポイントに安定してアクセスできることを確認してください。
 :::
 
 
-3. **Add Metadata and Build the Service:** Use the builder pattern to add required metadata and the file, then build the service.
+3. **メタデータとファイルを追加してサービスを構築する：** ビルダーパターンで必要なメタデータとファイルを追加し、サービスを構築します。
 
    ```javascript
    const service = serviceBuilder
@@ -78,28 +78,28 @@ For quick testing, you can use any publicly available file on e.g. GitHub. Ensur
    ```
 
 :::info
-You are currently publishing on the Pontus-X Devnet, as indicated by the provider url. This is ideal for testing. However, once you are satisfied with your use case, you should consider publishing it on the Pontus-X Testnet for final validation.
+Provider の URL が示すとおり、ここでは Pontus-X 開発ネットに公開しています。テストにはこれが適しています。ただし、ユースケースが仕上がったら、最終検証のために Pontus-X テストネットへの公開を検討してください。
 :::
 
-## Publishing the Asset
+## アセットを公開する
 
-Combine the asset metadata and services, then publish the asset using the Nautilus interface.
+アセットのメタデータとサービスを組み合わせ、Nautilus のインターフェースで公開します。
 
-1. **Add Service to Asset:** Add the configured service to your asset.
+1. **アセットにサービスを追加する：** 構成済みのサービスをアセットに追加します。
 
    ```javascript
    const assetWithService = assetBuilder.addService(service).build()
    ```
 
-2. **Publish the Asset:** Use the `nautilus.publish` function to anchor the asset on your chosen network.
+2. **アセットを公開する：** `nautilus.publish` 関数を使い、選択したネットワーク上にアセットを記録します。
 
    ```javascript
    const result = await nautilus.publish(assetWithService)
    ```
 
-## Example Code
+## サンプルコード
 
-Here's a complete example demonstrating the publishing process using Nautilus:
+Nautilus を使った公開の一連の流れを示す完全な例です。
 
 ```javascript
 import { Nautilus, AssetBuilder, ServiceBuilder, UrlFile, FileTypes, ServiceTypes } from '@deltadao/nautilus'
@@ -108,17 +108,17 @@ import { providers, Wallet } from 'ethers'
 const provider = new providers.JsonRpcProvider('https://rpc.dev.pontux-x.eu')
 const signer = new Wallet('0x...', provider)
 
-// Create the Nautilus instance
+// Nautilus インスタンスを作成する
 const nautilus = await Nautilus.create(signer)
 
-// Setup AssetBuilder
+// AssetBuilder を用意する
 const assetBuilder = new AssetBuilder()
   .setType('dataset')
   .setName('My New Asset')
   .setDescription('This is a publish asset building test using Nautilus')
   .setAuthor('Company Ltd.')
 
-// Setup ServiceBuilder
+// ServiceBuilder を用意する
 const serviceBuilder = new ServiceBuilder({
   serviceType: ServiceTypes.ACCESS,
   fileType: FileTypes.URL
@@ -139,23 +139,23 @@ const service = serviceBuilder
   })
   .build()
 
-// Add service to asset and build
+// アセットにサービスを追加して構築する
 const assetWithService = assetBuilder.addService(service).build()
 
-// Publish the asset
+// アセットを公開する
 const result = await nautilus.publish(assetWithService)
 ```
 
-## Deep Dive
+## さらに詳しく
 
-For more detailed information and advanced configurations, refer to the following resources:
+詳細な情報と高度な設定については、次の資料を参照してください。
 
-- [AssetBuilder - API Documentation](https://nautilus.delta-dao.com/docs/api/AssetBuilder)
-- [ServiceBuilder - API Documentation](https://nautilus.delta-dao.com/docs/api/ServiceBuilder)
-- [ConsumerParameterBuilder - API Documentation](https://nautilus.delta-dao.com/docs/api/ConsumerParameterBuilder)
-- [nautilus.publish() - API Documentation](https://nautilus.delta-dao.com/docs/api/nautilus/publish)
-- [Publish Examples - Code Examples](https://github.com/deltaDAO/nautilus-examples/blob/main/publish.ts)
+- [AssetBuilder — API ドキュメント](https://nautilus.delta-dao.com/docs/api/AssetBuilder)
+- [ServiceBuilder — API ドキュメント](https://nautilus.delta-dao.com/docs/api/ServiceBuilder)
+- [ConsumerParameterBuilder — API ドキュメント](https://nautilus.delta-dao.com/docs/api/ConsumerParameterBuilder)
+- [nautilus.publish() — API ドキュメント](https://nautilus.delta-dao.com/docs/api/nautilus/publish)
+- [公開の例 — コードサンプル](https://github.com/deltaDAO/nautilus-examples/blob/main/publish.ts)
 
-## Conclusion
+## まとめ
 
-Publishing data, applications, and services in the Pontus-X ecosystem is simplified with Nautilus, making it accessible even for those new to decentralized technologies. By following this guide, you can efficiently publish your assets, contribute to the data economy, and leverage the full potential of the Pontus-X ecosystem.
+Pontus-X エコシステムでのデータ・アプリケーション・サービスの公開は、Nautilus によって簡潔になり、分散技術に不慣れな方でも取り組めます。本ガイドの手順に従えば、アセットを効率よく公開し、データエコノミーに貢献し、Pontus-X エコシステムの力を最大限に活かせます。
